@@ -27,38 +27,38 @@ int cdecl getopt (int argc, char *argv[], const char *options)
     const char *p;
 
     if (optind >= argc || argv[optind][0] != '-' || argv[optind][1] == 0)
-	return EOF;
+        return EOF;
 
     optopt = argv[optind][pos++];
     optarg = NULL;
 
     if (argv[optind][pos] == 0)
-	{ pos = 1; optind++; }
+        { pos = 1; optind++; }
 
     p = strchr (options, optopt);
 
     if (optopt == ':' || p == NULL) {
 
-	fputs ("illegal option -- ", stdout);
-	goto error;
+        fputs ("illegal option -- ", stdout);
+        goto error;
 
     } else if (p[1] == ':') {
 
-	if (optind >= argc) {
+        if (optind >= argc) {
 
-	    fputs ("option requires an argument -- ", stdout);
-	    goto error;
+            fputs ("option requires an argument -- ", stdout);
+            goto error;
 
-	} else {
+        } else {
 
-	    optarg = argv[optind];
+            optarg = argv[optind];
 
-	    if (pos != 1)
-		optarg += pos;
+            if (pos != 1)
+                optarg += pos;
 
-	    pos = 1; optind++;
+            pos = 1; optind++;
 
-	}
+        }
     }
     return optopt;
 

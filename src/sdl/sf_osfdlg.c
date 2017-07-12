@@ -25,7 +25,7 @@ static zword pushed = 0;
 static int wentry;
 
 static ulong *sbuffer = NULL;
-static int sbpitch;		// in longs
+static int sbpitch;                // in longs
 static int ewidth, eheight;
 static int X,Y,W,H, xdlg,ydlg,wdlg,hdlg;
 
@@ -34,7 +34,7 @@ static int X,Y,W,H, xdlg,ydlg,wdlg,hdlg;
 STATIC void cleanlist( ENTRY *t);
 STATIC void drawlist();
 STATIC ENTRY * dodir(
-	char *dirname, char *pattern, char *resdir, int size, int *ndirs, int *ntot);
+        char *dirname, char *pattern, char *resdir, int size, int *ndirs, int *ntot);
 static int Numdirs, Numtot, First;
 static ENTRY *curdir = NULL, *selected;
 
@@ -61,7 +61,7 @@ STATIC void goup()
   }
 
 typedef struct {
-  int x,y,w,h;	// internal
+  int x,y,w,h;        // internal
   zword (*click)(int,int);
   ulong back;
   int isbutton;
@@ -80,11 +80,11 @@ static SF_textsetting *ts;
 
 #define HCURSOR 8
 
-#define O_BLACK	0
-#define O_GRAY1	0x8a8a8a
-#define O_GRAY2	0xd6d6d6
-#define O_GRAY3	0xe2e2e2
-#define O_WHITE	0xf5f5f5
+#define O_BLACK        0
+#define O_GRAY1        0x8a8a8a
+#define O_GRAY2        0xd6d6d6
+#define O_GRAY3        0xe2e2e2
+#define O_WHITE        0xf5f5f5
 
 STATIC void frame_upframe( int x, int y, int w, int h){
   ulong v = O_WHITE;
@@ -143,10 +143,10 @@ STATIC void writetext( ulong color, const char *s, int x, int y, int w, int cent
   sf_setclip(x,y,w,HTEXT);
 //printf("1\n");
   if (center)
-	{
-	int wt = 8*strlen(s);
-	x += (w-wt)/2;
-	}
+        {
+        int wt = 8*strlen(s);
+        x += (w-wt)/2;
+        }
 //printf("2 ts %p\n",ts); fflush(stdout); if (ts < 1000){sf_flushdisplay(); getchar();}
   ts->cx = x;
   ts->cy = y;
@@ -199,14 +199,14 @@ STATIC zword checkmouse( int i0)
     {
     BAREA *a = bareas+i;
     if (x > a->x && x < a->x+a->w && y > a->y && y < a->y+a->h)
-	{
-	if (a->click)
-		{
-		if (a->isbutton) clicked(a);
-		return a->click(x-a->x,y-a->y);
-		}
-	else return 0;
-	}
+        {
+        if (a->click)
+                {
+                if (a->isbutton) clicked(a);
+                return a->click(x-a->x,y-a->y);
+                }
+        else return 0;
+        }
     }
   return 0;
   }
@@ -237,12 +237,12 @@ STATIC zword inputkey()
   if (c == ZC_SINGLE_CLICK)
     {
     switch (mouse_button)
-	{
-	case 4: c = ZC_ARROW_LEFT; break;
-	case 5: c = ZC_ARROW_RIGHT; break;
-	case 1: break;
-	default: c = 0; break;
-	}
+        {
+        case 4: c = ZC_ARROW_LEFT; break;
+        case 5: c = ZC_ARROW_RIGHT; break;
+        case 1: break;
+        default: c = 0; break;
+        }
     }
 //    if (os_read_mouse() != 1) c = 0;
   return c;
@@ -255,9 +255,9 @@ STATIC int myosdialog( bool existing, const char *def, const char *filt, const c
   char *pp; ulong *saved; int y0, y1, y2, x1;
   zword c = 0;
 
-	// allow system-specific dialog if not fullscreen
+        // allow system-specific dialog if not fullscreen
   if (isfull == 0) if (sf_sysdialog)
-	return sf_sysdialog(existing,def,filt,tit,res);
+        return sf_sysdialog(existing,def,filt,tit,res);
 
   ts = sf_curtextsetting();
   if (!ts) return SF_NOTIMP;
@@ -268,11 +268,11 @@ STATIC int myosdialog( bool existing, const char *def, const char *filt, const c
   strcpy(filename,def);
   pp = strrchr(filename,'/');
   if (pp)
-	{
-	*pp = 0;
-	strcpy(lastdir,filename);
-	strcpy(filename,pp+1);
-	}
+        {
+        *pp = 0;
+        strcpy(lastdir,filename);
+        strcpy(filename,pp+1);
+        }
 
   if (!filt) filt = "*|All files";
 
@@ -301,7 +301,7 @@ STATIC int myosdialog( bool existing, const char *def, const char *filt, const c
   X = (ew-W)/2;
   Y = (eh-H)/2;
 
-	// internal!!
+        // internal!!
   xdlg = X+SPC+2*BFRAME;
   ydlg = Y+2*SPC+4*BFRAME+HTEXT+HTEXT;
 
@@ -360,14 +360,14 @@ STATIC int myosdialog( bool existing, const char *def, const char *filt, const c
     if (c == ZC_ARROW_RIGHT) goright();
     if (c == ZC_ESCAPE) break;
     if (c == ZC_RETURN)
-	{
-	strcpy(buffer,lastdir);
-	strcat(buffer,filename);
-	*res = buffer;
-	if ((existing==0) && (access(buffer,F_OK)==0))
-		c = yesnoover(xdlg+wdlg/2,ydlg+hdlg/2);
-	if (c == ZC_RETURN) break;
-	}
+        {
+        strcpy(buffer,lastdir);
+        strcat(buffer,filename);
+        *res = buffer;
+        if ((existing==0) && (access(buffer,F_OK)==0))
+                c = yesnoover(xdlg+wdlg/2,ydlg+hdlg/2);
+        if (c == ZC_RETURN) break;
+        }
     }
 
   sf_poptextsettings();
@@ -380,12 +380,12 @@ STATIC int myosdialog( bool existing, const char *def, const char *filt, const c
   if (c == ZC_ESCAPE) return -1;
 
   if (c == ZC_RETURN)
-	{
-	strcpy(buffer,lastdir);
-	strcat(buffer,filename);
-	*res = buffer;
-	return 0;
-	}
+        {
+        strcpy(buffer,lastdir);
+        strcat(buffer,filename);
+        *res = buffer;
+        return 0;
+        }
 
   return SF_NOTIMP;
   }
@@ -420,22 +420,22 @@ STATIC int myfnmatch( const char *pattern, const char *p, int dummy)
   if (!p) return -1;
   if (pattern[0] != '*') return strcmp(pattern,p);
   lpat = strlen(pattern);
-  if (lpat == 1) return 0;	// * matches anything
+  if (lpat == 1) return 0;        // * matches anything
   lpat--; pattern++;
   lp = strlen(p);
-  if (lp < lpat) return 1;	// too short
+  if (lp < lpat) return 1;        // too short
   return strcmp(pattern,p+lp-lpat);
   }
 
 STATIC void cleanlist( ENTRY *t)
   {
   while (t)
-	{
-	ENTRY *n = t->right;
-	if (t->value) free(t->value);
-	free(t);
-	t = n;
-	}
+        {
+        ENTRY *n = t->right;
+        if (t->value) free(t->value);
+        free(t);
+        t = n;
+        }
   }
 
 STATIC ENTRY * newentry( char *s)
@@ -443,9 +443,9 @@ STATIC ENTRY * newentry( char *s)
   ENTRY *r = calloc(1,sizeof(ENTRY));
 
   if (r){
-	r->value = strdup(s);
-	if (!r->value){ free(r); return NULL;}
-	}
+        r->value = strdup(s);
+        if (!r->value){ free(r); return NULL;}
+        }
   return r;
   }
 
@@ -453,33 +453,33 @@ STATIC void addentry( char *s, ENTRY **ae)
   {
   ENTRY *t = *ae;
   if (!t)
-	{
-	*ae = newentry(s);
-	return;
-	}
+        {
+        *ae = newentry(s);
+        return;
+        }
   for (;;)
-	{
-	int k = strcasecmp(s,t->value);
-	if (!k) return;
-	if (k > 0)
-		{
-		if (t->right) t = t->right;
-		else
-			{
-			t->right = newentry(s);
-			return;
-			}
-		}
-	else
-		{
-		if (t->left) t = t->left;
-		else
-			{
-			t->left = newentry(s);
-			return;
-			}
-		}
-	}
+        {
+        int k = strcasecmp(s,t->value);
+        if (!k) return;
+        if (k > 0)
+                {
+                if (t->right) t = t->right;
+                else
+                        {
+                        t->right = newentry(s);
+                        return;
+                        }
+                }
+        else
+                {
+                if (t->left) t = t->left;
+                else
+                        {
+                        t->left = newentry(s);
+                        return;
+                        }
+                }
+        }
   }
 
 STATIC char *resolvedir( char *dir, char *res, int size)
@@ -491,15 +491,15 @@ STATIC char *resolvedir( char *dir, char *res, int size)
   for (i=0;p[i];i++) if (p[i]=='\\') p[i] = '/';
   chdir(cwd);
   if (p)
-	{
-	int n = strlen(p);
-	if (n) if (p[n-1] != '/') { p[n] = '/'; p[n+1] = 0;}
-	}
+        {
+        int n = strlen(p);
+        if (n) if (p[n-1] != '/') { p[n] = '/'; p[n+1] = 0;}
+        }
   return p;
   }
 
 STATIC ENTRY * dodir(
-	char *dirname, char *pattern, char *resdir, int size, int *ndirs, int *ntot)
+        char *dirname, char *pattern, char *resdir, int size, int *ndirs, int *ntot)
   {
   DIR *dir;
   ENTRY *dirs = NULL;
@@ -524,11 +524,11 @@ STATIC ENTRY * dodir(
   resdend = resdir+strlen(resdir);
 
 //printf("[%s]\n",resdir);
-	// MinGW opendir() does not like the final slash
+        // MinGW opendir() does not like the final slash
 #ifdef WIN32
   n = strlen(resdir);
   if (n > 2 && (resdir[n-2] != ':'))
-	resdir[n-1] = 0;
+        resdir[n-1] = 0;
   dir = opendir(resdir);
   resdir[n-1] = '/';
 #else
@@ -549,12 +549,12 @@ STATIC ENTRY * dodir(
     if (stat(resdir,&fst)) continue;
 //printf("--mode %x\n",fst.st_mode);
     if (fst.st_mode & S_IFDIR)
-	addentry(p,&dirs);
+        addentry(p,&dirs);
     else
-	{
+        {
 //printf("--fnmatch: %d\n",fnmatch(pattern,p,0));
-	if (myfnmatch(pattern,p,0)==0) addentry(p,&files);
-	}
+        if (myfnmatch(pattern,p,0)==0) addentry(p,&files);
+        }
     }
 
   closedir(dir);
@@ -568,10 +568,10 @@ STATIC ENTRY * dodir(
 
   if (res)
     while (res->left)
-	{
-	((ENTRY *)(res->left))->right = res;
-	res = res->left;
-	}
+        {
+        ((ENTRY *)(res->left))->right = res;
+        res = res->left;
+        }
 
   return res;
   }
@@ -582,73 +582,73 @@ STATIC ENTRY * dodir(
 static ulong bcolors[4] = {0xfcfcfc,0,0xa0a0a0,0xa0d0e0};
 
 static unsigned char folderbmp[] = {
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,1,1,1,1,1,1,
-	0,0,0,0,0,0,0,0,
-	0,1,3,3,3,3,3,3,
-	1,1,1,1,1,1,0,0,
-	0,1,3,3,3,3,3,3,
-	3,3,3,3,3,3,1,0,
-	0,1,3,3,3,3,3,3,
-	3,1,1,1,1,1,1,0,
-	0,1,3,3,1,1,1,1,
-	1,3,3,3,3,3,1,0,
-	0,1,3,1,3,3,3,3,
-	3,3,3,3,3,3,1,0,
-	0,1,3,1,3,3,3,3,
-	3,3,3,3,3,3,1,0,
-	0,1,3,1,3,3,3,3,
-	3,3,3,3,3,3,1,0,
-	0,1,3,1,3,3,3,3,
-	3,3,3,3,3,3,1,0,
-	0,1,3,1,3,3,3,3,
-	3,3,3,3,3,3,1,0,
-	0,1,3,1,3,3,3,3,
-	3,3,3,3,3,3,1,0,
-	0,0,1,1,1,1,1,1,
-	1,1,1,1,1,1,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0};
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,1,1,1,1,1,1,
+        0,0,0,0,0,0,0,0,
+        0,1,3,3,3,3,3,3,
+        1,1,1,1,1,1,0,0,
+        0,1,3,3,3,3,3,3,
+        3,3,3,3,3,3,1,0,
+        0,1,3,3,3,3,3,3,
+        3,1,1,1,1,1,1,0,
+        0,1,3,3,1,1,1,1,
+        1,3,3,3,3,3,1,0,
+        0,1,3,1,3,3,3,3,
+        3,3,3,3,3,3,1,0,
+        0,1,3,1,3,3,3,3,
+        3,3,3,3,3,3,1,0,
+        0,1,3,1,3,3,3,3,
+        3,3,3,3,3,3,1,0,
+        0,1,3,1,3,3,3,3,
+        3,3,3,3,3,3,1,0,
+        0,1,3,1,3,3,3,3,
+        3,3,3,3,3,3,1,0,
+        0,1,3,1,3,3,3,3,
+        3,3,3,3,3,3,1,0,
+        0,0,1,1,1,1,1,1,
+        1,1,1,1,1,1,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0};
 
 
 static unsigned char docbmp[] = {
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,1,1,1,1,1,1,
-	1,1,1,1,1,1,0,0,
-	0,1,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,0,
-	0,1,0,2,2,2,2,2,
-	2,2,2,2,2,0,1,0,
-	0,1,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,0,
-	0,1,0,2,2,2,2,2,
-	2,2,2,2,2,0,1,0,
-	0,1,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,0,
-	0,1,0,2,2,2,2,2,
-	2,2,2,2,2,0,1,0,
-	0,1,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,0,
-	0,1,0,2,2,2,2,2,
-	2,2,2,2,2,0,1,0,
-	0,1,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,0,
-	0,1,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,0,
-	0,0,1,1,1,1,1,1,
-	1,1,1,1,1,1,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0};
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,1,1,1,1,1,1,
+        1,1,1,1,1,1,0,0,
+        0,1,0,0,0,0,0,0,
+        0,0,0,0,0,0,1,0,
+        0,1,0,2,2,2,2,2,
+        2,2,2,2,2,0,1,0,
+        0,1,0,0,0,0,0,0,
+        0,0,0,0,0,0,1,0,
+        0,1,0,2,2,2,2,2,
+        2,2,2,2,2,0,1,0,
+        0,1,0,0,0,0,0,0,
+        0,0,0,0,0,0,1,0,
+        0,1,0,2,2,2,2,2,
+        2,2,2,2,2,0,1,0,
+        0,1,0,0,0,0,0,0,
+        0,0,0,0,0,0,1,0,
+        0,1,0,2,2,2,2,2,
+        2,2,2,2,2,0,1,0,
+        0,1,0,0,0,0,0,0,
+        0,0,0,0,0,0,1,0,
+        0,1,0,0,0,0,0,0,
+        0,0,0,0,0,0,1,0,
+        0,0,1,1,1,1,1,1,
+        1,1,1,1,1,1,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0};
 
 ////////////////////////////////
 
@@ -664,19 +664,19 @@ STATIC void drawit( int x, int y, ENTRY *e, int w, int issub)
   n = w/8;
   if (n < 1) return;
   if (strlen(s) > n)
-	{
-	strcpy(buffer,s);
-	buffer[n] = 0;
-	buffer[n-1] = '>';
-	s = buffer;
-	}
+        {
+        strcpy(buffer,s);
+        buffer[n] = 0;
+        buffer[n-1] = '>';
+        s = buffer;
+        }
   if (e == selected)
-	{
-	color = O_WHITE;
-	sf_fillrect(0,x,y,w,16);
-	}
+        {
+        color = O_WHITE;
+        sf_fillrect(0,x,y,w,16);
+        }
   else
-	color = O_BLACK;
+        color = O_BLACK;
   writetext(color,s,x,y,w,0);
   }
 
@@ -696,22 +696,22 @@ STATIC void drawnames( int x, int y, int w, int h, ENTRY *files, int first, int 
   if (first < 0) return;
   if (nsub > ntot) nsub = ntot;
   while (first > 0)
-	{
-	files = files->right;
-	if (!files) return;
-	nsub--;
-	ntot--;
-	first--;
-	}
+        {
+        files = files->right;
+        if (!files) return;
+        nsub--;
+        ntot--;
+        first--;
+        }
   if (ntot <= 0) return;
   if (Ncols < 1) return;
   if (Nrows < 1) return;
   if (Nrows*Ncols < ntot) ntot = Nrows*Ncols;
   for (i=0;i<ntot;i++)
-	{
-	drawit(x+ewid*(i/Nrows),y+Fh*(i % Nrows),files,ewid,i < nsub);
-	files = files->right;
-	}
+        {
+        drawit(x+ewid*(i/Nrows),y+Fh*(i % Nrows),files,ewid,i < nsub);
+        files = files->right;
+        }
   }
 
 STATIC void drawlist()
@@ -741,9 +741,9 @@ STATIC void goleft()
 STATIC ENTRY *filesat( int n){
   ENTRY *e = curdir;
   while (n--)
-	{
-	if (e) e = e->right;
-	}
+        {
+        if (e) e = e->right;
+        }
   return e;
   }
 
@@ -754,22 +754,22 @@ STATIC zword Zselect( int x, int y)
   y /= Fh;
   n = First + y + x*Nrows;
   if (n >= Numtot)
-	{
-	if (selected)
-		{
-		selected = NULL;
-		drawlist();
-		}
-	return 0;
-	}
+        {
+        if (selected)
+                {
+                selected = NULL;
+                drawlist();
+                }
+        return 0;
+        }
   if (n < Numdirs)
-	{
-	ENTRY *e = filesat(n);
-	if (!e) return 0;
-	strcat(lastdir,e->value);
-	updatelist();
-	return 0;
-	}
+        {
+        ENTRY *e = filesat(n);
+        if (!e) return 0;
+        strcat(lastdir,e->value);
+        updatelist();
+        return 0;
+        }
   selected = curdir;
   while (n--) selected = selected->right;
   strcpy(filename,selected->value);
@@ -789,19 +789,19 @@ zword sf_yesnooverlay( int xc, int yc, char *t, int saverest)
   heff = 8*strlen(t);
   if (heff > 2*hx) hx = (heff+3)/2;
   if (saverest)
-	{
-  	ts = sf_curtextsetting();
-  	if (!ts) return ZC_ESCAPE;
-	saved = sf_savearea(xc-hx-2,yc-hy-2,2*hx+4,2*hy+4);
-	if (!saved) return ZC_ESCAPE;
-  	sf_pushtextsettings();
-  	ts->font = sf_VGA_SFONT;
-  	ts->style = 0;
-  	ts->oh = 0;
-  	ts->fore = 0;
-  	ts->backTransparent = 1;
-	sf_videodata(&sbuffer, &sbpitch, &ewidth, &eheight);
-	}
+        {
+          ts = sf_curtextsetting();
+          if (!ts) return ZC_ESCAPE;
+        saved = sf_savearea(xc-hx-2,yc-hy-2,2*hx+4,2*hy+4);
+        if (!saved) return ZC_ESCAPE;
+          sf_pushtextsettings();
+          ts->font = sf_VGA_SFONT;
+          ts->style = 0;
+          ts->oh = 0;
+          ts->fore = 0;
+          ts->backTransparent = 1;
+        sf_videodata(&sbuffer, &sbpitch, &ewidth, &eheight);
+        }
 
   sf_fillrect(FRAMECOLOR,xc-hx-2,yc-hy-2,2*hx+4,2*hy+4);
   sf_fillrect(O_WHITE,xc-hx,yc-hy,2*hx,2*hy);
@@ -819,10 +819,10 @@ zword sf_yesnooverlay( int xc, int yc, char *t, int saverest)
     }
 
   if (saved)
-	{
-	sf_restoreareaandfree(saved);
-	sf_poptextsettings();
-	}
+        {
+        sf_restoreareaandfree(saved);
+        sf_poptextsettings();
+        }
 
   nbareas = nsav;
   return c;
@@ -865,47 +865,47 @@ STATIC zword Zentry( int x, int y)
     {
     c = inputkey();
     if (c == ZC_SINGLE_CLICK)
-	{
-	pushed = c;
-	c = 0;
-	break;
-	}
+        {
+        pushed = c;
+        c = 0;
+        break;
+        }
     if (c == ZC_ESCAPE || c == VK_INS) { c = 0; break; }
     if (c == ZC_RETURN) break;
     if (c == ZC_ARROW_LEFT)
-	{
-	if (pos){ pos--; showfilename(pos); }
-	continue;
-	}
+        {
+        if (pos){ pos--; showfilename(pos); }
+        continue;
+        }
     if (c == ZC_ARROW_RIGHT)
-	{
-	if (pos < n){ pos++; showfilename(pos); }
-	continue;
-	}
+        {
+        if (pos < n){ pos++; showfilename(pos); }
+        continue;
+        }
     if (c == ZC_BACKSPACE)
-	{
-	if (pos)
-		{
-			// needs mystrcpy() because overlapping src-dst
-		if (pos < n) mystrcpy(filename+pos-1,filename+pos);
-		n--;
-		filename[n] = 0;
-		pos--;
-		showfilename(pos);
-		}
-	continue;
-	}
+        {
+        if (pos)
+                {
+                        // needs mystrcpy() because overlapping src-dst
+                if (pos < n) mystrcpy(filename+pos-1,filename+pos);
+                n--;
+                filename[n] = 0;
+                pos--;
+                showfilename(pos);
+                }
+        continue;
+        }
     if ((c >= 32 && c < 127) || (c >= 160 && c < 256))
-	{
-	if (n >= nmax) continue;
-	if (n > pos)
-	  for (i=n;i>pos;i--) filename[i] = filename[i-1];
-	filename[pos] = c;
-	n++;
-	filename[n] = 0;
-	pos++;
-	showfilename(pos);
-	}
+        {
+        if (n >= nmax) continue;
+        if (n > pos)
+          for (i=n;i>pos;i--) filename[i] = filename[i-1];
+        filename[pos] = c;
+        n++;
+        filename[n] = 0;
+        pos++;
+        showfilename(pos);
+        }
     }
   showfilename(-1);
   return c;

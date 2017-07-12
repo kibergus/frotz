@@ -42,29 +42,29 @@ int read_mouse (void)
 
     for (click = 0; click < 2; click++) {
 
-	if (click == 1)
-	    delay (222);
+        if (click == 1)
+            delay (222);
 
-	asm mov ax,6
-	asm xor bx,bx
-	asm int 0x33
+        asm mov ax,6
+        asm xor bx,bx
+        asm int 0x33
 
-	if (_BX == 0)
-	    break;
+        if (_BX == 0)
+            break;
 
-	mouse_x = _CX;
-	mouse_y = _DX;
+        mouse_x = _CX;
+        mouse_y = _DX;
 
-	if (display <= _TEXT_) {
-	    mouse_x /= 8;
-	    mouse_y /= 8;
-	}
+        if (display <= _TEXT_) {
+            mouse_x /= 8;
+            mouse_y /= 8;
+        }
 
-	if (display == _MCGA_)
-	    mouse_x /= 2;
+        if (display == _MCGA_)
+            mouse_x /= 2;
 
-	mouse_x++;
-	mouse_y++;
+        mouse_x++;
+        mouse_y++;
 
     }
 

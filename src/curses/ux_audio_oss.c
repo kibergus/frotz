@@ -35,7 +35,7 @@
 
 #include "ux_frotz.h"
 
-#ifdef OSS_SOUND	/* don't compile this if not using OSS */
+#ifdef OSS_SOUND        /* don't compile this if not using OSS */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -241,27 +241,27 @@ void os_prepare_sample (int number)
   if (sound_length > 0) {
     sound_buffer = malloc(sound_length);
     if (!sound_buffer) {
-	perror("malloc");
-	return;
+        perror("malloc");
+        return;
     }
     read_length = fread(sound_buffer, 1, sound_length, samples);
     if (read_length < sound_length) {
       if (feof(samples)) {
-	/*
-	 * One of the Sherlock samples trigger this for me, so let's make it
-	 * a non-fatal error.
-	 */
-	sound_buffer = realloc(sound_buffer, read_length);
-	if (! sound_buffer) {
-	  perror("realloc");
-	  return;
-	}
-	sound_length = read_length;
+        /*
+         * One of the Sherlock samples trigger this for me, so let's make it
+         * a non-fatal error.
+         */
+        sound_buffer = realloc(sound_buffer, read_length);
+        if (! sound_buffer) {
+          perror("realloc");
+          return;
+        }
+        sound_length = read_length;
       } else {
-	errno = ferror(samples);
-	perror(filename);
-	free(sound_buffer);
-	sound_buffer = NULL;
+        errno = ferror(samples);
+        perror(filename);
+        free(sound_buffer);
+        sound_buffer = NULL;
       }
     }
   }

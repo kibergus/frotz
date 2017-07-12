@@ -21,11 +21,11 @@ byte far *get_scrnptr (int y)
 {
 
     if (display == _CGA_)
-	return MK_FP ((y & 1) ? 0xba00 : 0xb800, 40 * (y & ~1));
+        return MK_FP ((y & 1) ? 0xba00 : 0xb800, 40 * (y & ~1));
     else if (display == _MCGA_)
-	return MK_FP (0xa000, 320 * y);
+        return MK_FP (0xa000, 320 * y);
     else
-	return MK_FP (0xa000, 80 * y);
+        return MK_FP (0xa000, 80 * y);
 
 }/* get_scrnptr */
 
@@ -41,22 +41,22 @@ static void clear_byte (byte far *scrn, word mask)
 
     if (display == _CGA_)
 
-	if (scrn_attr == 0)
-	    *scrn &= ~mask;
-	else
-	    *scrn |= mask;
+        if (scrn_attr == 0)
+            *scrn &= ~mask;
+        else
+            *scrn |= mask;
 
     else {
 
-	outport (0x03ce, 0x0205);
+        outport (0x03ce, 0x0205);
 
-	outportb (0x03ce, 0x08);
-	outportb (0x03cf, mask);
+        outportb (0x03ce, 0x08);
+        outportb (0x03cf, mask);
 
-	asm les bx,scrn
-	asm mov al,es:[bx]
-	asm mov al,scrn_attr
-	asm mov es:[bx],al
+        asm les bx,scrn
+        asm mov al,es:[bx]
+        asm mov al,scrn_attr
+        asm mov es:[bx],al
 
     }
 
@@ -75,37 +75,37 @@ static void clear_line (int y, int left, int right)
 
     if (display == _MCGA_)
 
-	_fmemset (scrn + left, scrn_attr, right - left + 1);
+        _fmemset (scrn + left, scrn_attr, right - left + 1);
 
     else {
 
-	word mask1 = 0x00ff >> (left & 7);
-	word mask2 = 0xff80 >> (right & 7);
+        word mask1 = 0x00ff >> (left & 7);
+        word mask2 = 0xff80 >> (right & 7);
 
-	int x = right / 8 - left / 8;
+        int x = right / 8 - left / 8;
 
-	scrn += left / 8;
+        scrn += left / 8;
 
-	if (x == 0) {
-	    mask1 &= mask2;
-	    mask2 = 0;
-	}
+        if (x == 0) {
+            mask1 &= mask2;
+            mask2 = 0;
+        }
 
-	/* Clear first byte */
+        /* Clear first byte */
 
-	clear_byte (scrn++, mask1);
+        clear_byte (scrn++, mask1);
 
-	/* Clear middle bytes */
+        /* Clear middle bytes */
 
-	if (display >= _EGA_)
-	    outport (0x03ce, 0xff08);
+        if (display >= _EGA_)
+            outport (0x03ce, 0xff08);
 
-	while (--x > 0)
-	    *scrn++ = scrn_attr;
+        while (--x > 0)
+            *scrn++ = scrn_attr;
 
-	/* Clear last byte */
+        /* Clear last byte */
 
-	clear_byte (scrn, mask2);
+        clear_byte (scrn, mask2);
 
     }
 
@@ -135,18 +135,18 @@ void os_erase_area (int top, int left, int bottom, int right, int win)
 
     if (display <= _TEXT_) {
 
-	asm mov ax,0x0600
-	asm mov ch,byte ptr top
-	asm mov cl,byte ptr left
-	asm mov dh,byte ptr bottom
-	asm mov dl,byte ptr right
-	asm mov bh,scrn_attr
-	asm int 0x10
+        asm mov ax,0x0600
+        asm mov ch,byte ptr top
+        asm mov cl,byte ptr left
+        asm mov dh,byte ptr bottom
+        asm mov dl,byte ptr right
+        asm mov bh,scrn_attr
+        asm int 0x10
 
     } else
 
-	for (y = top; y <= bottom; y++)
-	    clear_line (y, left, right);
+        for (y = top; y <= bottom; y++)
+            clear_line (y, left, right);
 
 }/* os_erase_area */
 
@@ -163,32 +163,32 @@ static void copy_byte (byte far *scrn1, byte far *scrn2, byte mask)
 
     if (display == _CGA_)
 
-	*scrn1 = (*scrn1 & ~mask) | (*scrn2 & mask);
+        *scrn1 = (*scrn1 & ~mask) | (*scrn2 & mask);
 
     else {
 
-	outport (0x03ce, 0x0005);
+        outport (0x03ce, 0x0005);
 
-	outportb (0x03ce, 0x08);
-	outportb (0x03cf, mask);
+        outportb (0x03ce, 0x08);
+        outportb (0x03cf, mask);
 
-	outportb (0x03ce, 0x04);
-	outportb (0x03c4, 0x02);
+        outportb (0x03ce, 0x04);
+        outportb (0x03c4, 0x02);
 
-	for (i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
 
-	    outportb (0x03cf, i);
-	    outportb (0x03c5, 1 << i);
+            outportb (0x03cf, i);
+            outportb (0x03c5, 1 << i);
 
-	    asm les bx,scrn2
-	    asm mov ah,es:[bx]
-	    asm les bx,scrn1
-	    asm mov al,es:[bx]
-	    asm mov es:[bx],ah
+            asm les bx,scrn2
+            asm mov ah,es:[bx]
+            asm les bx,scrn1
+            asm mov al,es:[bx]
+            asm mov es:[bx],ah
 
-	}
+        }
 
-	outportb (0x03c5, 0x0f);
+        outportb (0x03c5, 0x0f);
 
     }
 
@@ -208,38 +208,38 @@ static void copy_line (int y1, int y2, int left, int right)
 
     if (display == _MCGA_)
 
-	_fmemcpy (scrn1 + left, scrn2 + left, right - left + 1);
+        _fmemcpy (scrn1 + left, scrn2 + left, right - left + 1);
 
     else {
 
-	word mask1 = 0x00ff >> (left & 7);
-	word mask2 = 0xff80 >> (right & 7);
+        word mask1 = 0x00ff >> (left & 7);
+        word mask2 = 0xff80 >> (right & 7);
 
-	int x = right / 8 - left / 8;
+        int x = right / 8 - left / 8;
 
-	scrn1 += left / 8;
-	scrn2 += left / 8;
+        scrn1 += left / 8;
+        scrn2 += left / 8;
 
-	if (x == 0) {
-	    mask1 &= mask2;
-	    mask2 = 0;
-	}
+        if (x == 0) {
+            mask1 &= mask2;
+            mask2 = 0;
+        }
 
-	/* Copy first byte */
+        /* Copy first byte */
 
-	copy_byte (scrn1++, scrn2++, mask1);
+        copy_byte (scrn1++, scrn2++, mask1);
 
-	/* Copy middle bytes */
+        /* Copy middle bytes */
 
-	if (display >= _EGA_)
-	    outport (0x03ce, 0x0105);
+        if (display >= _EGA_)
+            outport (0x03ce, 0x0105);
 
-	while (--x > 0)
-	    *scrn1++ = *scrn2++;
+        while (--x > 0)
+            *scrn1++ = *scrn2++;
 
-	/* Copy last byte */
+        /* Copy last byte */
 
-	copy_byte (scrn1, scrn2, mask2);
+        copy_byte (scrn1, scrn2, mask2);
 
     }
 
@@ -265,39 +265,39 @@ void os_scroll_area (int top, int left, int bottom, int right, int units)
 
     if (display <= _TEXT_) {
 
-	asm mov ah,6
-	asm mov bx,units
-	asm cmp bx,0
-	asm jg scroll
-	asm mov ah,7
-	asm neg bx
+        asm mov ah,6
+        asm mov bx,units
+        asm cmp bx,0
+        asm jg scroll
+        asm mov ah,7
+        asm neg bx
     scroll:
-	asm mov al,bl
-	asm mov ch,byte ptr top
-	asm mov cl,byte ptr left
-	asm mov dh,byte ptr bottom
-	asm mov dl,byte ptr right
-	asm mov bh,scrn_attr
-	asm int 0x10
+        asm mov al,bl
+        asm mov ch,byte ptr top
+        asm mov cl,byte ptr left
+        asm mov dh,byte ptr bottom
+        asm mov dl,byte ptr right
+        asm mov bh,scrn_attr
+        asm int 0x10
 
     } else
 
-	if (units > 0)
+        if (units > 0)
 
-	    for (y = top; y <= bottom; y++)
+            for (y = top; y <= bottom; y++)
 
-		if (y <= bottom - units)
-		    copy_line (y, y + units, left, right);
-		else
-		    clear_line (y, left, right);
+                if (y <= bottom - units)
+                    copy_line (y, y + units, left, right);
+                else
+                    clear_line (y, left, right);
 
-	else
+        else
 
-	    for (y = bottom; y >= top; y--)
+            for (y = bottom; y >= top; y--)
 
-		if (y >= top - units)
-		    copy_line (y, y + units, left, right);
-		else
-		    clear_line (y, left, right);
+                if (y >= top - units)
+                    copy_line (y, y + units, left, right);
+                else
+                    clear_line (y, left, right);
 
 }/* os_scroll_area */

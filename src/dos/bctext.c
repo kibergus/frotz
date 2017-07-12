@@ -70,23 +70,23 @@ static byte far *serif_width = NULL;
 void load_fonts (void)
 {
     static chunk_offset[] = {
-	0x6660,
-	0x6300,
-	0x4A40,
-	0x3180,
-	0x18C0,
-	0x00
+        0x6660,
+        0x6300,
+        0x4A40,
+        0x3180,
+        0x18C0,
+        0x00
     };
 
     if (display == _MCGA_) {
-	mcga_font = font_data + chunk_offset[1];
-	mcga_width = (byte *) mcga_font + 0x300;
+        mcga_font = font_data + chunk_offset[1];
+        mcga_width = (byte *) mcga_font + 0x300;
     } else
-	graphics_font = font_data + chunk_offset[0];
+        graphics_font = font_data + chunk_offset[0];
 
     if (display == _AMIGA_ && user_font != 0) {
-	serif_font = (word *)(font_data + chunk_offset[1 + user_font]);
-	serif_width = (byte *) serif_font + 0x1800;
+        serif_font = (word *)(font_data + chunk_offset[1 + user_font]);
+        serif_width = (byte *) serif_font + 0x1800;
     }
 
 }/* load_fonts */
@@ -117,11 +117,11 @@ int os_font_data (int font, int *height, int *width)
     /* Not every font is available in every mode */
 
     if (font == TEXT_FONT)
-	return TRUE;
+        return TRUE;
     if (font == GRAPHICS_FONT && (display == _CGA_ || display >= _EGA_))
-	return TRUE;
+        return TRUE;
     if (font == FIXED_WIDTH_FONT)
-	return TRUE;
+        return TRUE;
 
     /* Unavailable font */
 
@@ -146,19 +146,19 @@ void switch_scrn_attr (bool flag)
     byte scrn_fg;
 
     if (flag) {
-	scrn_bg = text_bg;
-	scrn_fg = text_fg;
+        scrn_bg = text_bg;
+        scrn_fg = text_fg;
     } else {
-	scrn_bg = bg;
-	scrn_fg = fg;
+        scrn_bg = bg;
+        scrn_fg = fg;
     }
 
     if (display <= _TEXT_)
-	scrn_attr = (scrn_bg << 4) | scrn_fg;
+        scrn_attr = (scrn_bg << 4) | scrn_fg;
     else if (display == _CGA_)
-	scrn_attr = (scrn_bg != BLACK) ? 0xff : 0x00;
+        scrn_attr = (scrn_bg != BLACK) ? 0xff : 0x00;
     else
-	scrn_attr = scrn_bg;
+        scrn_attr = scrn_bg;
 
 }/* switch_scrn_attr */
 
@@ -173,29 +173,29 @@ void switch_scrn_attr (bool flag)
 static void adjust_style (void)
 {
     static byte amiga_palette[][3] = {
-	{ 0x00, 0x00, 0x00 },
-	{ 0x2a, 0x00, 0x00 },
-	{ 0x00, 0x2a, 0x00 },
-	{ 0x3f, 0x3f, 0x15 },
-	{ 0x00, 0x00, 0x2a },
-	{ 0x2a, 0x00, 0x2a },
-	{ 0x00, 0x2a, 0x2a },
-	{ 0x3f, 0x3f, 0x3f },
-	{ 0x30, 0x30, 0x30 },
-	{ 0x20, 0x20, 0x20 },
-	{ 0x10, 0x10, 0x10 },
+        { 0x00, 0x00, 0x00 },
+        { 0x2a, 0x00, 0x00 },
+        { 0x00, 0x2a, 0x00 },
+        { 0x3f, 0x3f, 0x15 },
+        { 0x00, 0x00, 0x2a },
+        { 0x2a, 0x00, 0x2a },
+        { 0x00, 0x2a, 0x2a },
+        { 0x3f, 0x3f, 0x3f },
+        { 0x30, 0x30, 0x30 },
+        { 0x20, 0x20, 0x20 },
+        { 0x10, 0x10, 0x10 },
     };
 
     static byte pc_colour[] = {
-	BLACK,
-	RED,
-	GREEN,
-	YELLOW,
-	BLUE,
-	MAGENTA,
-	CYAN,
-	WHITE,
-	DARKGRAY
+        BLACK,
+        RED,
+        GREEN,
+        YELLOW,
+        BLUE,
+        MAGENTA,
+        CYAN,
+        WHITE,
+        DARKGRAY
     };
 
     static byte palette_bg = 0xff;
@@ -210,39 +210,39 @@ static void adjust_style (void)
 
     if (display == _AMIGA_ && h_version == V6 && cwin == 0) {
 
-	if (fg < 16 && fg != palette_fg) {
+        if (fg < 16 && fg != palette_fg) {
 
-	    byte R = amiga_palette[fg - 2][0];
-	    byte G = amiga_palette[fg - 2][1];
-	    byte B = amiga_palette[fg - 2][2];
+            byte R = amiga_palette[fg - 2][0];
+            byte G = amiga_palette[fg - 2][1];
+            byte B = amiga_palette[fg - 2][2];
 
-	    asm mov ax,0x1010
-	    asm mov bx,79
-	    asm mov dh,R
-	    asm mov ch,G
-	    asm mov cl,B
-	    asm int 0x10
+            asm mov ax,0x1010
+            asm mov bx,79
+            asm mov dh,R
+            asm mov ch,G
+            asm mov cl,B
+            asm int 0x10
 
-	    palette_fg = fg;
+            palette_fg = fg;
 
-	}
+        }
 
-	if (bg < 16 && bg != palette_bg) {
+        if (bg < 16 && bg != palette_bg) {
 
-	    byte R = amiga_palette[bg - 2][0];
-	    byte G = amiga_palette[bg - 2][1];
-	    byte B = amiga_palette[bg - 2][2];
+            byte R = amiga_palette[bg - 2][0];
+            byte G = amiga_palette[bg - 2][1];
+            byte B = amiga_palette[bg - 2][2];
 
-	    asm mov ax,0x1010
-	    asm mov bx,64
-	    asm mov dh,R
-	    asm mov ch,G
-	    asm mov cl,B
-	    asm int 0x10
+            asm mov ax,0x1010
+            asm mov bx,64
+            asm mov dh,R
+            asm mov ch,G
+            asm mov cl,B
+            asm int 0x10
 
-	    palette_bg = bg;
+            palette_bg = bg;
 
-	}
+        }
 
     }
 
@@ -250,44 +250,44 @@ static void adjust_style (void)
 
     if (fg < 16)
 
-	if (display == _MONO_)
-	    fg = (fg == WHITE_COLOUR) ? LIGHTGRAY : BLACK;
-	else if (h_version == V6 && display == _AMIGA_)
-	    fg = (palette_fg == fg) ? 15 : 0;
-	else
-	    fg = pc_colour[fg - 2];
+        if (display == _MONO_)
+            fg = (fg == WHITE_COLOUR) ? LIGHTGRAY : BLACK;
+        else if (h_version == V6 && display == _AMIGA_)
+            fg = (palette_fg == fg) ? 15 : 0;
+        else
+            fg = pc_colour[fg - 2];
 
     else fg -= 16;
 
     if (bg < 16)
 
-	if (display == _MONO_)
-	    bg = (bg == WHITE_COLOUR) ? LIGHTGRAY : BLACK;
-	else if (h_version == V6 && display == _AMIGA_)
-	    bg = (palette_bg == bg) ? 0 : 15;
-	else
-	    bg = pc_colour[bg - 2];
+        if (display == _MONO_)
+            bg = (bg == WHITE_COLOUR) ? LIGHTGRAY : BLACK;
+        else if (h_version == V6 && display == _AMIGA_)
+            bg = (palette_bg == bg) ? 0 : 15;
+        else
+            bg = pc_colour[bg - 2];
 
     else bg -= 16;
 
     /* Handle reverse text style */
 
     if (current_style & REVERSE_STYLE) {
-	text_fg = (user_reverse_fg != -1) ? user_reverse_fg : bg;
-	text_bg = (user_reverse_bg != -1) ? user_reverse_bg : fg;
+        text_fg = (user_reverse_fg != -1) ? user_reverse_fg : bg;
+        text_bg = (user_reverse_bg != -1) ? user_reverse_bg : fg;
     } else {
-	text_fg = fg;
-	text_bg = bg;
+        text_fg = fg;
+        text_bg = bg;
     }
 
     /* Handle emphasis style */
 
     if (current_style & EMPHASIS_STYLE) {
 
-	if (display == _MONO_ && text_bg == BLACK)
-	    text_fg = BLUE;	/* blue in monochrome mode is underlined */
-	if (display == _TEXT_)
-	    text_fg = (user_emphasis != -1) ? user_emphasis : YELLOW;
+        if (display == _MONO_ && text_bg == BLACK)
+            text_fg = BLUE;        /* blue in monochrome mode is underlined */
+        if (display == _TEXT_)
+            text_fg = (user_emphasis != -1) ? user_emphasis : YELLOW;
 
     }
 
@@ -295,10 +295,10 @@ static void adjust_style (void)
 
     if (current_style & BOLDFACE_STYLE) {
 
-	if (display == _MONO_)
-	    text_fg = WHITE;
-	if (display == _TEXT_)
-	    text_fg ^= 8;
+        if (display == _MONO_)
+            text_fg = WHITE;
+        if (display == _TEXT_)
+            text_fg ^= 8;
 
     }
 
@@ -400,38 +400,38 @@ void write_pattern (byte far *screen, byte val, byte mask)
 
     if (mask != 0) {
 
-	if (display == _CGA_) {
+        if (display == _CGA_) {
 
-	    if (text_bg == BLACK)
-		*screen &= ~mask;
-	    if (text_bg == WHITE)
-		*screen |= mask;
-	    if (text_fg != text_bg)
-		*screen ^= val;
+            if (text_bg == BLACK)
+                *screen &= ~mask;
+            if (text_bg == WHITE)
+                *screen |= mask;
+            if (text_fg != text_bg)
+                *screen ^= val;
 
-	} else if (display == _MCGA_) {
+        } else if (display == _MCGA_) {
 
-	    byte i;
+            byte i;
 
-	    for (i = 0x80; (mask & i) != 0; i >>= 1)
-		*screen++ = (val & i) ? text_fg : text_bg;
+            for (i = 0x80; (mask & i) != 0; i >>= 1)
+                *screen++ = (val & i) ? text_fg : text_bg;
 
-	} else {
+        } else {
 
-	    asm mov dx,0x03cf
-	    asm mov al,mask
-	    asm out dx,al
-	    asm les bx,screen
-	    asm mov ch,text_bg
-	    asm mov al,es:[bx]
-	    asm mov es:[bx],ch
-	    asm mov al,val
-	    asm out dx,al
-	    asm mov ch,text_fg
-	    asm mov al,es:[bx]
-	    asm mov es:[bx],ch
+            asm mov dx,0x03cf
+            asm mov al,mask
+            asm out dx,al
+            asm les bx,screen
+            asm mov ch,text_bg
+            asm mov al,es:[bx]
+            asm mov es:[bx],ch
+            asm mov al,val
+            asm out dx,al
+            asm mov ch,text_fg
+            asm mov al,es:[bx]
+            asm mov es:[bx],ch
 
-	}
+        }
 
     }
 
@@ -457,149 +457,149 @@ void os_display_char (zchar c)
 
     if (c >= ZC_LATIN1_MIN && (story_id != BEYOND_ZORK || (h_flags & GRAPHICS_FLAG)))
 
-	if (display == _CGA_ || display == _MCGA_) {
+        if (display == _CGA_ || display == _MCGA_) {
 
-	    char *ptr = latin1_to_ascii + 3 * (c - ZC_LATIN1_MIN);
+            char *ptr = latin1_to_ascii + 3 * (c - ZC_LATIN1_MIN);
 
-	    char c1 = *ptr++;
-	    char c2 = *ptr++;
-	    char c3 = *ptr++;
+            char c1 = *ptr++;
+            char c2 = *ptr++;
+            char c3 = *ptr++;
 
-	    os_display_char (c1);
+            os_display_char (c1);
 
-	    if (c2 != ' ')
-		os_display_char (c2);
-	    if (c3 != ' ')
-		os_display_char (c3);
+            if (c2 != ' ')
+                os_display_char (c2);
+            if (c3 != ' ')
+                os_display_char (c3);
 
-	    return;
+            return;
 
-	} else if (display == _AMIGA_ && current_font == TEXT_FONT && !(current_style & FIXED_WIDTH_STYLE) && user_font != 0) {
+        } else if (display == _AMIGA_ && current_font == TEXT_FONT && !(current_style & FIXED_WIDTH_STYLE) && user_font != 0) {
 
-	    if (c >= ZC_LATIN1_MIN)
-		c -= 32;
+            if (c >= ZC_LATIN1_MIN)
+                c -= 32;
 
-	} else c = latin1_to_ibm[c - ZC_LATIN1_MIN];
+        } else c = latin1_to_ibm[c - ZC_LATIN1_MIN];
 
     /* Handle special indentations */
 
     if (c == ZC_INDENT)
-	{ os_display_char (' '); os_display_char (' '); os_display_char (' '); return; }
+        { os_display_char (' '); os_display_char (' '); os_display_char (' '); return; }
     if (c == ZC_GAP)
-	{ os_display_char (' '); os_display_char (' '); return; }
+        { os_display_char (' '); os_display_char (' '); return; }
 
     /* Display character */
 
     if (display <= _TEXT_) {
 
-	asm mov ah,2
-	asm mov bh,0
-	asm mov dh,byte ptr cursor_y
-	asm mov dl,byte ptr cursor_x
-	asm int 0x10
-	asm mov ah,9
-	asm mov bh,0
-	asm mov bl,byte ptr text_bg
-	asm mov cl,4
-	asm shl bl,cl
-	asm or bl,byte ptr text_fg
-	asm mov cx,1
-	asm mov al,byte ptr c
-	asm int 0x10
+        asm mov ah,2
+        asm mov bh,0
+        asm mov dh,byte ptr cursor_y
+        asm mov dl,byte ptr cursor_x
+        asm int 0x10
+        asm mov ah,9
+        asm mov bh,0
+        asm mov bl,byte ptr text_bg
+        asm mov cl,4
+        asm shl bl,cl
+        asm or bl,byte ptr text_fg
+        asm mov cx,1
+        asm mov al,byte ptr c
+        asm int 0x10
 
     } else {
 
-	void far *table;
-	word mask;
-	word val;
-	byte mask0;
-	byte mask1;
-	int align;
-	int underline;
-	int boldface;
-	int type;
+        void far *table;
+        word mask;
+        word val;
+        byte mask0;
+        byte mask1;
+        int align;
+        int underline;
+        int boldface;
+        int type;
 
-	int shift = (display != _MCGA_) ? cursor_x % 8 : 0;
-	int offset = (display != _MCGA_) ? cursor_x / 8 : cursor_x;
+        int shift = (display != _MCGA_) ? cursor_x % 8 : 0;
+        int offset = (display != _MCGA_) ? cursor_x / 8 : cursor_x;
 
-	int i;
+        int i;
 
-	if (current_font == GRAPHICS_FONT) {
-	    table = graphics_font + 8 * (c - 32);
-	    mask = 0xff;
-	    underline = -1;
-	    boldface = -1;
-	    align = 0;
-	    type = 1;
-	} else if (display == _AMIGA_ && current_font == TEXT_FONT && !(current_style & FIXED_WIDTH_STYLE) && user_font != 0) {
-	    table = serif_font + 16 * (c - 32);
-	    mask = 0xffff << (16 - width);
-	    underline = 14;
-	    boldface = 1;
-	    align = 0;
-	    type = 2;
-	} else if (display == _CGA_) {
-	    table = (byte far *) MK_FP (0xf000, 0xfa6e) + 8 * c;
-	    mask = 0xff;
-	    underline = 7;
-	    boldface = (user_bold_typing != -1) ? 1 : -1;
-	    align = 0;
-	    type = 3;
-	} else if (display >= _EGA_) {
-	    table = (byte far *) getvect (0x43) + h_font_height * c;
-	    mask = 0xff;
-	    underline = h_font_height - 1;
-	    boldface = (user_bold_typing != -1) ? 1 : -1;
-	    align = 0;
-	    type = 3;
-	} else {
-	    table = mcga_font + 8 * (c - 32);
-	    mask = 0xff & (0xff << (8 - width));
-	    underline = 7;
-	    boldface = -1;
-	    align = (width + 1 - mcga_width[c - 32]) / 2;
-	    type = 3;
-	}
+        if (current_font == GRAPHICS_FONT) {
+            table = graphics_font + 8 * (c - 32);
+            mask = 0xff;
+            underline = -1;
+            boldface = -1;
+            align = 0;
+            type = 1;
+        } else if (display == _AMIGA_ && current_font == TEXT_FONT && !(current_style & FIXED_WIDTH_STYLE) && user_font != 0) {
+            table = serif_font + 16 * (c - 32);
+            mask = 0xffff << (16 - width);
+            underline = 14;
+            boldface = 1;
+            align = 0;
+            type = 2;
+        } else if (display == _CGA_) {
+            table = (byte far *) MK_FP (0xf000, 0xfa6e) + 8 * c;
+            mask = 0xff;
+            underline = 7;
+            boldface = (user_bold_typing != -1) ? 1 : -1;
+            align = 0;
+            type = 3;
+        } else if (display >= _EGA_) {
+            table = (byte far *) getvect (0x43) + h_font_height * c;
+            mask = 0xff;
+            underline = h_font_height - 1;
+            boldface = (user_bold_typing != -1) ? 1 : -1;
+            align = 0;
+            type = 3;
+        } else {
+            table = mcga_font + 8 * (c - 32);
+            mask = 0xff & (0xff << (8 - width));
+            underline = 7;
+            boldface = -1;
+            align = (width + 1 - mcga_width[c - 32]) / 2;
+            type = 3;
+        }
 
-	mask0 = mask >> shift;
-	mask1 = mask << (8 - shift);
+        mask0 = mask >> shift;
+        mask1 = mask << (8 - shift);
 
-	if (!(current_style & BOLDFACE_STYLE))
-	    boldface = -1;
-	if (!(current_style & EMPHASIS_STYLE))
-	    underline = -1;
+        if (!(current_style & BOLDFACE_STYLE))
+            boldface = -1;
+        if (!(current_style & EMPHASIS_STYLE))
+            underline = -1;
 
-	if (display >= _EGA_) {
-	    outport (0x03ce, 0x0205);
-	    outport (0x03ce, 0xff08);
-	}
+        if (display >= _EGA_) {
+            outport (0x03ce, 0x0205);
+            outport (0x03ce, 0xff08);
+        }
 
-	for (i = 0; i < h_font_height; i++) {
+        for (i = 0; i < h_font_height; i++) {
 
-	    byte far *screen = get_scrnptr (cursor_y + i) + offset;
+            byte far *screen = get_scrnptr (cursor_y + i) + offset;
 
-	    if (type == 1)
-		val = *((byte far *) table + 8 * i / h_font_height);
-	    if (type == 2)
-		val = *((word far *) table + i);
-	    if (type == 3)
-		val = *((byte far *) table + i);
+            if (type == 1)
+                val = *((byte far *) table + 8 * i / h_font_height);
+            if (type == 2)
+                val = *((word far *) table + i);
+            if (type == 3)
+                val = *((byte far *) table + i);
 
-	    if (align != 0)
-		val >>= align;
+            if (align != 0)
+                val >>= align;
 
-	    if (boldface == 1)
-		val |= val >> 1;
-	    if (underline == i)
-		val ^= mask;
+            if (boldface == 1)
+                val |= val >> 1;
+            if (underline == i)
+                val ^= mask;
 
-	    if (type == 2)
-		write_pattern (screen++, val >> (8 + shift), mask >> (8 + shift));
+            if (type == 2)
+                write_pattern (screen++, val >> (8 + shift), mask >> (8 + shift));
 
-	    write_pattern (screen + 0, val >> shift, mask0);
-	    write_pattern (screen + 1, val << (8 - shift), mask1);
+            write_pattern (screen + 0, val >> shift, mask0);
+            write_pattern (screen + 1, val << (8 - shift), mask1);
 
-	}
+        }
 
     }
 
@@ -623,16 +623,16 @@ void os_display_string (const zchar *s)
 
     while ((c = *s++) != 0)
 
-	if (c == ZC_NEW_FONT || c == ZC_NEW_STYLE) {
+        if (c == ZC_NEW_FONT || c == ZC_NEW_STYLE) {
 
-	    int arg = *s++;
+            int arg = *s++;
 
-	    if (c == ZC_NEW_FONT)
-		os_set_font (arg);
-	    if (c == ZC_NEW_STYLE)
-		os_set_text_style (arg);
+            if (c == ZC_NEW_FONT)
+                os_set_font (arg);
+            if (c == ZC_NEW_STYLE)
+                os_set_text_style (arg);
 
-	} else os_display_char (c);
+        } else os_display_char (c);
 
 }/* os_display_string */
 
@@ -650,55 +650,55 @@ int os_char_width (zchar c)
 
     if (c >= ZC_LATIN1_MIN && (story_id != BEYOND_ZORK || (h_flags & GRAPHICS_FLAG)))
 
-	if (display == _CGA_ || display == _MCGA_) {
+        if (display == _CGA_ || display == _MCGA_) {
 
-	    const char *ptr = latin1_to_ascii + 3 * (c - ZC_LATIN1_MIN);
+            const char *ptr = latin1_to_ascii + 3 * (c - ZC_LATIN1_MIN);
 
-	    int width = 0;
+            int width = 0;
 
-	    char c1 = *ptr++;
-	    char c2 = *ptr++;
-	    char c3 = *ptr++;
+            char c1 = *ptr++;
+            char c2 = *ptr++;
+            char c3 = *ptr++;
 
-	    width = os_char_width (c1);
+            width = os_char_width (c1);
 
-	    if (c2 != ' ')
-		width += os_char_width (c2);
-	    if (c3 != ' ')
-		width += os_char_width (c3);
+            if (c2 != ' ')
+                width += os_char_width (c2);
+            if (c3 != ' ')
+                width += os_char_width (c3);
 
-	    return width;
+            return width;
 
-	} else if (display == _AMIGA_ && current_font == TEXT_FONT && !(current_style & FIXED_WIDTH_STYLE) && user_font != 0)
+        } else if (display == _AMIGA_ && current_font == TEXT_FONT && !(current_style & FIXED_WIDTH_STYLE) && user_font != 0)
 
-	    if (c >= ZC_LATIN1_MIN)
-		c -= 32;
+            if (c >= ZC_LATIN1_MIN)
+                c -= 32;
 
     /* Handle special indentations */
 
     if (c == ZC_INDENT)
-	return 3 * os_char_width (' ');
+        return 3 * os_char_width (' ');
     if (c == ZC_GAP)
-	return 2 * os_char_width (' ');
+        return 2 * os_char_width (' ');
 
     /* Calculate width */
 
     if (display <= _TEXT_)
-	return 1;
+        return 1;
     if (display == _CGA_)
-	return 8;
+        return 8;
     if (display == _EGA_)
-	return 8;
+        return 8;
 
     if (current_font == GRAPHICS_FONT)
-	return 8;
+        return 8;
     if (current_font == FIXED_WIDTH_FONT || (current_style & FIXED_WIDTH_STYLE) || (display == _AMIGA_ && user_font == 0))
-	return (display == _AMIGA_) ? 8 : 5;
+        return (display == _AMIGA_) ? 8 : 5;
 
     if (display == _MCGA_)
-	return mcga_width[c - 32];
+        return mcga_width[c - 32];
     if (display == _AMIGA_)
-	return serif_width[c - 32] + ((current_style & BOLDFACE_STYLE) ? 1 : 0);
+        return serif_width[c - 32] + ((current_style & BOLDFACE_STYLE) ? 1 : 0);
 
     return 0;
 
@@ -726,16 +726,16 @@ int os_string_width (const zchar *s)
 
     while ((c = *s++) != 0)
 
-	if (c == ZC_NEW_STYLE || c == ZC_NEW_FONT) {
+        if (c == ZC_NEW_STYLE || c == ZC_NEW_FONT) {
 
-	    int arg = *s++;
+            int arg = *s++;
 
-	    if (c == ZC_NEW_FONT)
-		current_font = arg;
-	    if (c == ZC_NEW_STYLE)
-		current_style = arg;
+            if (c == ZC_NEW_FONT)
+                current_font = arg;
+            if (c == ZC_NEW_STYLE)
+                current_style = arg;
 
-	} else width += os_char_width (c);
+        } else width += os_char_width (c);
 
     current_font = saved_font;
     current_style = saved_style;
@@ -791,10 +791,10 @@ void os_more_prompt (void)
     os_read_key (0, TRUE);
 
     os_erase_area (cursor_y + 1,
-		   saved_x + 1,
-		   cursor_y + h_font_height,
-		   cursor_x + 1,
-		   -1);
+                   saved_x + 1,
+                   cursor_y + h_font_height,
+                   cursor_x + 1,
+                   -1);
 
     cursor_x = saved_x;
 

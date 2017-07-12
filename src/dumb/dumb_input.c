@@ -66,11 +66,11 @@ static int xgetchar(void)
 {
     int c = getchar();
     if (c == EOF) {
-	if (feof(stdin)) {
-	    fprintf(stderr, "\nEOT\n");
-	    exit(0);
-	}
-	os_fatal(strerror(errno));
+        if (feof(stdin)) {
+            fprintf(stderr, "\nEOT\n");
+            exit(0);
+        }
+        os_fatal(strerror(errno));
     }
     return c;
 }
@@ -83,16 +83,16 @@ static void dumb_getline(char *s)
     int c;
     char *p = s;
     while (p < s + INPUT_BUFFER_SIZE - 1) {
-	if ((*p++ = xgetchar()) == '\n') {
-	    *p = '\0';
-	    return;
-	}
+        if ((*p++ = xgetchar()) == '\n') {
+            *p = '\0';
+            return;
+        }
     }
 
     p[-1] = '\n';
     p[0] = '\0';
     while ((c = xgetchar()) != '\n')
- 	;
+         ;
     printf("Line too long, truncated to %s\n", s - INPUT_BUFFER_SIZE);
 }
 
@@ -125,11 +125,11 @@ static void translate_special_chars(char *s)
       case 'H': *dest++ = ZC_HKEY_HELP; break;
       case '1': case '2': case '3': case '4':
       case '5': case '6': case '7': case '8': case '9':
-	*dest++ = ZC_FKEY_MIN + src[-1] - '0' - 1; break;
+        *dest++ = ZC_FKEY_MIN + src[-1] - '0' - 1; break;
       case '0': *dest++ = ZC_FKEY_MIN + 9; break;
       default:
-	fprintf(stderr, "DUMB-FROTZ: unknown escape char: %c\n", src[-1]);
-	fprintf(stderr, "Enter \\help to see the list\n");
+        fprintf(stderr, "DUMB-FROTZ: unknown escape char: %c\n", src[-1]);
+        fprintf(stderr, "Enter \\help to see the list\n");
       }
     }
   *dest = '\0';
@@ -146,9 +146,9 @@ static int time_ahead = 0;
 static bool check_timeout(int timeout)
 {
     if ((timeout == 0) || (timeout > time_ahead))
-	time_ahead = 0;
+        time_ahead = 0;
     else
-	time_ahead -= timeout;
+        time_ahead -= timeout;
     return time_ahead != 0;
 }
 
@@ -162,17 +162,17 @@ static void toggle(bool *var, char val)
 bool dumb_handle_setting(const char *setting, bool show_cursor, bool startup)
 {
     if (!strncmp(setting, "sf", 2)) {
-	speed = atof(&setting[2]);
-	printf("Speed Factor %g\n", speed);
+        speed = atof(&setting[2]);
+        printf("Speed Factor %g\n", speed);
     } else if (!strncmp(setting, "mp", 2)) {
-	toggle(&do_more_prompts, setting[2]);
-	printf("More prompts %s\n", do_more_prompts ? "ON" : "OFF");
+        toggle(&do_more_prompts, setting[2]);
+        printf("More prompts %s\n", do_more_prompts ? "ON" : "OFF");
     } else {
-	if (!strcmp(setting, "set")) {
-	    printf("Speed Factor %g\n", speed);
-	    printf("More Prompts %s\n", do_more_prompts ? "ON" : "OFF");
-	}
-	return dumb_output_handle_setting(setting, show_cursor, startup);
+        if (!strcmp(setting, "set")) {
+            printf("Speed Factor %g\n", speed);
+            printf("More Prompts %s\n", do_more_prompts ? "ON" : "OFF");
+        }
+        return dumb_output_handle_setting(setting, show_cursor, startup);
     }
     return TRUE;
 }
@@ -182,8 +182,8 @@ bool dumb_handle_setting(const char *setting, bool show_cursor, bool startup)
  * first non-command to s.
  * Return true if timed-out.  */
 static bool dumb_read_line(char *s, char *prompt, bool show_cursor,
-			   int timeout, enum input_type type,
-			   zchar *continued_line_chars)
+                           int timeout, enum input_type type,
+                           zchar *continued_line_chars)
 {
   time_t start_time;
 
@@ -211,11 +211,11 @@ static bool dumb_read_line(char *s, char *prompt, bool show_cursor,
       /* Is not a command line.  */
       translate_special_chars(s);
       if (timeout) {
-	int elapsed = (time(0) - start_time) * 10 * speed;
-	if (elapsed > timeout) {
-	  time_ahead = elapsed - timeout;
-	  return TRUE;
-	}
+        int elapsed = (time(0) - start_time) * 10 * speed;
+        if (elapsed > timeout) {
+          time_ahead = elapsed - timeout;
+          return TRUE;
+        }
       }
       return FALSE;
     }
@@ -227,56 +227,56 @@ static bool dumb_read_line(char *s, char *prompt, bool show_cursor,
 
     if (!strcmp(command, "t")) {
       if (timeout) {
-	time_ahead = 0;
-	s[0] = '\0';
-	return TRUE;
+        time_ahead = 0;
+        s[0] = '\0';
+        return TRUE;
       }
     } else if (*command == 'w') {
       if (timeout) {
-	int elapsed = atoi(&command[1]);
-	time_t now = time(0);
-	if (elapsed == 0)
-	  elapsed = (now - start_time) * 10 * speed;
-	if (elapsed >= timeout) {
-	  time_ahead = elapsed - timeout;
-	  s[0] = '\0';
-	  return TRUE;
-	}
-	timeout -= elapsed;
-	start_time = now;
+        int elapsed = atoi(&command[1]);
+        time_t now = time(0);
+        if (elapsed == 0)
+          elapsed = (now - start_time) * 10 * speed;
+        if (elapsed >= timeout) {
+          time_ahead = elapsed - timeout;
+          s[0] = '\0';
+          return TRUE;
+        }
+        timeout -= elapsed;
+        start_time = now;
       }
     } else if (!strcmp(command, "d")) {
       if (type != INPUT_LINE_CONTINUED)
-	fprintf(stderr, "DUMB-FROTZ: No input to discard\n");
+        fprintf(stderr, "DUMB-FROTZ: No input to discard\n");
       else {
-	dumb_discard_old_input(strlen(continued_line_chars));
-	continued_line_chars[0] = '\0';
-	type = INPUT_LINE;
+        dumb_discard_old_input(strlen(continued_line_chars));
+        continued_line_chars[0] = '\0';
+        type = INPUT_LINE;
       }
     } else if (!strcmp(command, "help")) {
       if (!do_more_prompts)
-	fputs(runtime_usage, stdout);
+        fputs(runtime_usage, stdout);
       else {
-	char *current_page, *next_page;
-	current_page = next_page = runtime_usage;
-	for (;;) {
-	  int i;
-	  for (i = 0; (i < h_screen_rows - 2) && *next_page; i++)
-	    next_page = strchr(next_page, '\n') + 1;
-	  /* next_page - current_page is width */
-	  printf("%.*s", next_page - current_page, current_page);
-	  current_page = next_page;
-	  if (!*current_page)
-	    break;
-	  printf("HELP: Type <return> for more, or q <return> to stop: ");
-	  fflush(stdout);
-	  dumb_getline(s);
-	  if (!strcmp(s, "q\n"))
-	    break;
-	}
+        char *current_page, *next_page;
+        current_page = next_page = runtime_usage;
+        for (;;) {
+          int i;
+          for (i = 0; (i < h_screen_rows - 2) && *next_page; i++)
+            next_page = strchr(next_page, '\n') + 1;
+          /* next_page - current_page is width */
+          printf("%.*s", next_page - current_page, current_page);
+          current_page = next_page;
+          if (!*current_page)
+            break;
+          printf("HELP: Type <return> for more, or q <return> to stop: ");
+          fflush(stdout);
+          dumb_getline(s);
+          if (!strcmp(s, "q\n"))
+            break;
+        }
       }
     } else if (!strcmp(command, "s")) {
-	dumb_dump_screen();
+        dumb_dump_screen();
     } else if (!dumb_handle_setting(command, show_cursor, FALSE)) {
       fprintf(stderr, "DUMB-FROTZ: unknown command: %s\n", s);
       fprintf(stderr, "Enter \\help to see the list of commands\n");
@@ -311,7 +311,7 @@ zchar os_read_key (int timeout, bool show_cursor)
 
   if (read_key_buffer[0] == '\0') {
     timed_out = dumb_read_line(read_key_buffer, NULL, show_cursor, timeout,
-			       INPUT_CHAR, NULL);
+                               INPUT_CHAR, NULL);
     /* An empty input line is reported as a single CR.
      * If there's anything else in the line, we report only the line's
      * contents and not the terminating CR.  */
@@ -347,8 +347,8 @@ zchar os_read_line (int max, zchar *buf, int timeout, int width, int continued)
 
   if (read_line_buffer[0] == '\0')
     timed_out = dumb_read_line(read_line_buffer, NULL, TRUE, timeout,
-			       buf[0] ? INPUT_LINE_CONTINUED : INPUT_LINE,
-			       buf);
+                               buf[0] ? INPUT_LINE_CONTINUED : INPUT_LINE,
+                               buf);
   else
     timed_out = check_timeout(timeout);
 
@@ -429,6 +429,6 @@ void dumb_init_input(void)
 
 zword os_read_mouse(void)
 {
-	/* NOT IMPLEMENTED */
+        /* NOT IMPLEMENTED */
     return 0;
 }

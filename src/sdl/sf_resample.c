@@ -18,29 +18,29 @@ static int myconv( CONV *conv, FILE *f, void *dest, int nin, int eod)
   src.input_frames = nin; src.output_frames = conv->maxout;
   src.src_ratio = conv->ratio;
   src.end_of_input = eod;
-	// load input data
+        // load input data
   nbrd = conv->bytespersam;
   switch (conv->bytespersam)
     {
     case 1:
-	for (i=0;i<nin*conv->channels;i++)
-		{
-		c = fgetc(f);
-		*sdata++ = (((short)c) << 8)/32768.0;
-		}
-	break;
+        for (i=0;i<nin*conv->channels;i++)
+                {
+                c = fgetc(f);
+                *sdata++ = (((short)c) << 8)/32768.0;
+                }
+        break;
     case 2:
-	for (i=0;i<nin*conv->channels;i++)
-		{
-		c1 = fgetc(f);
-		c2 = fgetc(f);
-		*sdata++ = ((short)(((unsigned short)c1) << 8 + (unsigned short)c2))
-			/ 32768.0;
-		}
+        for (i=0;i<nin*conv->channels;i++)
+                {
+                c1 = fgetc(f);
+                c2 = fgetc(f);
+                *sdata++ = ((short)(((unsigned short)c1) << 8 + (unsigned short)c2))
+                        / 32768.0;
+                }
     }
-	// do conversion
+        // do conversion
   src_process ((SRC_STATE *)conv->aux, &src);
-	// save output
+        // save output
   nbrd = src.output_frames_gen;
   src_float_to_short_array (conv->outbuf, (short *)dest, nbrd*conv->channels) ;
 

@@ -22,8 +22,8 @@ OUTFILE="$1/soundcard.h"
 echo "checking for $SOUNDCARD_H"
 
 #if [ -f $OUTFILE ] ; then
-#	echo "$SOUNDCARD_H already made."
-#	exit 0
+#        echo "$SOUNDCARD_H already made."
+#        exit 0
 #fi
 
 cat << EOF > $OUTFILE
@@ -40,34 +40,34 @@ EOF
 
 FILE=$INCLUDE1/$SOUNDCARD_H
 if [ -f $FILE ] ; then
-	echo "I see we have $FILE..."
-	echo
-	if [ -r $FILE ] ; then
-		echo '#include <sys/soundcard.h>' >> $OUTFILE
-	else
-		echo "====================================="
-		echo "Oops...  Can't read $FILE!"
-		echo "====================================="
-		exit 1
-	fi
-	exit 0
+        echo "I see we have $FILE..."
+        echo
+        if [ -r $FILE ] ; then
+                echo '#include <sys/soundcard.h>' >> $OUTFILE
+        else
+                echo "====================================="
+                echo "Oops...  Can't read $FILE!"
+                echo "====================================="
+                exit 1
+        fi
+        exit 0
 fi
 
 # I'm too lazy to iterate properly right now
 
 FILE=$INCLUDE2/$SOUNDCARD_H
 if [ -f $FILE ] ; then
-	echo "I see we have $FILE..."
-	echo
-	if [ -r $FILE ] ; then
-		echo '#include <soundcard.h>' >> $OUTFILE
-	else
-		echo "====================================="
-		echo "Oops...  Can't read $FILE!"
-		echo "====================================="
-		exit 2
-	fi
-	exit 0
+        echo "I see we have $FILE..."
+        echo
+        if [ -r $FILE ] ; then
+                echo '#include <soundcard.h>' >> $OUTFILE
+        else
+                echo "====================================="
+                echo "Oops...  Can't read $FILE!"
+                echo "====================================="
+                exit 2
+        fi
+        exit 0
 fi
 
 
@@ -75,32 +75,32 @@ fi
 
 FILE=$INCLUDE3/$SOUNDCARD_H
 if [ -f $FILE ] ; then
-	echo "I see we have $FILE..."
-	echo
-	if [ -r $FILE ] ; then
-		echo '#include <machine/soundcard.h>' >> $OUTFILE
-	else
-		echo "====================================="
-		echo "Oops...  Can't read $FILE!"
-		echo "====================================="
-		exit 3
-	fi
-	exit 0
+        echo "I see we have $FILE..."
+        echo
+        if [ -r $FILE ] ; then
+                echo '#include <machine/soundcard.h>' >> $OUTFILE
+        else
+                echo "====================================="
+                echo "Oops...  Can't read $FILE!"
+                echo "====================================="
+                exit 3
+        fi
+        exit 0
 fi
 
 
 
 FILE=$INCLUDE4/$SOUNDCARD_H
 if [ -f $FILE ] ; then
-	echo "I see we have $FILE..."
-	echo
-	if [ -r $FILE ] ; then
-		echo '#include <linux/soundcard.h>' >> $OUTFILE
-	else
-		echo "====================================="
-		echo "Oops...  Can't read $FILE!"
-		echo "====================================="
-		exit 3
-	fi
-	exit 0
+        echo "I see we have $FILE..."
+        echo
+        if [ -r $FILE ] ; then
+                echo '#include <linux/soundcard.h>' >> $OUTFILE
+        else
+                echo "====================================="
+                echo "Oops...  Can't read $FILE!"
+                echo "====================================="
+                exit 3
+        fi
+        exit 0
 fi

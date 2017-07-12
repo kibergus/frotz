@@ -35,7 +35,7 @@
     else {
       print "You just typed ~";
       for (ix=0: ix<inbuf->1: ix++)
-      	print (char)(inbuf->(2+ix));
+              print (char)(inbuf->(2+ix));
       print "~.^";
     }
 

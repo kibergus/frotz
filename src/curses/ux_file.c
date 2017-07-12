@@ -48,35 +48,35 @@
 
 FILE *os_path_open(const char *name, const char *mode)
 {
-	FILE *fp;
-	char buf[FILENAME_MAX + 1];
-	char *p;
+        FILE *fp;
+        char buf[FILENAME_MAX + 1];
+        char *p;
 
-	/* Let's see if the file is in the currect directory */
-	/* or if the user gave us a full path. */
-	if ((fp = fopen(name, mode))) {
-		return fp;
-	}
+        /* Let's see if the file is in the currect directory */
+        /* or if the user gave us a full path. */
+        if ((fp = fopen(name, mode))) {
+                return fp;
+        }
 
-	/* If zcodepath is defined in a config file, check that path. */
-	/* If we find the file a match in that path, great. */
-	/* Otherwise, check some environmental variables. */
-	if (f_setup.zcode_path != NULL) {
-		if ((fp = pathopen(name, f_setup.zcode_path, mode, buf)) != NULL) {
-			strncpy(f_setup.story_name, buf, FILENAME_MAX);
-			return fp;
-		}
-	}
+        /* If zcodepath is defined in a config file, check that path. */
+        /* If we find the file a match in that path, great. */
+        /* Otherwise, check some environmental variables. */
+        if (f_setup.zcode_path != NULL) {
+                if ((fp = pathopen(name, f_setup.zcode_path, mode, buf)) != NULL) {
+                        strncpy(f_setup.story_name, buf, FILENAME_MAX);
+                        return fp;
+                }
+        }
 
-	if ( (p = getenv(PATH1) ) == NULL)
-		p = getenv(PATH2);
+        if ( (p = getenv(PATH1) ) == NULL)
+                p = getenv(PATH2);
 
-	if (p != NULL) {
-		fp = pathopen(name, p, mode, buf);
-		strncpy(f_setup.story_name, buf, FILENAME_MAX);
-		return fp;
-	}
-	return NULL;	/* give up */
+        if (p != NULL) {
+                fp = pathopen(name, p, mode, buf);
+                strncpy(f_setup.story_name, buf, FILENAME_MAX);
+                return fp;
+        }
+        return NULL;        /* give up */
 } /* os_path_open() */
 
 /*
@@ -90,25 +90,25 @@ FILE *os_path_open(const char *name, const char *mode)
 
 FILE *pathopen(const char *name, const char *p, const char *mode, char *fullname)
 {
-	FILE *fp;
-	char buf[FILENAME_MAX + 1];
-	char *bp, lastch;
+        FILE *fp;
+        char buf[FILENAME_MAX + 1];
+        char *bp, lastch;
 
-	lastch = 'a';	/* makes compiler shut up */
+        lastch = 'a';        /* makes compiler shut up */
 
-	while (*p) {
-		bp = buf;
-		while (*p && *p != PATHSEP)
-			lastch = *bp++ = *p++;
-		if (lastch != DIRSEP)
-			*bp++ = DIRSEP;
-		strcpy(bp, name);
-		if ((fp = fopen(buf, mode)) != NULL) {
-			strncpy(fullname, buf, FILENAME_MAX);
-			return fp;
-		}
-		if (*p)
-			p++;
-	}
-	return NULL;
+        while (*p) {
+                bp = buf;
+                while (*p && *p != PATHSEP)
+                        lastch = *bp++ = *p++;
+                if (lastch != DIRSEP)
+                        *bp++ = DIRSEP;
+                strcpy(bp, name);
+                if ((fp = fopen(buf, mode)) != NULL) {
+                        strncpy(fullname, buf, FILENAME_MAX);
+                        return fp;
+                }
+                if (*p)
+                        p++;
+        }
+        return NULL;
 } /* FILE *pathopen() */

@@ -64,7 +64,7 @@ Array inbuf -> INBUFSIZE;
       print "Options: (hit Enter by itself to display this menu)^";
       print "  . (period): Exit TerpEtude^";
       for (ix=0: ix<numopts: ix++) {
-	print "  ", ix+1, ": ", (string) optionlist-->(ix*2+1), "^";
+        print "  ", ix+1, ": ", (string) optionlist-->(ix*2+1), "^";
       }
       printmenu = 0;
     }
@@ -95,7 +95,7 @@ Array inbuf -> INBUFSIZE;
 
     if (val < 1 || val > numopts) {
       print "Please enter a value from 1 to ", numopts, ", or ~.~ to
-	exit, or hit Enter by itself to display the menu of options.^";
+        exit, or hit Enter by itself to display the menu of options.^";
       continue;
     }
 

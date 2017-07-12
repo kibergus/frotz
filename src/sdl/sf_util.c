@@ -27,25 +27,25 @@ static cfrec *cflist = NULL;
 void sf_regcleanfunc( void *f, const char *p){
   cfrec *n = calloc(1,sizeof(cfrec));
   if (n)
-	{
-	if (!p) p = "";
-	n->func = (CLEANFUNC) f;
-	n->name = p;
-	n->next = cflist;
-	cflist = n;
-	}
+        {
+        if (!p) p = "";
+        n->func = (CLEANFUNC) f;
+        n->name = p;
+        n->next = cflist;
+        cflist = n;
+        }
   }
 
 void sf_cleanup_all()
   {
   while (cflist)
-	{
-	cfrec *n = cflist->next;
+        {
+        cfrec *n = cflist->next;
 //printf("cleanup c%p [%s] n%p\n",cflist,cflist->name,n);
-	if (cflist->func) cflist->func();
-	free(cflist);
-	cflist = n;
-	}
+        if (cflist->func) cflist->func();
+        free(cflist);
+        cflist = n;
+        }
 //printf("Cleanup done.\n");
   }
 
@@ -58,20 +58,20 @@ void sf_cleanup_all()
 void os_reset_screen(void)
   {
   sf_flushdisplay();
-//	theWnd->FlushDisplay();
-//	theWnd->ResetOverhang();
+//        theWnd->FlushDisplay();
+//        theWnd->ResetOverhang();
 
   if (m_exitPause)
-	{
-	const char *hit = sf_msgstring(IDS_HIT_KEY_EXIT);
-	os_set_font(TEXT_FONT);
-	os_set_text_style(0);
-	screen_new_line();
+        {
+        const char *hit = sf_msgstring(IDS_HIT_KEY_EXIT);
+        os_set_font(TEXT_FONT);
+        os_set_text_style(0);
+        screen_new_line();
 
-	while (*hit)
-		os_display_char((*hit++));
-	os_read_key(0,1);
-	}
+        while (*hit)
+                os_display_char((*hit++));
+        os_read_key(0,1);
+        }
 
   sf_cleanup_all();
   }
@@ -95,49 +95,49 @@ int m_fullscreen = -1;
 int m_reqW = 0, m_reqH = 0;
 int m_vga_fonts = 0;
 extern char * m_setupfile;
-extern char	m_names_format;
+extern char        m_names_format;
 static char user_names_format = 0;
 extern char *m_reslist_file;
 extern int option_scrollback_buffer;
 
 static char *info1 =
-	"\n"
-	"SDL Frotz V%d.%02d build %s - interpreter for z-code games.\n"
-	"Complies with Standard 1.0; supports Blorb resources and Quetzal save files.\n"
-	"Based on Frotz 2.40 by Stefan Jokisch and WindowsFrotz2000 by David Kinder.\n"
-	"\n"
-	"Syntax: sfrotz [options] story-file\n\n";
+        "\n"
+        "SDL Frotz V%d.%02d build %s - interpreter for z-code games.\n"
+        "Complies with Standard 1.0; supports Blorb resources and Quetzal save files.\n"
+        "Based on Frotz 2.40 by Stefan Jokisch and WindowsFrotz2000 by David Kinder.\n"
+        "\n"
+        "Syntax: sfrotz [options] story-file\n\n";
 
 static char *infos[] = {
-	"-a   watch attribute setting",
-	"-A   watch attribute testing",
-	"-b # background colour",
-	"-c # context lines",
-	"-f # foreground colour",
-	"-F   fullscreen mode",
-	"-h # screen height",
-	"-i   ignore runtime errors",
-	"-l # left margin",
-	"-L   use local resources",
-	"-o   watch object movement",
-	"-O   watch object locating",
-	"-p   alter piracy opcode",
-	"-q   quiet (disable sound)",
-	"-r # right margin",
-	"-R   save/restore in old Frotz format",
-	"-s # random number seed value",
-	"-S # transcript width",
-	"-t   set Tandy bit",
-	"-u # slots for multiple undo",
-	"-w # screen width",
-	"-x   expand abbreviations g/x/z",
-	"-V   force VGA fonts",
-	"-Z # error checking (see below)",
-	NULL};
+        "-a   watch attribute setting",
+        "-A   watch attribute testing",
+        "-b # background colour",
+        "-c # context lines",
+        "-f # foreground colour",
+        "-F   fullscreen mode",
+        "-h # screen height",
+        "-i   ignore runtime errors",
+        "-l # left margin",
+        "-L   use local resources",
+        "-o   watch object movement",
+        "-O   watch object locating",
+        "-p   alter piracy opcode",
+        "-q   quiet (disable sound)",
+        "-r # right margin",
+        "-R   save/restore in old Frotz format",
+        "-s # random number seed value",
+        "-S # transcript width",
+        "-t   set Tandy bit",
+        "-u # slots for multiple undo",
+        "-w # screen width",
+        "-x   expand abbreviations g/x/z",
+        "-V   force VGA fonts",
+        "-Z # error checking (see below)",
+        NULL};
 
 static char *info2 = 
-	"\nError checking: 0 none, 1 first only (default), 2 all, 3 exit after any error.\n"
-	"For more options and explanations, please read the HTML manual.\n";
+        "\nError checking: 0 none, 1 first only (default), 2 all, 3 exit after any error.\n"
+        "For more options and explanations, please read the HTML manual.\n";
 
 static char * getbuilddatetime( int tf);
 
@@ -147,21 +147,21 @@ static void usage()
   char **p = infos; int i=0,len=0;
   printf(info1,SFROTZ_MAJOR,SFROTZ_MINOR,getbuilddatetime(1));
   while (*p)
-	{
-	if (i)
-		{
-		while (len > 0){ fputc(' ',stdout); len--;}
-		puts(*p);
-		}
-	else
-		{
-		fputs("  ",stdout);
-		fputs(*p,stdout);
-		len = WIDCOL-strlen(*p)-2;
-		}
-	i = 1-i;
-	p++;
-	}
+        {
+        if (i)
+                {
+                while (len > 0){ fputc(' ',stdout); len--;}
+                puts(*p);
+                }
+        else
+                {
+                fputs("  ",stdout);
+                fputs(*p,stdout);
+                len = WIDCOL-strlen(*p)-2;
+                }
+        i = 1-i;
+        p++;
+        }
   if (i) fputc('\n',stdout);
   puts (info2);
   }
@@ -201,86 +201,86 @@ static void parse_options (int argc, char **argv)
 
   do {
 
-	int num = 0, copt = 0;;
+        int num = 0, copt = 0;;
 
-	c = getopt (argc, argv, options);
+        c = getopt (argc, argv, options);
 
-	if (optarg != NULL)
-	    {
-	    num = atoi (optarg);
-	    copt = optarg[0];
-	    }
+        if (optarg != NULL)
+            {
+            num = atoi (optarg);
+            copt = optarg[0];
+            }
 
-	if (c == 'a')
-	    f_setup.attribute_assignment = 1;
-	if (c == 'A')
-	    f_setup.attribute_testing = 1;
-	if (c == 'b')
-	    user_background = num;
-	if (c == 'B')
-	    option_scrollback_buffer = num;
-	if (c == 'c')
-	    f_setup.context_lines = num;
-	if (c == 'D')
-		{
-		if (copt == 'k') m_reqW = -1;
-		else sscanf(optarg,"%dx%d",&m_reqW,&m_reqH);
-		m_fullscreen = 1;
-		}
-	if (c == 'm')
-	    m_timerinterval = limit(num,10,1000000);
-	if (c == 'N')
-	    user_names_format = copt;
-	if (c == '@')
-	    m_reslist_file = optarg;
-	if (c == 'I')
-	    m_setupfile = optarg;
-	if (c == 'f')
-	    user_foreground = num;
-	if (c == 'F')
-	    m_fullscreen = 1;
-	if (c == 'h')
-	    user_screen_height = num;
-	if (c == 'i')
-	    f_setup.ignore_errors = 1;
-	if (c == 'l')
-	    f_setup.left_margin = num;
-	if (c == 'L')
-	    m_localfiles = true;
-	if (c == 'q')
-	    m_no_sound = 1;
-	if (c == 'o')
-	    f_setup.object_movement = 1;
-	if (c == 'O')
-	    f_setup.object_locating = 1;
-	if (c == 'p')
-	    f_setup.piracy = 1;
-	if (c == 'r')
-	    f_setup.right_margin = num;
-	if (c == 'R')
-	    f_setup.save_quetzal = 0;
-	if (c == 's')
-	    m_random_seed = num;
-	if (c == 'S')
-	    f_setup.script_cols = num;
-	if (c == 't')
-	    user_tandy_bit = 1;
-	if (c == 'T')
-	    sf_osdialog = NULL;
-	if (c == 'u')
-	    f_setup.undo_slots = num;
-	if (c == 'V')
-	    m_vga_fonts = 1;
-	if (c == 'w')
-	    user_screen_width = num;
-	if (c == 'x')
-	    f_setup.expand_abbreviations = 1;
-	if (c == 'Z')
-	    if (num >= ERR_REPORT_NEVER && num <= ERR_REPORT_FATAL)
-	      f_setup.err_report_mode = num;
-	if (c == '?')
-		optind = argc;
-	} while (c != EOF && c != '?');
+        if (c == 'a')
+            f_setup.attribute_assignment = 1;
+        if (c == 'A')
+            f_setup.attribute_testing = 1;
+        if (c == 'b')
+            user_background = num;
+        if (c == 'B')
+            option_scrollback_buffer = num;
+        if (c == 'c')
+            f_setup.context_lines = num;
+        if (c == 'D')
+                {
+                if (copt == 'k') m_reqW = -1;
+                else sscanf(optarg,"%dx%d",&m_reqW,&m_reqH);
+                m_fullscreen = 1;
+                }
+        if (c == 'm')
+            m_timerinterval = limit(num,10,1000000);
+        if (c == 'N')
+            user_names_format = copt;
+        if (c == '@')
+            m_reslist_file = optarg;
+        if (c == 'I')
+            m_setupfile = optarg;
+        if (c == 'f')
+            user_foreground = num;
+        if (c == 'F')
+            m_fullscreen = 1;
+        if (c == 'h')
+            user_screen_height = num;
+        if (c == 'i')
+            f_setup.ignore_errors = 1;
+        if (c == 'l')
+            f_setup.left_margin = num;
+        if (c == 'L')
+            m_localfiles = true;
+        if (c == 'q')
+            m_no_sound = 1;
+        if (c == 'o')
+            f_setup.object_movement = 1;
+        if (c == 'O')
+            f_setup.object_locating = 1;
+        if (c == 'p')
+            f_setup.piracy = 1;
+        if (c == 'r')
+            f_setup.right_margin = num;
+        if (c == 'R')
+            f_setup.save_quetzal = 0;
+        if (c == 's')
+            m_random_seed = num;
+        if (c == 'S')
+            f_setup.script_cols = num;
+        if (c == 't')
+            user_tandy_bit = 1;
+        if (c == 'T')
+            sf_osdialog = NULL;
+        if (c == 'u')
+            f_setup.undo_slots = num;
+        if (c == 'V')
+            m_vga_fonts = 1;
+        if (c == 'w')
+            user_screen_width = num;
+        if (c == 'x')
+            f_setup.expand_abbreviations = 1;
+        if (c == 'Z')
+            if (num >= ERR_REPORT_NEVER && num <= ERR_REPORT_FATAL)
+              f_setup.err_report_mode = num;
+        if (c == '?')
+                optind = argc;
+        } while (c != EOF && c != '?');
 
   }/* parse_options */
 
@@ -314,7 +314,7 @@ void os_process_arguments (int argc, char *argv[])
   const char *p;
   int i;
 
-	// install signal handlers
+        // install signal handlers
 
   sf_installhandlers();
 
@@ -323,17 +323,17 @@ void os_process_arguments (int argc, char *argv[])
   parse_options(argc, argv);
 
   if (optind != argc - 1) 
-	{
-	usage();
-	exit (EXIT_FAILURE);
-	}
+        {
+        usage();
+        exit (EXIT_FAILURE);
+        }
 
     /* Set the story file name */
 
   story_name = argv[optind];
 
-	// load resources
-	// it's useless to test the retval, as in case of error it does not return
+        // load resources
+        // it's useless to test the retval, as in case of error it does not return
   sf_load_resources( story_name);
 
     /* Strip path and extension off the story file name */
@@ -341,12 +341,12 @@ void os_process_arguments (int argc, char *argv[])
   p = story_name;
 
   for (i = 0; story_name[i] != 0; i++)
-	if (story_name[i] == '\\' || story_name[i] == '/'
-	    || story_name[i] == ':')
-	    p = story_name + i + 1;
+        if (story_name[i] == '\\' || story_name[i] == '/'
+            || story_name[i] == ':')
+            p = story_name + i + 1;
 
     for (i = 0; p[i] != 0 && p[i] != '.'; i++)
-	stripped_story_name[i] = p[i];
+        stripped_story_name[i] = p[i];
 
     stripped_story_name[i] = 0;
 
@@ -414,9 +414,9 @@ unsigned long sf_ticks (void) {
   now.tv_sec = now.tv_usec = 0;
   gettimeofday(&now, NULL);
   if (!started){
-	started = 1;
-	start = now;
-	}
+        started = 1;
+        start = now;
+        }
   ticks = (now.tv_sec-start.tv_sec)*1000 + (now.tv_usec-start.tv_usec)/1000;
 //  ticks = now.tv_sec*1000 + now.tv_usec/1000;
   return ticks;
@@ -451,11 +451,11 @@ static char *getextension( int flag)
   char *ext = ".aux";
 
   if (flag == FILE_SAVE || flag == FILE_RESTORE)
-	ext = ".sav";
+        ext = ".sav";
   else if (flag == FILE_SCRIPT)
-	ext = ".scr";
+        ext = ".scr";
   else if (flag == FILE_RECORD || flag == FILE_PLAYBACK)
-	ext = ".rec";
+        ext = ".rec";
 
   return ext;
   }
@@ -463,7 +463,7 @@ static char *getextension( int flag)
 static bool newfile( int flag)
   {
   if (flag == FILE_SAVE || flag == FILE_SAVE_AUX || flag == FILE_RECORD)
-	return true;
+        return true;
   return false;
   }
 
@@ -475,9 +475,9 @@ static const char *getnumbername( const char *def, char *ext)
   strcpy(buf,stripped_story_name);
   len = strlen(buf);
   for (;;){
-	sprintf(buf+len,"%03d%s",number++,ext);
-	if (access(buf,F_OK)) break;
-	}
+        sprintf(buf+len,"%03d%s",number++,ext);
+        if (access(buf,F_OK)) break;
+        }
   return buf;
   }
 
@@ -493,8 +493,8 @@ static const char *getdatename( const char *def, char *ext)
   p = buf + 1;
   if (*p) p++;
   sprintf(p,"%04d%02d%02d%02d%02d%s",
- 	tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
-	tm->tm_hour, tm->tm_min, ext);
+         tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
+        tm->tm_hour, tm->tm_min, ext);
   return buf;
   }
 
@@ -552,9 +552,9 @@ static int ingame_read_file_name (char *file_name, const char *default_name, int
     /* Use the default name if nothing was typed */
 
   if (file_name[0] == 0)
-	strcpy (file_name, default_name);
+        strcpy (file_name, default_name);
   if (strchr (file_name, '.') == NULL)
-	strcat (file_name, extension);
+        strcat (file_name, extension);
 
     /* Make sure it is safe to use this file name */
 
@@ -563,12 +563,12 @@ static int ingame_read_file_name (char *file_name, const char *default_name, int
     /* OK if the file is opened for reading */
 
   if (!newfile(flag))
-	goto finished;
+        goto finished;
 
     /* OK if the file does not exist */
 
   if ((fp = fopen (file_name, "rb")) == NULL)
-	goto finished;
+        goto finished;
 
     /* OK if this is a pseudo-file (like PRN, CON, NUL) */
 
@@ -577,7 +577,7 @@ static int ingame_read_file_name (char *file_name, const char *default_name, int
   fclose (fp);
 
   if (terminal)
-	goto finished;
+        goto finished;
 
     /* OK if user wants to overwrite */
 
@@ -601,52 +601,52 @@ static int dialog_read_file_name(char *file_name, const char *default_name, int 
   char *res;
 
   sf_flushdisplay();
-//	theWnd->ResetOverhang();
+//        theWnd->ResetOverhang();
 
   switch (flag)
-	{
-	case FILE_SAVE:
-		filter = IDS_SAVE_FILTER;
-		title = IDS_SAVE_TITLE;
-		break;
-	case FILE_RESTORE:
-		filter = IDS_SAVE_FILTER;
-		title = IDS_RESTORE_TITLE;
-		break;
-	case FILE_SCRIPT:
-		filter = IDS_SCRIPT_FILTER;
-		title = IDS_SCRIPT_TITLE;
-		break;
-	case FILE_RECORD:
-		filter = IDS_RECORD_FILTER;
-		title = IDS_RECORD_TITLE;
-		break;
-	case FILE_PLAYBACK:
-		filter = IDS_RECORD_FILTER;
-		title = IDS_PLAYBACK_TITLE;
-		break;
-	case FILE_SAVE_AUX:
-		filter = IDS_AUX_FILTER;
-		title = IDS_SAVE_AUX_TITLE;
-		break;
-	case FILE_LOAD_AUX:
-		filter = IDS_AUX_FILTER;
-		title = IDS_LOAD_AUX_TITLE;
-		break;
-	default:
-		return 0;
-	}
+        {
+        case FILE_SAVE:
+                filter = IDS_SAVE_FILTER;
+                title = IDS_SAVE_TITLE;
+                break;
+        case FILE_RESTORE:
+                filter = IDS_SAVE_FILTER;
+                title = IDS_RESTORE_TITLE;
+                break;
+        case FILE_SCRIPT:
+                filter = IDS_SCRIPT_FILTER;
+                title = IDS_SCRIPT_TITLE;
+                break;
+        case FILE_RECORD:
+                filter = IDS_RECORD_FILTER;
+                title = IDS_RECORD_TITLE;
+                break;
+        case FILE_PLAYBACK:
+                filter = IDS_RECORD_FILTER;
+                title = IDS_PLAYBACK_TITLE;
+                break;
+        case FILE_SAVE_AUX:
+                filter = IDS_AUX_FILTER;
+                title = IDS_SAVE_AUX_TITLE;
+                break;
+        case FILE_LOAD_AUX:
+                filter = IDS_AUX_FILTER;
+                title = IDS_LOAD_AUX_TITLE;
+                break;
+        default:
+                return 0;
+        }
 
 // fdialog( existing, defname, filter, title, &resultstr)
 // returns 0 if OK
   st = sf_user_fdialog( !newfile(flag), default_name, sf_msgstring(filter), sf_msgstring(title), &res);
   if (st == SF_NOTIMP) return st;
   if (st == 0)
-	{
-	strncpy(file_name,res,MAX_FILE_NAME);
-	file_name[MAX_FILE_NAME-1] = 0;
-	return 1;
-	}
+        {
+        strncpy(file_name,res,MAX_FILE_NAME);
+        file_name[MAX_FILE_NAME-1] = 0;
+        return 1;
+        }
   return 0;
   }
 
@@ -660,12 +660,12 @@ static Dynstr * strings = NULL;
 static void freestrings()
   {
   while (strings)
-	{
-	Dynstr *r = strings->link;
-	if (strings->str) free(strings->str);
-	free(strings);
-	strings = r;
-	}
+        {
+        Dynstr *r = strings->link;
+        if (strings->str) free(strings->str);
+        free(strings);
+        strings = r;
+        }
   }
 
 static char *mystrdup( char *p)
@@ -676,12 +676,12 @@ static char *mystrdup( char *p)
   if (!p) return p;
   r = calloc(1,sizeof(Dynstr));
   if (r)
-	{
-	if (!strings) CLEANREG(freestrings);
-	r->link = strings;
-	r->str = p;
-	strings = r;
-	}
+        {
+        if (!strings) CLEANREG(freestrings);
+        r->link = strings;
+        r->str = p;
+        strings = r;
+        }
   return p;
   }
 
@@ -717,12 +717,12 @@ void sf_InitProfile( const char *fn)
   while (*s)
     {
     if (*s == '#')
-	{
-	while ((*s) && (*s != '\n')) s++;
-	if (!*s) break;
-	}
+        {
+        while ((*s) && (*s != '\n')) s++;
+        if (!*s) break;
+        }
     else
-	*d++ = *s++;
+        *d++ = *s++;
     }
   *d = 0;
 
@@ -754,17 +754,17 @@ static char * findid( const char *sect, const char *id)
   if (!r) return NULL;
   sav = strchr(r,'['); if (sav) *sav = 0;
   while (r)
-	{
-	r = strstr(r,id);
-	if (!r) break;
-	rq = r+nid;
-	if ((*(byte *)(r-1) <= ' ') && ((*rq == ' ') || (*rq == '=')))
-		{
-		while (*rq) if (*rq++ == '=') break;
-		if (*rq) { fnd = rq; break;}
-		}
-	r = rq;
-	}
+        {
+        r = strstr(r,id);
+        if (!r) break;
+        rq = r+nid;
+        if ((*(byte *)(r-1) <= ' ') && ((*rq == ' ') || (*rq == '=')))
+                {
+                while (*rq) if (*rq++ == '=') break;
+                if (*rq) { fnd = rq; break;}
+                }
+        r = rq;
+        }
   if (sav) *sav = '[';
   return fnd;
   }
@@ -772,20 +772,20 @@ static char * findid( const char *sect, const char *id)
 int sf_GetProfileInt( const char *sect, const char *id, int def)
   {
   if (rc)
-	{
-	char *p = findid(sect,id);
-	if (p) def = atoi(p);
-	}
+        {
+        char *p = findid(sect,id);
+        if (p) def = atoi(p);
+        }
   return def;
   }
 
 double sf_GetProfileDouble( const char *sect, const char *id, double def)
   {
   if (rc)
-	{
-	char *p = findid(sect,id);
-	if (p) def = atof(p);
-	}
+        {
+        char *p = findid(sect,id);
+        if (p) def = atof(p);
+        }
   return def;
   }
 
@@ -797,25 +797,25 @@ char * sf_GetProfileString( const char *sect, const char *id, char * def)
     char *p = findid(sect,id);
 //printf("findid(%s,%s) %p\n",sect,id,p);
     if (p)
-	{
-	int quoted = 0;
-	while (*p)
-		{
-		if (*p == '\"') { quoted = 1; p++; break;}
-		if ((byte)(*p) > ' ') break;
-		}
-	if (*p)
-		{
-		if (quoted) q = strchr(p,'\"');
-		if (!q)
-			{
-			q = p;
-			while (*q > ' ') q++;
-			sav = *q; *q = 0;
-			}
-		}
-	def = p;
-	}
+        {
+        int quoted = 0;
+        while (*p)
+                {
+                if (*p == '\"') { quoted = 1; p++; break;}
+                if ((byte)(*p) > ' ') break;
+                }
+        if (*p)
+                {
+                if (quoted) q = strchr(p,'\"');
+                if (!q)
+                        {
+                        q = p;
+                        while (*q > ' ') q++;
+                        sav = *q; *q = 0;
+                        }
+                }
+        def = p;
+        }
     }
   if (def) def = mystrdup(def);
   if (sav) *q = sav;
@@ -840,7 +840,7 @@ char * sf_GetProfileString( const char *sect, const char *id, char * def)
 //         extra field (variable size)
 
 #define plong( b) (((int)((b)[3]) << 24) + ((int)((b)[2]) << 16) +\
-	((int)((b)[1]) << 8) + (int)((b)[0]))
+        ((int)((b)[1]) << 8) + (int)((b)[0]))
 
 #define pshort( b) (((int)((b)[1]) << 8) + (int)((b)[0]))
 
@@ -852,10 +852,10 @@ static int myunzip( int csize, byte *cdata, byte *udata)
 
   unsigned myin( void *d, byte **b){return 0;}
   int myout( void *d, byte *b, unsigned n)
-	{
-	memcpy(udata,b,n); udata += n;
-	return 0;
-	}
+        {
+        memcpy(udata,b,n); udata += n;
+        return 0;
+        }
 
   memset(&z,0,sizeof(z));
 
@@ -866,10 +866,10 @@ static int myunzip( int csize, byte *cdata, byte *udata)
   z.avail_in = csize;
 
   for (;;){
-	st = inflateBack( &z, myin, NULL, myout, NULL);
-	if (st == Z_STREAM_END) break;
-	if (st) return st;
-	}
+        st = inflateBack( &z, myin, NULL, myout, NULL);
+        if (st == Z_STREAM_END) break;
+        if (st) return st;
+        }
 
   st = inflateBackEnd(&z);
   return st;
@@ -902,10 +902,10 @@ int sf_pkread( FILE *f, int foffs,  void ** out, int *size)
 
   free(cdata);
   if (st)
-	{
-	free(data);
-	return st;
-	}
+        {
+        free(data);
+        return st;
+        }
   *out = (void *)data;
   *size = usize;
   return st;
@@ -954,11 +954,11 @@ static char * getbuilddatetime( int tf){
   tm = localtime(&t);
   buf[0] = 0;
   sprintf(buf,"%04d%02d%02d",
-		tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday);
+                tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday);
   if (tf){
     strcat(buf,".");
     sprintf(buf+strlen(buf),"%02d%02d%02d",
-	tm->tm_hour, tm->tm_min, tm->tm_sec);
+        tm->tm_hour, tm->tm_min, tm->tm_sec);
     }
   return buf;
   }

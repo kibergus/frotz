@@ -16,12 +16,12 @@ static void resethandlers()
 static const char * signame( int sig)
   {
   switch (sig)
-	{
-	case SIGINT: return "[SIGINT]";
-	case SIGFPE: return "[SIGFPE]";
-	case SIGSEGV: return "[SIGSEGV]";
-	default: return "";
-	}
+        {
+        case SIGINT: return "[SIGINT]";
+        case SIGFPE: return "[SIGFPE]";
+        case SIGSEGV: return "[SIGSEGV]";
+        default: return "";
+        }
   }
 
 static void myhandler( int s)
@@ -57,18 +57,18 @@ void sf_installhandlers()
 #endif
 
 static struct { int sig; char *name;} NAMES[] = {
-	{SIGSEGV,"SIGSEGV"},
-	{SIGFPE,"SIGFPE"},
-	{SIGILL,"SIGILL"},
-	{0,NULL}};
+        {SIGSEGV,"SIGSEGV"},
+        {SIGFPE,"SIGFPE"},
+        {SIGILL,"SIGILL"},
+        {0,NULL}};
 
 static char *getsigname( int s){
   int i = 0;
   while (NAMES[i].name)
-	{
-	if (NAMES[i].sig == s) return NAMES[i].name;
-	i++;
-	}
+        {
+        if (NAMES[i].sig == s) return NAMES[i].name;
+        i++;
+        }
   return NULL;
   }
 

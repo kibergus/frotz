@@ -77,40 +77,40 @@ static void switch_cursor (bool cursor)
 
     if (display <= _TEXT_) {
 
-	/* Use hardware cursor in text mode */
+        /* Use hardware cursor in text mode */
 
-	if (display == _MONO_)
-	    _CX = overwrite ? 0x080f : 0x0a0b;
-	else
-	    _CX = overwrite ? 0x0408 : 0x0506;
+        if (display == _MONO_)
+            _CX = overwrite ? 0x080f : 0x0a0b;
+        else
+            _CX = overwrite ? 0x0408 : 0x0506;
 
-	if (!cursor)
-	    _CX = 0xffff;
+        if (!cursor)
+            _CX = 0xffff;
 
-	asm mov ah,2
-	asm mov bh,0
-	asm mov dh,byte ptr cursor_y
-	asm mov dl,byte ptr cursor_x
-	asm int 0x10
-	asm mov ah,1
-	asm int 0x10
+        asm mov ah,2
+        asm mov bh,0
+        asm mov dh,byte ptr cursor_y
+        asm mov dl,byte ptr cursor_x
+        asm int 0x10
+        asm mov ah,1
+        asm int 0x10
 
     } else {
 
-	int saved_x = cursor_x;
+        int saved_x = cursor_x;
 
-	if (cursor)
-	    swap_colours ();
+        if (cursor)
+            swap_colours ();
 
-	if (input.pos < input.length)
-	    os_display_char (input.buffer[input.pos]);
-	else
-	    os_display_char (' ');
+        if (input.pos < input.length)
+            os_display_char (input.buffer[input.pos]);
+        else
+            os_display_char (' ');
 
-	if (cursor)
-	    swap_colours ();
+        if (cursor)
+            swap_colours ();
 
-	cursor_x = saved_x;
+        cursor_x = saved_x;
 
     }
 
@@ -128,9 +128,9 @@ static long get_current_time (void)
     long time;
 
     /* Get the current time of day measured in
-	 65536 / 1,193,180 = 0.054925493
+         65536 / 1,193,180 = 0.054925493
        seconds. Multiply this value with
-	 959 / 1746 = 0.54925544
+         959 / 1746 = 0.54925544
        to get the current time in 0.1 seconds. */
 
     asm mov ah,0
@@ -169,12 +169,12 @@ static bool out_of_time (void)
 
     if (limit != 0) {
 
-	long now = get_current_time ();
+        long now = get_current_time ();
 
-	if (now < 1L * 3600 * 10 && limit > 23L * 3600 * 10)
-	    now += 24L * 3600 * 10;
+        if (now < 1L * 3600 * 10 && limit > 23L * 3600 * 10)
+            now += 24L * 3600 * 10;
 
-	return now >= limit;
+        return now >= limit;
 
     } else return FALSE;
 
@@ -185,32 +185,32 @@ static bool out_of_time (void)
  *
  * Read a keypress or a mouse click. Returns...
  *
- *	ZC_TIME_OUT = time limit exceeded,
- *	ZC_BACKSPACE = the backspace key,
- *	ZC_RETURN = the return key,
- *	ZC_HKEY_MIN...ZC_HKEY_MAX = a hot key,
- *	ZC_ESCAPE = the escape key,
- *	ZC_ASCII_MIN...ZC_ASCII_MAX = ASCII character,
- *	ZC_ARROW_MIN...ZC_ARROW_MAX = an arrow key,
- *	ZC_FKEY_MIN...ZC_FKEY_MAX = a function key,
- *	ZC_NUMPAD_MIN...ZC_NUMPAD_MAX = a number pad key,
- *	ZC_SINGLE_CLICK = single mouse click,
- *	ZC_DOUBLE_CLICK = double mouse click,
- *	ZC_LATIN1_MIN+1...ZC_LATIN1_MAX = ISO Latin-1 character,
- *	SPECIAL_KEY_MIN...SPECIAL_KEY_MAX = a special editing key.
+ *        ZC_TIME_OUT = time limit exceeded,
+ *        ZC_BACKSPACE = the backspace key,
+ *        ZC_RETURN = the return key,
+ *        ZC_HKEY_MIN...ZC_HKEY_MAX = a hot key,
+ *        ZC_ESCAPE = the escape key,
+ *        ZC_ASCII_MIN...ZC_ASCII_MAX = ASCII character,
+ *        ZC_ARROW_MIN...ZC_ARROW_MAX = an arrow key,
+ *        ZC_FKEY_MIN...ZC_FKEY_MAX = a function key,
+ *        ZC_NUMPAD_MIN...ZC_NUMPAD_MAX = a number pad key,
+ *        ZC_SINGLE_CLICK = single mouse click,
+ *        ZC_DOUBLE_CLICK = double mouse click,
+ *        ZC_LATIN1_MIN+1...ZC_LATIN1_MAX = ISO Latin-1 character,
+ *        SPECIAL_KEY_MIN...SPECIAL_KEY_MAX = a special editing key.
  *
  */
 
 static int get_key (bool cursor)
 {
     static byte arrow_key_map[] = {
-	0x48, 0x50, 0x4b, 0x4d
+        0x48, 0x50, 0x4b, 0x4d
     };
     static byte special_key_map[] = {
-	0x47, 0x4f, 0x73, 0x74, 0x53, 0x52, 0x49, 0x51, 0x0f
+        0x47, 0x4f, 0x73, 0x74, 0x53, 0x52, 0x49, 0x51, 0x0f
     };
     static byte hot_key_map[] = {
-	0x13, 0x19, 0x1f, 0x16, 0x31, 0x2d, 0x20, 0x23
+        0x13, 0x19, 0x1f, 0x16, 0x31, 0x2d, 0x20, 0x23
     };
 
     int key;
@@ -218,92 +218,92 @@ static int get_key (bool cursor)
     /* Loop until a key was pressed */
 
     if (cursor)
-	switch_cursor (TRUE);
+        switch_cursor (TRUE);
 
     if (h_flags & MOUSE_FLAG) {
-	asm mov ax,1
-	asm int 0x33
+        asm mov ax,1
+        asm int 0x33
     }
 
     do {
 
 #ifdef SOUND_SUPPORT
-	if (end_of_sound_flag)
-	    end_of_sound ();
+        if (end_of_sound_flag)
+            end_of_sound ();
 #endif
 
-	if (_bios_keybrd (_KEYBRD_READY)) {
+        if (_bios_keybrd (_KEYBRD_READY)) {
 
-	    word code = _bios_keybrd (_KEYBRD_READ);
-	    byte code0 = code;
-	    byte code1 = code >> 8;
+            word code = _bios_keybrd (_KEYBRD_READ);
+            byte code0 = code;
+            byte code1 = code >> 8;
 
-	    if (code0 != 0 && code0 != 9) {
+            if (code0 != 0 && code0 != 9) {
 
-		key = code0 - '0' + ZC_NUMPAD_MIN;
-		if (key >= ZC_NUMPAD_MIN && key <= ZC_NUMPAD_MAX
-		    && code1 >= 0x10)
-		    goto exit_loop;
+                key = code0 - '0' + ZC_NUMPAD_MIN;
+                if (key >= ZC_NUMPAD_MIN && key <= ZC_NUMPAD_MAX
+                    && code1 >= 0x10)
+                    goto exit_loop;
 
-		for (key = ZC_LATIN1_MIN + 1; key <= ZC_LATIN1_MAX; key++)
-		    if (code0 == latin1_to_ibm[key - ZC_LATIN1_MIN])
-			goto exit_loop;
+                for (key = ZC_LATIN1_MIN + 1; key <= ZC_LATIN1_MAX; key++)
+                    if (code0 == latin1_to_ibm[key - ZC_LATIN1_MIN])
+                        goto exit_loop;
 
-		key = code0;
+                key = code0;
 
-		if (key == ZC_BACKSPACE)
-		    goto exit_loop;
-		if (key == ZC_RETURN)
-		    goto exit_loop;
-		if (key == ZC_ESCAPE)
-		    goto exit_loop;
-		if (key >= ZC_ASCII_MIN && key <= ZC_ASCII_MAX)
-		    goto exit_loop;
+                if (key == ZC_BACKSPACE)
+                    goto exit_loop;
+                if (key == ZC_RETURN)
+                    goto exit_loop;
+                if (key == ZC_ESCAPE)
+                    goto exit_loop;
+                if (key >= ZC_ASCII_MIN && key <= ZC_ASCII_MAX)
+                    goto exit_loop;
 
-	    } else {
+            } else {
 
-		for (key = ZC_ARROW_MIN; key <= ZC_ARROW_MAX; key++)
-		    if (code1 == arrow_key_map[key - ZC_ARROW_MIN])
-			goto exit_loop;
+                for (key = ZC_ARROW_MIN; key <= ZC_ARROW_MAX; key++)
+                    if (code1 == arrow_key_map[key - ZC_ARROW_MIN])
+                        goto exit_loop;
 
-		key = code1 - 0x3b + ZC_FKEY_MIN;
-		if (key >= ZC_FKEY_MIN && key <= ZC_FKEY_MAX - 2)
-		    goto exit_loop;
+                key = code1 - 0x3b + ZC_FKEY_MIN;
+                if (key >= ZC_FKEY_MIN && key <= ZC_FKEY_MAX - 2)
+                    goto exit_loop;
 
-		for (key = ZC_HKEY_MIN; key <= ZC_HKEY_MAX; key++)
-		    if (code1 == hot_key_map[key - ZC_HKEY_MIN])
-			goto exit_loop;
+                for (key = ZC_HKEY_MIN; key <= ZC_HKEY_MAX; key++)
+                    if (code1 == hot_key_map[key - ZC_HKEY_MIN])
+                        goto exit_loop;
 
-		for (key = SPECIAL_KEY_MIN; key <= SPECIAL_KEY_MAX; key++)
-		    if (code1 == special_key_map[key - SPECIAL_KEY_MIN])
-			goto exit_loop;
+                for (key = SPECIAL_KEY_MIN; key <= SPECIAL_KEY_MAX; key++)
+                    if (code1 == special_key_map[key - SPECIAL_KEY_MIN])
+                        goto exit_loop;
 
-	    }
+            }
 
-	} else {
+        } else {
 
-	    int clicks = read_mouse ();
+            int clicks = read_mouse ();
 
-	    if (clicks == 1)
-		{ key = ZC_SINGLE_CLICK; goto exit_loop; }
-	    if (clicks == 2)
-		{ key = ZC_DOUBLE_CLICK; goto exit_loop; }
+            if (clicks == 1)
+                { key = ZC_SINGLE_CLICK; goto exit_loop; }
+            if (clicks == 2)
+                { key = ZC_DOUBLE_CLICK; goto exit_loop; }
 
-	}
+        }
 
-	key = ZC_TIME_OUT;
+        key = ZC_TIME_OUT;
 
     } while (!out_of_time ());
 
 exit_loop:
 
     if (h_flags & MOUSE_FLAG) {
-	asm mov ax,2
-	asm int 0x33
+        asm mov ax,2
+        asm int 0x33
     }
 
     if (cursor)
-	switch_cursor (FALSE);
+        switch_cursor (FALSE);
 
     return key;
 
@@ -320,7 +320,7 @@ static void cursor_left (void)
 {
 
     if (input.pos > 0)
-	cursor_x -= os_char_width (input.buffer[--input.pos]);
+        cursor_x -= os_char_width (input.buffer[--input.pos]);
 
 }/* cursor_left */
 
@@ -335,7 +335,7 @@ static void cursor_right (void)
 {
 
     if (input.pos < input.length)
-	cursor_x += os_char_width (input.buffer[input.pos++]);
+        cursor_x += os_char_width (input.buffer[input.pos++]);
 
 }/* cursor_right */
 
@@ -350,7 +350,7 @@ static void first_char (void)
 {
 
     while (input.pos > 0)
-	cursor_left ();
+        cursor_left ();
 
 }/* first_char */
 
@@ -365,7 +365,7 @@ static void last_char (void)
 {
 
     while (input.pos < input.length)
-	cursor_right ();
+        cursor_right ();
 
 }/* last_char */
 
@@ -381,10 +381,10 @@ static void prev_word (void)
 
     do {
 
-	cursor_left ();
+        cursor_left ();
 
-	if (input.pos == 0)
-	    return;
+        if (input.pos == 0)
+            return;
 
     } while (input.buffer[input.pos] == ' ' || input.buffer[input.pos - 1] != ' ');
 
@@ -402,10 +402,10 @@ static void next_word (void)
 
     do {
 
-	cursor_right ();
+        cursor_right ();
 
-	if (input.pos == input.length)
-	    return;
+        if (input.pos == input.length)
+            return;
 
     } while (input.buffer[input.pos] == ' ' || input.buffer[input.pos - 1] != ' ');
 
@@ -438,20 +438,20 @@ static void input_move (zchar newc, zchar oldc)
     int updated_length = input.length + H (newc) - H (oldc);
 
     if (updated_width > input.max_width)
-	return;
+        return;
     if (updated_length > input.max_length)
-	return;
+        return;
 
     input.width = updated_width;
     input.length = updated_length;
 
     if (oldc != 0 && newc == 0)
-	memmove (p, p + 1, updated_length - input.pos + 1);
+        memmove (p, p + 1, updated_length - input.pos + 1);
     if (newc != 0 && oldc == 0)
-	memmove (p + 1, p, updated_length - input.pos);
+        memmove (p + 1, p, updated_length - input.pos);
 
     if (newc != 0)
-	*p = newc;
+        *p = newc;
 
     os_display_string (p);
 
@@ -459,19 +459,19 @@ static void input_move (zchar newc, zchar oldc)
 
     if (oldwidth > newwidth)
 
-	os_erase_area (
-	    cursor_y + 1,
-	    cursor_x + 1,
-	    cursor_y + h_font_height,
-	    cursor_x + oldwidth - newwidth,
-	    -1);
+        os_erase_area (
+            cursor_y + 1,
+            cursor_x + 1,
+            cursor_y + h_font_height,
+            cursor_x + oldwidth - newwidth,
+            -1);
 
     switch_scrn_attr (FALSE);
 
     cursor_x = saved_x;
 
     if (newc != 0)
-	cursor_right ();
+        cursor_right ();
 
 }/* input_move */
 
@@ -502,8 +502,8 @@ static void delete_left (void)
 {
 
     if (input.pos > 0) {
-	cursor_left ();
-	delete_char ();
+        cursor_left ();
+        delete_char ();
     }
 
 }/* delete_left */
@@ -521,7 +521,7 @@ static void truncate_line (int n)
     last_char ();
 
     while (input.length > n)
-	delete_left ();
+        delete_left ();
 
 }/* truncate_line */
 
@@ -537,7 +537,7 @@ static void insert_char (zchar newc)
     zchar oldc = 0;
 
     if (overwrite)
-	oldc = input.buffer[input.pos];
+        oldc = input.buffer[input.pos];
 
     input_move (newc, oldc);
 
@@ -555,12 +555,12 @@ static void insert_string (const zchar *s)
 
     while (*s != 0) {
 
-	if (input.length + 1 > input.max_length)
-	    break;
-	if (input.width + os_char_width (*s) > input.max_width)
-	    break;
+        if (input.length + 1 > input.max_length)
+            break;
+        if (input.width + os_char_width (*s) > input.max_width)
+            break;
 
-	insert_char (*s++);
+        insert_char (*s++);
 
     }
 
@@ -579,17 +579,17 @@ static void tabulator_key (void)
 
     if (input.pos == input.length) {
 
-	zchar extension[10];
+        zchar extension[10];
 
-	status = completion (input.buffer, extension);
-	insert_string (extension);
+        status = completion (input.buffer, extension);
+        insert_string (extension);
 
     } else status = 2;
 
     /* Beep if the completion was impossible or ambiguous */
 
     if (status != 0)
-	os_beep (status);
+        os_beep (status);
 
 }/* tabulator_key */
 
@@ -605,16 +605,16 @@ static void store_input (void)
 
     if (input.length >= HISTORY_MIN_ENTRY) {
 
-	const zchar *ptr = input.buffer;
+        const zchar *ptr = input.buffer;
 
-	do {
+        do {
 
-	    if (history.latest++ == HISTORY_BUFSIZE - 1)
-		history.latest = 0;
+            if (history.latest++ == HISTORY_BUFSIZE - 1)
+                history.latest = 0;
 
-	    history.buffer[history.latest] = *ptr;
+            history.buffer[history.latest] = *ptr;
 
-	} while (*ptr++ != 0);
+        } while (*ptr++ != 0);
 
     }
 
@@ -636,15 +636,15 @@ static bool fetch_entry (zchar *buf, int entry)
 
     do {
 
-	if (entry++ == HISTORY_BUFSIZE - 1)
-	    entry = 0;
+        if (entry++ == HISTORY_BUFSIZE - 1)
+            entry = 0;
 
-	c = history.buffer[entry];
+        c = history.buffer[entry];
 
-	if (i < history.prefix_len && input.buffer[i] != c)
-	    return FALSE;
+        if (i < history.prefix_len && input.buffer[i] != c)
+            return FALSE;
 
-	buf[i++] = c;
+        buf[i++] = c;
 
     } while (c != 0);
 
@@ -667,15 +667,15 @@ static void get_prev_entry (void)
 
     do {
 
-	do {
+        do {
 
-	    if (i-- == 0)
-		i = HISTORY_BUFSIZE - 1;
+            if (i-- == 0)
+                i = HISTORY_BUFSIZE - 1;
 
-	    if (i == history.latest)
-		return;
+            if (i == history.latest)
+                return;
 
-	} while (history.buffer[i] != 0);
+        } while (history.buffer[i] != 0);
 
     } while (!fetch_entry (buf, i));
 
@@ -704,18 +704,18 @@ static void get_next_entry (void)
 
     do {
 
-	do {
+        do {
 
-	    if (i == history.latest)
-		return;
+            if (i == history.latest)
+                return;
 
-	    if (i++ == HISTORY_BUFSIZE - 1)
-		i = 0;
+            if (i++ == HISTORY_BUFSIZE - 1)
+                i = 0;
 
-	} while (history.buffer[i] != 0);
+        } while (history.buffer[i] != 0);
 
-	if (i == history.latest)
-	    goto no_further;
+        if (i == history.latest)
+            goto no_further;
 
     } while (!fetch_entry (buf, i));
 
@@ -797,68 +797,68 @@ zchar os_read_line (int max, zchar *buf, int timeout, int width, int continued)
 
     do {
 
-	if (key != 9999)
-	    new_history_search ();
+        if (key != 9999)
+            new_history_search ();
 
-	/* Get next key from mouse or keyboard */
+        /* Get next key from mouse or keyboard */
 
-	key = get_key (TRUE);
+        key = get_key (TRUE);
 
-	if (key < ZC_ASCII_MIN || key > ZC_ASCII_MAX && key < ZC_LATIN1_MIN || key > ZC_LATIN1_MAX) {
+        if (key < ZC_ASCII_MIN || key > ZC_ASCII_MAX && key < ZC_LATIN1_MIN || key > ZC_LATIN1_MAX) {
 
-	    /* Ignore time-outs if the cursor is not at end of the line */
+            /* Ignore time-outs if the cursor is not at end of the line */
 
-	    if (key == ZC_TIME_OUT && input.pos < input.length)
-		key = 9999;
+            if (key == ZC_TIME_OUT && input.pos < input.length)
+                key = 9999;
 
-	    /* Backspace, return and escape keys */
+            /* Backspace, return and escape keys */
 
-	    if (key == ZC_BACKSPACE)
-		delete_left ();
-	    if (key == ZC_RETURN)
-		store_input ();
-	    if (key == ZC_ESCAPE)
-		truncate_line (0);
+            if (key == ZC_BACKSPACE)
+                delete_left ();
+            if (key == ZC_RETURN)
+                store_input ();
+            if (key == ZC_ESCAPE)
+                truncate_line (0);
 
-	    /* Editing keys */
+            /* Editing keys */
 
-	    if (cwin == 0) {
+            if (cwin == 0) {
 
-		if (key == ZC_ARROW_UP)
-		    get_prev_entry ();
-		if (key == ZC_ARROW_DOWN)
-		    get_next_entry ();
-		if (key == ZC_ARROW_LEFT)
-		    cursor_left ();
-		if (key == ZC_ARROW_RIGHT)
-		    cursor_right ();
+                if (key == ZC_ARROW_UP)
+                    get_prev_entry ();
+                if (key == ZC_ARROW_DOWN)
+                    get_next_entry ();
+                if (key == ZC_ARROW_LEFT)
+                    cursor_left ();
+                if (key == ZC_ARROW_RIGHT)
+                    cursor_right ();
 
-		if (key >= ZC_ARROW_MIN && key <= ZC_ARROW_MAX)
-		    key = 9999;
+                if (key >= ZC_ARROW_MIN && key <= ZC_ARROW_MAX)
+                    key = 9999;
 
-		if (key == SPECIAL_KEY_HOME)
-		    first_char ();
-		if (key == SPECIAL_KEY_END)
-		    last_char ();
-		if (key == SPECIAL_KEY_WORD_LEFT)
-		    prev_word ();
-		if (key == SPECIAL_KEY_WORD_RIGHT)
-		    next_word ();
-		if (key == SPECIAL_KEY_DELETE)
-		    delete_char ();
-		if (key == SPECIAL_KEY_INSERT)
-		    overwrite = !overwrite;
-		if (key == SPECIAL_KEY_TAB)
-		    tabulator_key ();
+                if (key == SPECIAL_KEY_HOME)
+                    first_char ();
+                if (key == SPECIAL_KEY_END)
+                    last_char ();
+                if (key == SPECIAL_KEY_WORD_LEFT)
+                    prev_word ();
+                if (key == SPECIAL_KEY_WORD_RIGHT)
+                    next_word ();
+                if (key == SPECIAL_KEY_DELETE)
+                    delete_char ();
+                if (key == SPECIAL_KEY_INSERT)
+                    overwrite = !overwrite;
+                if (key == SPECIAL_KEY_TAB)
+                    tabulator_key ();
 
-	    }
+            }
 
-	    if (key == SPECIAL_KEY_PAGE_UP)
-		key = ZC_ARROW_UP;
-	    if (key == SPECIAL_KEY_PAGE_DOWN)
-		key = ZC_ARROW_DOWN;
+            if (key == SPECIAL_KEY_PAGE_UP)
+                key = ZC_ARROW_UP;
+            if (key == SPECIAL_KEY_PAGE_DOWN)
+                key = ZC_ARROW_DOWN;
 
-	} else insert_char (key);
+        } else insert_char (key);
 
     } while (key > 0xff || !is_terminator (key));
 
@@ -890,7 +890,7 @@ zchar os_read_key (int timeout, bool cursor)
 
     do {
 
-	key = get_key (cursor);
+        key = get_key (cursor);
 
     } while (key > 0xff);
 
@@ -938,11 +938,11 @@ int os_read_file_name (char *file_name, const char *default_name, int flag)
     extension = ".aux";
 
     if (flag == FILE_SAVE || flag == FILE_RESTORE)
-	extension = ".sav";
+        extension = ".sav";
     if (flag == FILE_SCRIPT)
-	extension = ".scr";
+        extension = ".scr";
     if (flag == FILE_RECORD || flag == FILE_PLAYBACK)
-	extension = ".rec";
+        extension = ".rec";
 
     /* Input file name (reserve four bytes for a file name extension) */
 
@@ -957,9 +957,9 @@ int os_read_file_name (char *file_name, const char *default_name, int flag)
     /* Use the default name if nothing was typed */
 
     if (file_name[0] == 0)
-	strcpy (file_name, default_name);
+        strcpy (file_name, default_name);
     if (strchr (file_name, '.') == NULL)
-	strcat (file_name, extension);
+        strcat (file_name, extension);
 
     /* Make sure it is safe to use this file name */
 
@@ -968,12 +968,12 @@ int os_read_file_name (char *file_name, const char *default_name, int flag)
     /* OK if the file is opened for reading */
 
     if (flag != FILE_SAVE && flag != FILE_SAVE_AUX && flag != FILE_RECORD)
-	goto finished;
+        goto finished;
 
     /* OK if the file does not exist */
 
     if ((fp = fopen (file_name, "rb")) == NULL)
-	goto finished;
+        goto finished;
 
     /* OK if this is a pseudo-file (like PRN, CON, NUL) */
 
@@ -982,7 +982,7 @@ int os_read_file_name (char *file_name, const char *default_name, int flag)
     fclose (fp);
 
     if (terminal)
-	goto finished;
+        goto finished;
 
     /* OK if user wants to overwrite */
 

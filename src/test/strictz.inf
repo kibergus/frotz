@@ -9,25 +9,25 @@ Attribute attr2;   ! 1
 
 ! Note: obj1's property list will have prop2 before prop1.
 
-Object 	obj1
- with 	prop1 1,
-	prop2 2,
- has	attr1 attr2;  ! These will be set later anyway
-Object 	-> obj2
- with 	prop1;
-Object	-> obj3;
+Object         obj1
+ with         prop1 1,
+        prop2 2,
+ has        attr1 attr2;  ! These will be set later anyway
+Object         -> obj2
+ with         prop1;
+Object        -> obj3;
 
 [ _jin o1 o2 expected;
     @jin o1 o2 ?L1;
     print "@@64jin ", o1, " ", o2, " => FALSE ";
     if (expected)
- 	"(incorrect)";
+         "(incorrect)";
     "(correct)";
 
     .L1;
     print "@@64jin ", o1, " ", o2, " => TRUE ";
     if (expected)
-	"(correct)";
+        "(correct)";
     "(incorrect)";
 ];
 
@@ -35,13 +35,13 @@ Object	-> obj3;
     @get_child o -> result ?L2;
     print "@@64get_child ", o, " => ", result;
     if (expected)
-	" (incorrect)";
+        " (incorrect)";
     " (correct)";
 
     .L2;
     print "@@64get_child ", o, " => ", result;
     if (expected)
-	" (correct)";
+        " (correct)";
     " (incorrect)";
 ];
 
@@ -50,9 +50,9 @@ Object	-> obj3;
     @get_parent o -> result;
     print "@@64get_parent ", o, " => ", result;
     if (result)
-	result = true;
+        result = true;
     if (expected == result)
-	" (correct)";
+        " (correct)";
     " (incorrect)";
 ];
 
@@ -60,13 +60,13 @@ Object	-> obj3;
     @get_sibling o -> result ?L3;
     print "@@64get_sibling ", o, " => ", result;
     if (expected)
-	" (incorrect)";
+        " (incorrect)";
     " (correct)";
 
     .L3;
     print "@@64get_sibling ", o, " => ", result;
     if (expected)
-	" (correct)";
+        " (correct)";
     " (incorrect)";
 ];
 
@@ -74,9 +74,9 @@ Object	-> obj3;
     @get_prop_addr o p -> result;
     print "@@64get_prop_addr ", o, " ", p, " => ", result;
     if (result)
-	result = true;
+        result = true;
     if (result == expected)
-	" (correct)";
+        " (correct)";
     " (incorrect)";
 ];
 
@@ -84,9 +84,9 @@ Object	-> obj3;
     @get_prop o p -> result;
     print "@@64get_prop ", o, " ", p, " => ", result;
     if (result)
-	result = true;
+        result = true;
     if (result == expected)
-	" (correct)";
+        " (correct)";
     " (incorrect)";
 ];
 
@@ -104,14 +104,14 @@ Object	-> obj3;
     @test_attr o a ?L4;
     print "@@64test_attr ", o, " ", a, " => FALSE ";
     if (expected)
-    	"(incorrect)";
+            "(incorrect)";
     "(correct)";
     .L4;
     print "@@64test_attr ", o, " ", a, " => TRUE ";
     if (expected)
-	"(correct)";
+        "(correct)";
     if (~~o)
-	"(incorrect; shouldn't set attributes in object 0)";
+        "(incorrect; shouldn't set attributes in object 0)";
     "(incorrect)";
 ];
 
@@ -129,9 +129,9 @@ Object	-> obj3;
     @get_next_prop o p -> result;
     print "@@64get_next_prop ", o, " ", p, " => ", result;
     if (result)
-	result = true;
+        result = true;
     if (result == expected)
-	" (correct)";
+        " (correct)";
     " (incorrect)";
 ];
 
@@ -142,40 +142,40 @@ Array parse string 64;
     print "Strict Z Test^";
 
     print "^According to the Z-Machine Standards Document, ~objects are
-	numbered consecucutively from 1 upward, with object number 0
-	being used to mean ~nothing~ (though there is formally no such
-	object).~ Hence, it seems reasonable that operations on object
-	number 0 should either fail or, if that is not an option, do
-	nothing. These tests are written with that assumption.^";
+        numbered consecucutively from 1 upward, with object number 0
+        being used to mean ~nothing~ (though there is formally no such
+        object).~ Hence, it seems reasonable that operations on object
+        number 0 should either fail or, if that is not an option, do
+        nothing. These tests are written with that assumption.^";
 
     print "^Please note that whenever a test is flagged as ~correct~,
-	that only means that an instruction returned zero or non-zero
-	(or branched / didn't branch) when it was supposed to. Not
-	that it necessarily returned the correct value. If no result
-	is written the result was not tested, and the test was only
-	included to test the stability of the interpreter.^";
+        that only means that an instruction returned zero or non-zero
+        (or branched / didn't branch) when it was supposed to. Not
+        that it necessarily returned the correct value. If no result
+        is written the result was not tested, and the test was only
+        included to test the stability of the interpreter.^";
 
     print "^Would you like to make a transcript of the test results?
-	(Y/N) ";
+        (Y/N) ";
 
     for (::)
     {
-	read buffer parse;
+        read buffer parse;
 
-	if (parse-->1 == 'yes' or 'y//')
-	{
-	    print "^";
-	    @output_stream 2;
-	    break;
-	}
+        if (parse-->1 == 'yes' or 'y//')
+        {
+            print "^";
+            @output_stream 2;
+            break;
+        }
 
-	if (parse-->1 == 'no' or 'n//')
-	{
-	    print "^";
-	    break;
-	}
+        if (parse-->1 == 'no' or 'n//')
+        {
+            print "^";
+            break;
+        }
 
-	print "Transcript? (Y/N) ";
+        print "Transcript? (Y/N) ";
     }
 
     print "Testing @@64jin:^^";
@@ -229,9 +229,9 @@ Array parse string 64;
     _set_attr (0, attr1);
 
     print "^(Note: An attempt has been made to set attribute number ",
-	attr1, " in object number 0. If the @@64test_attr test below
-	indicates that this attribute has been set, the	interpreter
-	did not ignore the instruction as it should have done.)^";
+        attr1, " in object number 0. If the @@64test_attr test below
+        indicates that this attribute has been set, the        interpreter
+        did not ignore the instruction as it should have done.)^";
 
     print "^Testing @@64test_attr:^^";
 
@@ -264,8 +264,8 @@ Array parse string 64;
 
     if ((0-->8) & 1)
     {
-	print "^End of transcript^";
-	@output_stream -2;
+        print "^End of transcript^";
+        @output_stream -2;
     }
 
     print "^Press any key.^";

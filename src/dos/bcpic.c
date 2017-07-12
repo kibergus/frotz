@@ -19,8 +19,8 @@
 #define PIC_DATA 8
 #define PIC_COLOUR 11
 
-#define READ_BYTE(v,p,o)	v = *(byte far *)(p+o)
-#define READ_WORD(v,p,o)	v = *(word far *)(p+o)
+#define READ_BYTE(v,p,o)        v = *(byte far *)(p+o)
+#define READ_WORD(v,p,o)        v = *(word far *)(p+o)
 
 /* This may be troublesome later */
 /* extern byte far *get_scrnptr (int); */
@@ -84,13 +84,13 @@ static bool open_graphics_file (int number)
     /* Open file, load header, allocate memory, load picture directory */
 
     if ((file = fopen (fname, "rb")) == NULL)
-	goto failure1;
+        goto failure1;
     if (fread (&gheader, sizeof (gheader), 1, file) != 1)
-	goto failure2;
+        goto failure2;
     if ((info = farmalloc (gheader.images * gheader.entry_size)) == NULL)
-	goto failure2;
+        goto failure2;
     if (fread (info, gheader.entry_size, gheader.images, file) != gheader.images)
-	goto failure3;
+        goto failure3;
     return TRUE;
 
 failure3:
@@ -113,9 +113,9 @@ static void close_graphics_file (void)
 {
 
     if (file != NULL)
-	{ fclose (file); file = NULL; }
+        { fclose (file); file = NULL; }
     if (info != NULL)
-	{ farfree (info); info = NULL; }
+        { farfree (info); info = NULL; }
 
 }/* close_graphics_file */
 
@@ -135,7 +135,7 @@ bool init_pictures (void)
     table_ref = (word far *) (table_val + 3840);
 
     if (table_val == NULL)
-	return FALSE;
+        return FALSE;
 
     /* Open the [first of two] graphics file[s] */
 
@@ -154,11 +154,11 @@ void reset_pictures (void)
 {
 
     if (table_val != NULL)
-	{ farfree (table_val); table_val = NULL; }
+        { farfree (table_val); table_val = NULL; }
     if (file != NULL)
-	{ fclose (file); file = NULL; }
+        { fclose (file); file = NULL; }
     if (info != NULL)
-	{ farfree (info); info = NULL; }
+        { farfree (info); info = NULL; }
 
 }/* reset_pictures */
 
@@ -180,55 +180,55 @@ static bool load_picture_info (int picture)
 
     do {
 
-	int i;
+        int i;
 
-	/* Abort if there is a problem with the graphics file */
+        /* Abort if there is a problem with the graphics file */
 
-	if (file == NULL)
-	    return FALSE;
+        if (file == NULL)
+            return FALSE;
 
-	/* Scan the directory of the current graphics file */
+        /* Scan the directory of the current graphics file */
 
-	ptr = info;
+        ptr = info;
 
-	for (i = 0; i < gheader.images; i++) {
+        for (i = 0; i < gheader.images; i++) {
 
-	    if (picture == * (int far *) ptr) {
+            if (picture == * (int far *) ptr) {
 
-		READ_WORD (pic_width, ptr, PIC_WIDTH);
-		READ_WORD (pic_height, ptr, PIC_HEIGHT);
-		READ_WORD (pic_flags, ptr, PIC_FLAGS);
+                READ_WORD (pic_width, ptr, PIC_WIDTH);
+                READ_WORD (pic_height, ptr, PIC_HEIGHT);
+                READ_WORD (pic_flags, ptr, PIC_FLAGS);
 
-		pic_height *= scaler;
-		pic_width *= scaler;
+                pic_height *= scaler;
+                pic_width *= scaler;
 
-		READ_BYTE (byte0 (pic_data), ptr, PIC_DATA + 2);
-		READ_BYTE (byte1 (pic_data), ptr, PIC_DATA + 1);
-		READ_BYTE (byte2 (pic_data), ptr, PIC_DATA);
+                READ_BYTE (byte0 (pic_data), ptr, PIC_DATA + 2);
+                READ_BYTE (byte1 (pic_data), ptr, PIC_DATA + 1);
+                READ_BYTE (byte2 (pic_data), ptr, PIC_DATA);
 
-		if (gheader.entry_size > PIC_COLOUR + 2) {
+                if (gheader.entry_size > PIC_COLOUR + 2) {
 
-		    READ_BYTE (byte0 (pic_colour), ptr, PIC_COLOUR + 2);
-		    READ_BYTE (byte1 (pic_colour), ptr, PIC_COLOUR + 1);
-		    READ_BYTE (byte2 (pic_colour), ptr, PIC_COLOUR);
+                    READ_BYTE (byte0 (pic_colour), ptr, PIC_COLOUR + 2);
+                    READ_BYTE (byte1 (pic_colour), ptr, PIC_COLOUR + 1);
+                    READ_BYTE (byte2 (pic_colour), ptr, PIC_COLOUR);
 
-		} else pic_colour = 0;
+                } else pic_colour = 0;
 
-		return TRUE;
+                return TRUE;
 
-	    }
+            }
 
-	    ptr += gheader.entry_size;
+            ptr += gheader.entry_size;
 
-	}
+        }
 
-	/* Close current graphics file */
+        /* Close current graphics file */
 
-	close_graphics_file ();
+        close_graphics_file ();
 
-	/* Open next graphics file */
+        /* Open next graphics file */
 
-	open_graphics_file ((gheader.link != 0) ? gheader.fileno + 1 : 1);
+        open_graphics_file ((gheader.link != 0) ? gheader.fileno + 1 : 1);
 
     } while (fileno != gheader.fileno);
 
@@ -254,7 +254,7 @@ static void load_colour_map (int first_colour)
     /* Some pictures from Arthur mistakenly claim to have 16 colours */
 
     if ((n = fgetc (file)) == 16)
-	n = 14;
+        n = 14;
 
     /* Each colour is stored in three bytes R-G-B */
 
@@ -263,7 +263,7 @@ static void load_colour_map (int first_colour)
     /* MCGA boards can only handle R-G-B values from 0 to 63 */
 
     for (i = 0; i < 42; i++)
-	rgb[i] = (rgb[i] * 63 + 128) / 255;
+        rgb[i] = (rgb[i] * 63 + 128) / 255;
 
     /* Synchronise with vertical retrace */
 
@@ -295,7 +295,7 @@ static void load_colour_map (int first_colour)
 static void pascal draw_picture (int y, int x)
 {
     static int raise_bits[4] = {
-	0x0100, 0x0300, 0x0700, 0x0000
+        0x0100, 0x0300, 0x0700, 0x0000
     };
 
     byte buf[512];
@@ -328,16 +328,16 @@ static void pascal draw_picture (int y, int x)
        Amiga mode.) */
 
     if (display == _CGA_)
-	colour_shift = -2;
+        colour_shift = -2;
     if (display == _EGA_)
-	colour_shift = 0;
+        colour_shift = 0;
     if (display == _MCGA_)
-	{ colour_shift = 32; first_colour = 34; }
+        { colour_shift = 32; first_colour = 34; }
     if (display == _AMIGA_)
-	{ colour_shift = -1; first_colour = 65; }
+        { colour_shift = -1; first_colour = 65; }
 
     if (pic_colour != 0)
-	load_colour_map (first_colour);
+        load_colour_map (first_colour);
 
     fseek (file, pic_data, SEEK_SET);
 
@@ -349,13 +349,13 @@ static void pascal draw_picture (int y, int x)
     transparent = 0xff;
 
     if (pic_flags & 1)
-	transparent = pic_flags >> 12;
+        transparent = pic_flags >> 12;
 
     /* Prepare EGA hardware for setting pixels */
 
     if (display >= _EGA_) {
-	outport (0x03ce, 0x0205);
-	outport (0x03ce, 0xff08);
+        outport (0x03ce, 0x0205);
+        outport (0x03ce, 0xff08);
     }
 
     /* The uncompressed picture is a long sequence of bytes. Every
@@ -410,11 +410,11 @@ next_code:
 
     do {
 
-	bits = fgetc (file);
+        bits = fgetc (file);
 
-	code |= bits << bits_shift;
+        code |= bits << bits_shift;
 
-	bits_shift += 8;
+        bits_shift += 8;
 
     } while (bits_shift < bits_per_code);
 
@@ -431,9 +431,9 @@ next_code:
     code -= 256;
 
     if (code == 0)
-	goto reset_table;
+        goto reset_table;
     if (code == 1)
-	return;
+        return;
 
     /* Codes from 0 to 255 are literals, i.e. they represent a
        plain byte value. Codes from 258 onwards are references
@@ -457,12 +457,12 @@ next_code:
     prev_code = code;
 
     while (code >= 0) {
-	buf[bufpos++] = table_val[code];
-	code = (short) table_ref[code];
+        buf[bufpos++] = table_val[code];
+        code = (short) table_ref[code];
     }
 
     if (next_entry == prev_code)
-	buf[0] = code;
+        buf[0] = code;
 
     table_val[next_entry] = code;
 
@@ -474,7 +474,7 @@ next_code:
     next_entry++;
 
     if (next_entry == raise_bits[bits_per_code - 9])
-	bits_per_code++;
+        bits_per_code++;
 
 reverse_buffer:
 
@@ -488,10 +488,10 @@ reverse_buffer:
 
     if (current_x == x + pic_width) {
 
-	screen = get_scrnptr (current_y);
+        screen = get_scrnptr (current_y);
 
-	current_x -= pic_width;
-	current_y += scaler;
+        current_x -= pic_width;
+        current_y += scaler;
 
     }
 
@@ -503,83 +503,83 @@ reverse_buffer:
 
     if (display == _CGA_ && transparent == 0xff) {
 
-	pixels = x + pic_width - current_x;
+        pixels = x + pic_width - current_x;
 
-	if (pixels > 8)
-	    pixels = 8;
+        if (pixels > 8)
+            pixels = 8;
 
-	asm les bx,screen
-	asm mov dx,current_x
-	asm dec dx
-	asm push dx
-	asm mov cl,3
-	asm shr dx,cl
-	asm add bx,dx
-	asm mov ax,es:[bx]
-	asm mov dx,0xffff
-	asm mov cl,byte ptr pixels
-	asm shr dl,cl
-	asm pop cx
-	asm and cl,7
-	asm ror dx,cl
-	asm and ax,dx
-	asm mov dx,code
-	asm inc dh
-	asm ror dx,cl
-	asm or ax,dx
-	asm mov es:[bx],ax
+        asm les bx,screen
+        asm mov dx,current_x
+        asm dec dx
+        asm push dx
+        asm mov cl,3
+        asm shr dx,cl
+        asm add bx,dx
+        asm mov ax,es:[bx]
+        asm mov dx,0xffff
+        asm mov cl,byte ptr pixels
+        asm shr dl,cl
+        asm pop cx
+        asm and cl,7
+        asm ror dx,cl
+        asm and ax,dx
+        asm mov dx,code
+        asm inc dh
+        asm ror dx,cl
+        asm or ax,dx
+        asm mov es:[bx],ax
 
-	current_x += pixels;
+        current_x += pixels;
 
     } else for (i = 0; i < scaler; i++) {
 
-	_AH = code;
+        _AH = code;
 
-	if (_AH != transparent) {
+        if (_AH != transparent) {
 
-	    asm add ah,colour_shift
-	    asm les bx,screen
-	    asm mov dx,current_x
-	    asm dec dx
+            asm add ah,colour_shift
+            asm les bx,screen
+            asm mov dx,current_x
+            asm dec dx
 
-	    if (display != _MCGA_) {
+            if (display != _MCGA_) {
 
-		asm push dx
-		asm mov cl,3
-		asm shr dx,cl
-		asm pop cx
-		asm and cl,7
-		asm add bx,dx
-		asm mov al,es:[bx]
+                asm push dx
+                asm mov cl,3
+                asm shr dx,cl
+                asm pop cx
+                asm and cl,7
+                asm add bx,dx
+                asm mov al,es:[bx]
 
-		if (display == _CGA_) {
-		    asm mov dl,0x7f
-		    asm ror dl,cl
-		    asm and al,dl
-		    asm xor ah,1
-		    asm ror ah,1
-		    asm shr ah,cl
-		    asm or ah,al
-		} else {
-		    asm mov al,0x80
-		    asm shr al,cl
-		    asm mov dx,0x03cf
-		    asm out dx,al
-		}
+                if (display == _CGA_) {
+                    asm mov dl,0x7f
+                    asm ror dl,cl
+                    asm and al,dl
+                    asm xor ah,1
+                    asm ror ah,1
+                    asm shr ah,cl
+                    asm or ah,al
+                } else {
+                    asm mov al,0x80
+                    asm shr al,cl
+                    asm mov dx,0x03cf
+                    asm out dx,al
+                }
 
-	    } else asm add bx,dx
+            } else asm add bx,dx
 
-	    asm mov es:[bx],ah
+            asm mov es:[bx],ah
 
-	    if (display == _AMIGA_) {
-		asm add bx,80
-		asm mov al,es:[bx]
-		asm mov es:[bx],ah
-	    }
+            if (display == _AMIGA_) {
+                asm add bx,80
+                asm mov al,es:[bx]
+                asm mov es:[bx],ah
+            }
 
-	}
+        }
 
-	current_x++;
+        current_x++;
 
     }
 
@@ -588,7 +588,7 @@ reverse_buffer:
        value from the buffer and continue painting the picture. */
 
     if (bufpos == 0)
-	goto next_code;
+        goto next_code;
 
     byte0 (code) = buf[--bufpos];
 
@@ -609,7 +609,7 @@ void os_draw_picture (int picture, int y, int x)
 {
 
     if (load_picture_info (picture))
-	draw_picture (y, x);
+        draw_picture (y, x);
 
 }/* os_draw_picture */
 
@@ -633,14 +633,14 @@ int os_peek_colour (void)
 
     if (display >= _CGA_) {
 
-	asm mov ah,13
-	asm mov bh,0
-	asm mov cx,cursor_x
-	asm mov dx,cursor_y
-	asm int 0x10
-	asm mov ah,0
+        asm mov ah,13
+        asm mov bh,0
+        asm mov cx,cursor_x
+        asm mov dx,cursor_y
+        asm int 0x10
+        asm mov ah,0
 
-	return _AX + 16;
+        return _AX + 16;
 
     } else return current_bg;
 
@@ -662,16 +662,16 @@ bool os_picture_data (int picture, int *height, int *width)
 
     if (picture == 0) {
 
-	avail = FALSE;
+        avail = FALSE;
 
-	/* This is the special case mentioned above. In practice, only
-	   the release number is used; and even this is only used by
-	   the DOS version of "Zork Zero". Infocom's Amiga interpreter
-	   could not handle this feature, and the Amiga version of the
-	   story file does not use it. */
+        /* This is the special case mentioned above. In practice, only
+           the release number is used; and even this is only used by
+           the DOS version of "Zork Zero". Infocom's Amiga interpreter
+           could not handle this feature, and the Amiga version of the
+           story file does not use it. */
 
-	pic_height = gheader.images;
-	pic_width = gheader.version;
+        pic_height = gheader.images;
+        pic_width = gheader.version;
 
     } else avail = load_picture_info (picture);
 

@@ -23,13 +23,13 @@ static char * sf_searchfile( char *fn, int fnlen, char *buf, char *paths)
     int plen;
     p = strchr(paths,OS_PATHSEP);
     if (p)
-	plen = p-paths;
+        plen = p-paths;
     else
-	plen = strlen(paths);
+        plen = strlen(paths);
     if (plen) strncpy(buf,paths,plen);
     buf[plen] = 0;
     if ((plen) && (buf[plen-1] != '\\') && (buf[plen-1] != '/'))
-	strcat(buf,"/");
+        strcat(buf,"/");
     plen = strlen(buf);
     strncpy(buf+plen,fn,fnlen);
     buf[plen+fnlen] = 0;
@@ -57,7 +57,7 @@ static void bdestroy( SFONT *s)
     {
     int i; MYFONT *f = (MYFONT *)s;
     for (i=0;i<f->totglyphs;i++)
-	if (f->glyphs[i]) free(f->glyphs[i]);
+        if (f->glyphs[i]) free(f->glyphs[i]);
     free(s);
     }
   }
@@ -98,10 +98,10 @@ static SF_glyph *getglyph( SFONT *s, word c, int allowdef)
     {
     int i; MYFONT *f = (MYFONT *)s;
     if (c < f->minchar || c > f->maxchar)
-	{
-	if (allowdef) c = 0;
-	else return NULL;
-	}
+        {
+        if (allowdef) c = 0;
+        else return NULL;
+        }
     return f->glyphs[c];
     }
   return NULL;
@@ -129,12 +129,12 @@ static void libinit()
   initerr = FT_Init_FreeType( &library );  /* initialize library */
   /* error handling omitted */
   if (initerr)
-	printf("FT_Init_FreeType: error %d\n",initerr);
+        printf("FT_Init_FreeType: error %d\n",initerr);
   else
-	{
-	inited = 1;
-	atexit(libfinish);
-	}
+        {
+        inited = 1;
+        atexit(libfinish);
+        }
   }
 
 
@@ -183,7 +183,7 @@ static void setglyph( MYFONT *f, FT_Face face, int ch)
   if (!res) return;
   for (i=0;i<bitmap->rows;i++)
     for (j=0;j<nbypr;j++)
-	res->bitmap[i*nbypr+j] = bitmap->buffer[i*bitmap->pitch+j];
+        res->bitmap[i*nbypr+j] = bitmap->buffer[i*bitmap->pitch+j];
 
 //printf("%c %d %p  w%d\n",ch,bitmap->pitch,res,bitmap->width);
 //{
@@ -254,22 +254,22 @@ SFONT * sf_loadftype( char *fspec, int *err)
 
   at = strchr(fspec,'@');
   if (at)
-	{
-	fnlen = at-fspec;
-	size = atoi(at+1);
-	}
+        {
+        fnlen = at-fspec;
+        size = atoi(at+1);
+        }
 
   fn = sf_searchfile( fspec, fnlen, buf, "");
   if (!fn) fn = sf_searchfile( fspec, fnlen, buf, "./");
   if (!fn)
     if (m_fontdir)
-	fn = sf_searchfile( fspec, fnlen, buf, m_fontdir);
+        fn = sf_searchfile( fspec, fnlen, buf, m_fontdir);
   if (!fn) fn = sf_searchfile( fspec, fnlen, buf, SYSFONTS);
   if (!fn)
-	{
-	fenv = getenv("FONTS");
-	if (fenv) fn = sf_searchfile( fspec, fnlen, buf, fenv);
-	}
+        {
+        fenv = getenv("FONTS");
+        if (fenv) fn = sf_searchfile( fspec, fnlen, buf, fenv);
+        }
 
   if (!fn) return NULL;
 

@@ -133,20 +133,20 @@ void os_set_colour (int new_foreground, int new_background)
     if (new_background == 1) new_background = h_default_background;
     if (u_setup.color_enabled) {
 #ifdef COLOR_SUPPORT
-	static int colorspace[10][10];
-	static int n_colors = 0;
+        static int colorspace[10][10];
+        static int n_colors = 0;
 
-	if (!colorspace[new_foreground][new_background]) {
-	  init_pair(++n_colors, unix_convert(new_foreground),
-			unix_convert(new_background));
-	  colorspace[new_foreground][new_background] = n_colors;
-	}
-	u_setup.current_color = COLOR_PAIR(colorspace[new_foreground][new_background]);
+        if (!colorspace[new_foreground][new_background]) {
+          init_pair(++n_colors, unix_convert(new_foreground),
+                        unix_convert(new_background));
+          colorspace[new_foreground][new_background] = n_colors;
+        }
+        u_setup.current_color = COLOR_PAIR(colorspace[new_foreground][new_background]);
 #endif
     } else
       u_setup.current_color = (((new_foreground == h_default_background)
-			&& (new_background == h_default_foreground))
-			? A_REVERSE : 0);
+                        && (new_background == h_default_foreground))
+                        ? A_REVERSE : 0);
     os_set_text_style(u_setup.current_text_style);
 }/* os_set_colour */
 
@@ -205,25 +205,25 @@ void os_display_char (zchar c)
     if (c >= ZC_LATIN1_MIN && c <= ZC_LATIN1_MAX) {
         if (u_setup.plain_ascii) {
 
-	  char *ptr = latin1_to_ascii + 3 * (c - ZC_LATIN1_MIN);
-	  char c1 = *ptr++;
-	  char c2 = *ptr++;
-	  char c3 = *ptr++;
+          char *ptr = latin1_to_ascii + 3 * (c - ZC_LATIN1_MIN);
+          char c1 = *ptr++;
+          char c2 = *ptr++;
+          char c3 = *ptr++;
 
-	  addch(c1);
+          addch(c1);
 
-	  if (c2 != ' ')
-	    addch(c2);
-	  if (c3 != ' ')
-	    addch(c3);
+          if (c2 != ' ')
+            addch(c2);
+          if (c3 != ' ')
+            addch(c3);
 
-	} else
-	  addch(c);
-	return;
+        } else
+          addch(c);
+        return;
     }
     if (c >= ZC_ASCII_MIN && c <= ZC_ASCII_MAX) {
         addch(c);
-	return;
+        return;
     }
     if (c == ZC_INDENT) {
       addch(' '); addch(' '); addch(' ');
@@ -258,7 +258,7 @@ void os_display_string (const zchar *s)
                 os_set_text_style (arg);
 
         } else
-	    os_display_char (c);
+            os_display_char (c);
     }
 
 }/* os_display_string */
@@ -276,19 +276,19 @@ int os_char_width (zchar c)
 
         int width = 0;
         const char *ptr = latin1_to_ascii + 3 * (c - ZC_LATIN1_MIN);
-	char c1 = *ptr++;
-	char c2 = *ptr++;
-	char c3 = *ptr++;
+        char c1 = *ptr++;
+        char c2 = *ptr++;
+        char c3 = *ptr++;
 
-	/* Why, oh, why did you declare variables that way??? */
+        /* Why, oh, why did you declare variables that way??? */
 
-	if (c1 == c1)  /* let's avoid confusing the compiler (and me) */
-	  width++;
-	if (c2 != ' ')
-	  width++;
-	if (c3 != ' ')
-	  width++;
-	return width;
+        if (c1 == c1)  /* let's avoid confusing the compiler (and me) */
+          width++;
+        if (c2 != ' ')
+          width++;
+        if (c3 != ' ')
+          width++;
+        return width;
     }
     return 1;
 }/* os_char_width*/
@@ -311,11 +311,11 @@ int os_string_width (const zchar *s)
 
     while ((c = *s++) != 0) {
 
-	if (c == ZC_NEW_STYLE || c == ZC_NEW_FONT) {
-	    s++;
-	    /* No effect */
-	} else
-	    width += os_char_width(c);
+        if (c == ZC_NEW_STYLE || c == ZC_NEW_FONT) {
+            s++;
+            /* No effect */
+        } else
+            width += os_char_width(c);
     }
     return width;
 }/* os_string_width */

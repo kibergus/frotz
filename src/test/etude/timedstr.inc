@@ -47,11 +47,11 @@
     new_line;
     if (inbuf->1 == 0)
       print "You just typed a blank line. (Type ~.~ to stop this
-	test.)^^";
+        test.)^^";
     else {
       print "You just typed ~";
       for (ix=0: ix<inbuf->1: ix++)
-      	print (char)(inbuf->(2+ix));
+              print (char)(inbuf->(2+ix));
       print "~.^^";
     }
     if (inbuf->1 == 1 && inbuf->2 == '.')
@@ -67,24 +67,24 @@
       before ten seconds elapsed.)^^";
     if (claim == 0)
       print "Your interpreter claims to not support timed
-	input. ", (string)SectionOk;
+        input. ", (string)SectionOk;
     else
       print "Your interpreter claims to support timed input. ",
-	(string)SectionBad;
+        (string)SectionBad;
   }
   else {
     if (timedcharflag == 0) {
       print "Your interpreter calls the timing interrupt function
-	with no arguments. ";
+        with no arguments. ";
       if (claim == 0)
-	print "This is correct, except that your interpreter claims
-	  not to support timed input at all. ", (string)SectionBad;
+        print "This is correct, except that your interpreter claims
+          not to support timed input at all. ", (string)SectionBad;
       else
-	print (string)SectionOk;
+        print (string)SectionOk;
     }
     else {
       print "Your interpreter calls the timing interrupt function
-	with an argument. ", (string)SectionBad;
+        with an argument. ", (string)SectionBad;
     }
   }
 

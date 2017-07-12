@@ -40,30 +40,30 @@ Global timedcharcounter;
 
     if (timedcharflag == -93) {
       print "The timing interrupt function was not called at
-	all. Either your interpreter does not support timed input, or
-	you terminated the test before one second elapsed. (Or your
-	interpreter has the ~slow~ bug and you terminated the test
-	before ten seconds elapsed.)^^";
+        all. Either your interpreter does not support timed input, or
+        you terminated the test before one second elapsed. (Or your
+        interpreter has the ~slow~ bug and you terminated the test
+        before ten seconds elapsed.)^^";
       if (claim == 0)
-	print "Your interpreter claims to not support timed
-	  input. ", (string)SectionOk;
+        print "Your interpreter claims to not support timed
+          input. ", (string)SectionOk;
       else
-	print "Your interpreter claims to support timed input. ",
-	  (string)SectionBad;
+        print "Your interpreter claims to support timed input. ",
+          (string)SectionBad;
     }
     else {
       if (timedcharflag == 0) {
-	print "Your interpreter calls the timing interrupt function
-	  with no arguments. ";
-	if (claim == 0)
-	  print "This is correct, except that your interpreter claims
-	    not to support timed input at all. ", (string)SectionBad;
-	else
-	  print (string)SectionOk;
+        print "Your interpreter calls the timing interrupt function
+          with no arguments. ";
+        if (claim == 0)
+          print "This is correct, except that your interpreter claims
+            not to support timed input at all. ", (string)SectionBad;
+        else
+          print (string)SectionOk;
       }
       else {
-	print "Your interpreter calls the timing interrupt function
-	  with an argument. ", (string)SectionBad;
+        print "Your interpreter calls the timing interrupt function
+          with an argument. ", (string)SectionBad;
       }
     }
     new_line;

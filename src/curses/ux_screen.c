@@ -50,7 +50,7 @@ void os_erase_area (int top, int left, int bottom, int right, int win)
 
     /* Catch the most common situation and do things the easy way */
     if ((top == 1) && (bottom == h_screen_rows) &&
-	(left == 1) && (right == h_screen_cols)) {
+        (left == 1) && (right == h_screen_cols)) {
 #ifdef COLOR_SUPPORT
       /* Only set the curses background when doing an erase, so it won't
        * interfere with the copying we do in os_scroll_area.
@@ -63,17 +63,17 @@ void os_erase_area (int top, int left, int bottom, int right, int win)
 #endif
     } else {
         /* Sigh... */
-	int saved_style = u_setup.current_text_style;
-	os_set_text_style(u_setup.current_color);
-	getyx(stdscr, y, x);
-	top--; left--; bottom--; right--;
-	for (i = top; i <= bottom; i++) {
-	  move(i, left);
-	  for (j = left; j <= right; j++)
-	    addch(' ');
-	}
-	move(y, x);
-	os_set_text_style(saved_style);
+        int saved_style = u_setup.current_text_style;
+        os_set_text_style(u_setup.current_color);
+        getyx(stdscr, y, x);
+        top--; left--; bottom--; right--;
+        for (i = top; i <= bottom; i++) {
+          move(i, left);
+          for (j = left; j <= right; j++)
+            addch(' ');
+        }
+        move(y, x);
+        os_set_text_style(saved_style);
     }
 }/* os_erase_area */
 
@@ -110,16 +110,16 @@ void os_scroll_area (int top, int left, int bottom, int right, int units)
     attrset(0);
     if (units > 0) {
       for (row = top; row <= bottom - units; row++)
-	for (col = left; col <= right; col++) {
-	  ch = mvinch(row + units, col);
-	  mvaddch(row, col, ch);
-	}
+        for (col = left; col <= right; col++) {
+          ch = mvinch(row + units, col);
+          mvaddch(row, col, ch);
+        }
     } else if (units < 0) {
       for (row = bottom; row >= top - units; row--)
-	for (col = left; col <= right; col++) {
-	  ch = mvinch(row + units, col);
-	  mvaddch(row, col, ch);
-	}
+        for (col = left; col <= right; col++) {
+          ch = mvinch(row + units, col);
+          mvaddch(row, col, ch);
+        }
     }
     /* Restore attributes.  */
     os_set_text_style(u_setup.current_text_style);

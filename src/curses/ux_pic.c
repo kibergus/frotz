@@ -69,12 +69,12 @@ static unsigned short lookupw(unsigned char *p, int n)
  */
 static int round_div(int x, int y)
 {
-	int quotient = x / y;
-	int dblremain = (x % y) << 1;
+        int quotient = x / y;
+        int dblremain = (x % y) << 1;
 
-	if ((dblremain > y) || (dblremain == y) && (quotient & 1))
-		quotient++;
-	return quotient;
+        if ((dblremain > y) || (dblremain == y) && (quotient & 1))
+                quotient++;
+        return quotient;
 }
 
 
@@ -103,7 +103,7 @@ bool unix_init_pictures (void)
     int i, entry_size, flags, x_scale, y_scale;
 
     if (((file = fopen (filename, "rb")) == NULL)
-	|| (fread(&gheader, sizeof (gheader), 1, file) != 1))
+        || (fread(&gheader, sizeof (gheader), 1, file) != 1))
       break;
 
     num_pictures = lookupw(gheader, PIC_FILE_HEADER_NUM_IMAGES);
@@ -132,9 +132,9 @@ bool unix_init_pictures (void)
       pict_info[i].orig_width = lookupw(p, PIC_HEADER_WIDTH);
 
       pict_info[i].height = round_div(pict_info[i].orig_height *
-		h_screen_rows, y_scale);
+                h_screen_rows, y_scale);
       pict_info[i].width = round_div(pict_info[i].orig_width *
-		h_screen_cols, x_scale);
+                h_screen_cols, x_scale);
 
       /* Don't let dimensions get rounded to nothing. */
       if (pict_info[i].orig_height && !pict_info[i].height)
@@ -195,8 +195,8 @@ int os_picture_data(int num, int *height, int *width)
  */
 static void safe_mvaddch(int y, int x, int ch)
 {
-	if ((y < h_screen_rows) && (x < h_screen_cols))
-		mvaddch(y, x, ch);
+        if ((y < h_screen_rows) && (x < h_screen_cols))
+                mvaddch(y, x, ch);
 }
 
 /*
@@ -205,13 +205,13 @@ static void safe_mvaddch(int y, int x, int ch)
  */
 static void safe_scrnset(int y, int x, int ch, int n)
 {
-	if ((y < h_screen_rows) && (x < h_screen_cols)) {
-		move(y, x);
-		if (x + n > h_screen_cols)
-			n = h_screen_cols - x;
-		while (n--)
-			addch(ch);
-	}
+        if ((y < h_screen_rows) && (x < h_screen_cols)) {
+                move(y, x);
+                if (x + n > h_screen_cols)
+                        n = h_screen_cols - x;
+                while (n--)
+                        addch(ch);
+        }
 }
 
 /*

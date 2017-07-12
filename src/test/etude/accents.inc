@@ -108,22 +108,22 @@ Array AccentList table [;
 
     if (opt >= 0) {
       if (opt & 4)
-      	font off;
+              font off;
       if (opt & 2)
-	style underline;
+        style underline;
       if (opt & 1)
-	style bold;
+        style bold;
       for (ix=1: ix <= AccentList-->0: ix++) {
-      	print (string) AccentList-->ix;
-      	if (ix % 4 == 0)
-      	  new_line;
-      	else
-      	  print "   ";
+              print (string) AccentList-->ix;
+              if (ix % 4 == 0)
+                new_line;
+              else
+                print "   ";
       }
       if (opt & 4)
-      	font on;
+              font on;
       if (opt & 3)
-	style roman;
+        style roman;
       new_line; new_line;
     }
 

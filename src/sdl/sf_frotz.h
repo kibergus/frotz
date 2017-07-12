@@ -58,46 +58,46 @@ int colour_in_use(zword colour);
 
 // various data
 
-extern bool 	m_tandy;
-extern bool	m_quetzal;
-//	CRect m_wndSize;
-//	CString m_propFontName;
-//	CString m_fixedFontName;
-//	int m_fontSize;
-extern int 	m_v6scale;
-extern int	m_gfxScale;
-extern ulong	m_defaultFore;
-extern ulong	m_defaultBack;
-extern ulong	m_colours[11];
-extern ulong	m_nonStdColours[NON_STD_COLS];
-extern int	m_nonStdIndex;
-extern bool	m_exitPause;
-extern bool	m_lineInput;
-//extern bool	m_IsInfocomV6;
-//	bool m_fastScroll;
-extern bool	m_morePrompts;
-//	int m_leftMargin;
-//	int m_rightMargin;
-//	FILE* m_blorbFile;
-//	bb_map_t* m_blorbMap;
-//	GameInfo m_gameInfo;
-extern int	AcWidth;
-extern int	AcHeight;
-extern int	m_random_seed;
-extern int	m_fullscreen;
-extern int	m_reqW, m_reqH;
-extern char *	m_fontfiles[8];
-extern bool	m_localfiles;
-extern int	m_no_sound;
-extern int 	m_vga_fonts;
-extern int	SFdticks;
-extern volatile bool	SFticked;
-extern char *	m_fontdir;
-extern bool	m_aafonts;
-extern char *	m_setupfile;
+extern bool         m_tandy;
+extern bool        m_quetzal;
+//        CRect m_wndSize;
+//        CString m_propFontName;
+//        CString m_fixedFontName;
+//        int m_fontSize;
+extern int         m_v6scale;
+extern int        m_gfxScale;
+extern ulong        m_defaultFore;
+extern ulong        m_defaultBack;
+extern ulong        m_colours[11];
+extern ulong        m_nonStdColours[NON_STD_COLS];
+extern int        m_nonStdIndex;
+extern bool        m_exitPause;
+extern bool        m_lineInput;
+//extern bool        m_IsInfocomV6;
+//        bool m_fastScroll;
+extern bool        m_morePrompts;
+//        int m_leftMargin;
+//        int m_rightMargin;
+//        FILE* m_blorbFile;
+//        bb_map_t* m_blorbMap;
+//        GameInfo m_gameInfo;
+extern int        AcWidth;
+extern int        AcHeight;
+extern int        m_random_seed;
+extern int        m_fullscreen;
+extern int        m_reqW, m_reqH;
+extern char *        m_fontfiles[8];
+extern bool        m_localfiles;
+extern int        m_no_sound;
+extern int         m_vga_fonts;
+extern int        SFdticks;
+extern volatile bool        SFticked;
+extern char *        m_fontdir;
+extern bool        m_aafonts;
+extern char *        m_setupfile;
 extern int m_frequency;
 
-extern double 	m_gamma;
+extern double         m_gamma;
 
 // sf_resource.c
 
@@ -105,7 +105,7 @@ extern double 	m_gamma;
 int sf_load_resources( char *givenfn);
 
 typedef struct {
-  int number;		// 0 means unallocated
+  int number;                // 0 means unallocated
   int width, height;
   byte *pixels;
   } sf_picture;
@@ -152,8 +152,8 @@ typedef struct {
   SFONT *font;
   int proportional;
   int style, zfontnum;
-  int cx, cy;		// cursor position - 0 based
-  int oh;		// overhang
+  int cx, cy;                // cursor position - 0 based
+  int oh;                // overhang
   unsigned long fore, back;
   bool foreDefault, backDefault, backTransparent;
   } SF_textsetting;
@@ -215,7 +215,7 @@ zword sf_read_key( int timeout, int cursor, int allowed);
 
 int sf_user_fdialog( bool exist, const char *def, const char *filt, const char *title, char **res);
 extern int (*sf_osdialog)( bool ex, const char *def, const char *filt, const char *tit, char **res,
-	ulong *sbuf, int sbp, int ew, int eh, int isfull);
+        ulong *sbuf, int sbp, int ew, int eh, int isfull);
 
 #ifdef WIN32
 #define OS_PATHSEP ';'
@@ -224,23 +224,23 @@ extern int (*sf_osdialog)( bool ex, const char *def, const char *filt, const cha
 #endif
 
 // virtual keys
-#define VK_TAB	0x16
-#define VK_INS	0x17
+#define VK_TAB        0x16
+#define VK_INS        0x17
 
 // for AIFF resampling
 
 typedef struct CONVstruct CONV;
 struct CONVstruct {
-	double ratio;
-	// input
-	int channels;
-	int bytespersam;
-	// returns num of output samples
-	int (* doCONV)( CONV *, FILE *, void *, int, int );
-	void (* finishCONV)( CONV *);
-	int maxin, maxout;
-	float *inbuf, *outbuf;
-	void *aux;
+        double ratio;
+        // input
+        int channels;
+        int bytespersam;
+        // returns num of output samples
+        int (* doCONV)( CONV *, FILE *, void *, int, int );
+        void (* finishCONV)( CONV *);
+        int maxin, maxout;
+        float *inbuf, *outbuf;
+        void *aux;
 };
 
 

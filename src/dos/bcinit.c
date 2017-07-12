@@ -92,21 +92,21 @@ static void interrupt (*oldvect) () = NULL;
  */
 void os_init_setup(void)
 {
-	f_setup.attribute_assignment = 0;
-	f_setup.attribute_testing = 0;
-	f_setup.context_lines = 0;
-	f_setup.object_locating = 0;
-	f_setup.object_movement = 0;
-	f_setup.left_margin = 0;
-	f_setup.right_margin = 0;
-	f_setup.ignore_errors = 0;
-	f_setup.piracy = 0;
-	f_setup.undo_slots = MAX_UNDO_SLOTS;
-	f_setup.expand_abbreviations = 0;
-	f_setup.script_cols = 80;
-	f_setup.sound = 1;
-	f_setup.err_report_mode = ERR_DEFAULT_REPORT_MODE;
-	f_setup.restore_mode = 0;
+        f_setup.attribute_assignment = 0;
+        f_setup.attribute_testing = 0;
+        f_setup.context_lines = 0;
+        f_setup.object_locating = 0;
+        f_setup.object_movement = 0;
+        f_setup.left_margin = 0;
+        f_setup.right_margin = 0;
+        f_setup.ignore_errors = 0;
+        f_setup.piracy = 0;
+        f_setup.undo_slots = MAX_UNDO_SLOTS;
+        f_setup.expand_abbreviations = 0;
+        f_setup.script_cols = 80;
+        f_setup.sound = 1;
+        f_setup.err_report_mode = ERR_DEFAULT_REPORT_MODE;
+        f_setup.restore_mode = 0;
 
 }/* os_init_setup */
 
@@ -124,11 +124,11 @@ int dectoi (const char *s)
 
     if (s != NULL)
 
-	do {
+        do {
 
-	    n = 10 * n + (*s & 15);
+            n = 10 * n + (*s & 15);
 
-	} while (*++s > ' ');
+        } while (*++s > ' ');
 
     return n;
 
@@ -148,14 +148,14 @@ int hextoi (const char *s)
 
     if (s != NULL)
 
-	do {
+        do {
 
-	    n = 16 * n + (*s & 15);
+            n = 16 * n + (*s & 15);
 
-	    if (*s > '9')
-		n += 9;
+            if (*s > '9')
+                n += 9;
 
-	} while (*++s > ' ');
+        } while (*++s > ' ');
 
     return n;
 
@@ -232,7 +232,7 @@ void os_fatal (const char *s, ...)
 {
 
     if (h_interpreter_number)
-	os_reset_screen ();
+        os_reset_screen ();
 
     /* Display error message */
 
@@ -259,74 +259,74 @@ static void parse_options (int argc, char **argv)
 
     do {
 
-	int num = 0;
+        int num = 0;
 
-	c = getopt (argc, argv, "aAb:B:c:d:e:f:F:g:h:il:oOpr:s:S:tTu:w:xZ:");
+        c = getopt (argc, argv, "aAb:B:c:d:e:f:F:g:h:il:oOpr:s:S:tTu:w:xZ:");
 
-	if (optarg != NULL)
-	    num = dectoi (optarg);
+        if (optarg != NULL)
+            num = dectoi (optarg);
 
-	if (c == 'a')
-	    f_setup.attribute_assignment = 1;
-	if (c == 'A')
-	    f_setup.attribute_testing = 1;
-	if (c == 'b')
-	    user_background = num;
-	if (c == 'B')
-	    user_reverse_bg = num;
-	if (c == 'c')
-	    f_setup.context_lines = num;
-	if (c == 'd') {
-	    display = optarg[0] | 32;
-	    if ((display < '0' || display > '5')
-		&& (display < 'a' || display > 'e')) {
-		display = -1;
-	    }
-	}
-	if (c == 'e')
-	    user_emphasis = num;
-	if (c == 'T')
-	    user_bold_typing = 1;
-	if (c == 'f')
-	    user_foreground = num;
-	if (c == 'F')
-	    user_reverse_fg = num;
-	if (c == 'g') {
-	    if (num >= 0 && num <= 4)
-		user_font = num;
-	}
-	if (c == 'h')
-	    user_screen_height = num;
-	if (c == 'i')
-	    f_setup.ignore_errors = 1;
-	if (c == 'l')
-	    f_setup.left_margin = num;
-	if (c == 'o')
-	    f_setup.object_movement = 1;
-	if (c == 'O')
-	    f_setup.object_locating = 1;
-	if (c == 'p')
-	    f_setup.piracy = 1;
-	if (c == 'r')
-	    f_setup.right_margin = num;
-	if (c == 's')
-	    user_random_seed = num;
-	if (c == 'S')
-	    f_setup.script_cols = num;
-	if (c == 't')
-	    user_tandy_bit = 1;
-	if (c == 'u')
-	    f_setup.undo_slots = num;
-	if (c == 'w')
-	    user_screen_width = num;
-	if (c == 'x')
-	    f_setup.expand_abbreviations = 1;
-	if (c == 'Z') {
-	    if (num >= ERR_REPORT_NEVER && num <= ERR_REPORT_FATAL)
-		f_setup.err_report_mode = num;
-	}
-	if (c == '?')
-	    optind = argc;
+        if (c == 'a')
+            f_setup.attribute_assignment = 1;
+        if (c == 'A')
+            f_setup.attribute_testing = 1;
+        if (c == 'b')
+            user_background = num;
+        if (c == 'B')
+            user_reverse_bg = num;
+        if (c == 'c')
+            f_setup.context_lines = num;
+        if (c == 'd') {
+            display = optarg[0] | 32;
+            if ((display < '0' || display > '5')
+                && (display < 'a' || display > 'e')) {
+                display = -1;
+            }
+        }
+        if (c == 'e')
+            user_emphasis = num;
+        if (c == 'T')
+            user_bold_typing = 1;
+        if (c == 'f')
+            user_foreground = num;
+        if (c == 'F')
+            user_reverse_fg = num;
+        if (c == 'g') {
+            if (num >= 0 && num <= 4)
+                user_font = num;
+        }
+        if (c == 'h')
+            user_screen_height = num;
+        if (c == 'i')
+            f_setup.ignore_errors = 1;
+        if (c == 'l')
+            f_setup.left_margin = num;
+        if (c == 'o')
+            f_setup.object_movement = 1;
+        if (c == 'O')
+            f_setup.object_locating = 1;
+        if (c == 'p')
+            f_setup.piracy = 1;
+        if (c == 'r')
+            f_setup.right_margin = num;
+        if (c == 's')
+            user_random_seed = num;
+        if (c == 'S')
+            f_setup.script_cols = num;
+        if (c == 't')
+            user_tandy_bit = 1;
+        if (c == 'u')
+            f_setup.undo_slots = num;
+        if (c == 'w')
+            user_screen_width = num;
+        if (c == 'x')
+            f_setup.expand_abbreviations = 1;
+        if (c == 'Z') {
+            if (num >= ERR_REPORT_NEVER && num <= ERR_REPORT_FATAL)
+                f_setup.err_report_mode = num;
+        }
+        if (c == '?')
+            optind = argc;
     } while (c != EOF && c != '?');
 
 }/* parse_options */
@@ -365,9 +365,9 @@ void os_process_arguments (int argc, char *argv[])
     parse_options (argc, argv);
 
     if (optind != argc - 1) {
-	printf ("FROTZ V%s\tMSDOS / PCDOS Edition\n", VERSION);
-	puts (information);
-	exit (EXIT_FAILURE);
+        printf ("FROTZ V%s\tMSDOS / PCDOS Edition\n", VERSION);
+        puts (information);
+        exit (EXIT_FAILURE);
     }
 
     /* Set the story file name */
@@ -379,12 +379,12 @@ void os_process_arguments (int argc, char *argv[])
     p = strdup(f_setup.story_file);
 
     for (i = 0; f_setup.story_file[i] != 0; i++)
-	if (f_setup.story_file[i] == '\\' || f_setup.story_file[i] == '/'
-	    || f_setup.story_file[i] == ':')
-	    p = f_setup.story_file + i + 1;
+        if (f_setup.story_file[i] == '\\' || f_setup.story_file[i] == '/'
+            || f_setup.story_file[i] == ':')
+            p = f_setup.story_file + i + 1;
 
     for (i = 0; p[i] != 0 && p[i] != '.'; i++)
-	stripped_story_name[i] = p[i];
+        stripped_story_name[i] = p[i];
     stripped_story_name[i] = 0;
     f_setup.story_name = strdup(stripped_story_name);
 
@@ -408,13 +408,13 @@ void os_process_arguments (int argc, char *argv[])
     strcat(blorb_file, ".blb");
 
     switch (dos_init_blorb()) {
-	case bb_err_Format:
-	    printf("Blorb file loaded, but unable to build map.\n\n");
-	    break;
-	default:
-	    break;
+        case bb_err_Format:
+            printf("Blorb file loaded, but unable to build map.\n\n");
+            break;
+        default:
+            break;
 /* No problem.  Don't say anything. */
-/*	    printf("Blorb error code %i\n\n"); */
+/*            printf("Blorb error code %i\n\n"); */
     }
 }/* os_process_arguments */
 
@@ -430,20 +430,20 @@ static void standard_palette (void)
 {
 
     static byte palette[] = {
-	0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x14, 0x07,
-	0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f,
-	0x00 /* last one is the overscan register */
+        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x14, 0x07,
+        0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f,
+        0x00 /* last one is the overscan register */
     };
 
     if (display == _AMIGA_) {
-	asm mov ax,0x1002
-	asm lea dx,palette
-	asm push ds
-	asm pop es
-	asm int 0x10
-	asm mov ax,0x1013
-	asm mov bx,0x0001
-	asm int 0x10
+        asm mov ax,0x1002
+        asm lea dx,palette
+        asm push ds
+        asm pop es
+        asm int 0x10
+        asm mov ax,0x1013
+        asm mov bx,0x0001
+        asm int 0x10
     }
 
 }/* standard_palette */
@@ -460,20 +460,20 @@ static void special_palette (void)
 {
 
     static byte palette[] = {
-	0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-	0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-	0x00 /* last one is the overscan register */
+        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+        0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+        0x00 /* last one is the overscan register */
     };
 
     if (display == _AMIGA_) {
-	asm mov ax,0x1002
-	asm mov dx,offset palette
-	asm push ds
-	asm pop es
-	asm int 0x10
-	asm mov ax,0x1013
-	asm mov bx,0x0101
-	asm int 0x10
+        asm mov ax,0x1002
+        asm mov dx,offset palette
+        asm push ds
+        asm pop es
+        asm int 0x10
+        asm mov ax,0x1013
+        asm mov bx,0x0101
+        asm int 0x10
     }
 
 }/* special_palette */
@@ -507,51 +507,51 @@ static void special_palette (void)
 void os_init_screen (void)
 {
     static byte zcolour[] = {
-	BLACK_COLOUR,
-	BLUE_COLOUR,
-	GREEN_COLOUR,
-	CYAN_COLOUR,
-	RED_COLOUR,
-	MAGENTA_COLOUR,
-	BROWN + 16,
-	LIGHTGRAY + 16,
-	GREY_COLOUR,
-	LIGHTBLUE + 16,
-	LIGHTGREEN + 16,
-	LIGHTCYAN + 16,
-	LIGHTRED + 16,
-	LIGHTMAGENTA + 16,
-	YELLOW_COLOUR,
-	WHITE_COLOUR
+        BLACK_COLOUR,
+        BLUE_COLOUR,
+        GREEN_COLOUR,
+        CYAN_COLOUR,
+        RED_COLOUR,
+        MAGENTA_COLOUR,
+        BROWN + 16,
+        LIGHTGRAY + 16,
+        GREY_COLOUR,
+        LIGHTBLUE + 16,
+        LIGHTGREEN + 16,
+        LIGHTCYAN + 16,
+        LIGHTRED + 16,
+        LIGHTMAGENTA + 16,
+        YELLOW_COLOUR,
+        WHITE_COLOUR
     };
 
-    static struct {	/* information on modes 0 to 5 */
-	byte vmode;
-	word width;
-	word height;
-	byte font_width;
-	byte font_height;
-	byte fg;
-	byte bg;
+    static struct {        /* information on modes 0 to 5 */
+        byte vmode;
+        word width;
+        word height;
+        byte font_width;
+        byte font_height;
+        byte fg;
+        byte bg;
     } info[] = {
-	{ 0x07,  80,  25,  1,  1, LIGHTGRAY + 16, BLACK_COLOUR }, /* MONO  */
-	{ 0x03,  80,  25,  1,  1, LIGHTGRAY + 16, BLUE_COLOUR  }, /* TEXT  */
-	{ 0x06, 640, 200,  8,  8, WHITE_COLOUR,   BLACK_COLOUR }, /* CGA   */
-	{ 0x13, 320, 200,  5,  8, WHITE_COLOUR,   GREY_COLOUR  }, /* MCGA  */
-	{ 0x0e, 640, 200,  8,  8, WHITE_COLOUR,   BLUE_COLOUR  }, /* EGA   */
-	{ 0x12, 640, 400,  8, 16, WHITE_COLOUR,   BLACK_COLOUR }  /* AMIGA */
+        { 0x07,  80,  25,  1,  1, LIGHTGRAY + 16, BLACK_COLOUR }, /* MONO  */
+        { 0x03,  80,  25,  1,  1, LIGHTGRAY + 16, BLUE_COLOUR  }, /* TEXT  */
+        { 0x06, 640, 200,  8,  8, WHITE_COLOUR,   BLACK_COLOUR }, /* CGA   */
+        { 0x13, 320, 200,  5,  8, WHITE_COLOUR,   GREY_COLOUR  }, /* MCGA  */
+        { 0x0e, 640, 200,  8,  8, WHITE_COLOUR,   BLUE_COLOUR  }, /* EGA   */
+        { 0x12, 640, 400,  8, 16, WHITE_COLOUR,   BLACK_COLOUR }  /* AMIGA */
     };
 
-    static struct {	/* information on modes A to E */
-	word vesamode;
-	word width;
-	word height;
+    static struct {        /* information on modes A to E */
+        word vesamode;
+        word width;
+        word height;
     } subinfo[] = {
-	{ 0x001,  40, 25 },
-	{ 0x109, 132, 25 },
-	{ 0x10b, 132, 50 },
-	{ 0x108,  80, 60 },
-	{ 0x10c, 132, 60 }
+        { 0x001,  40, 25 },
+        { 0x109, 132, 25 },
+        { 0x10b, 132, 50 },
+        { 0x108,  80, 60 },
+        { 0x10c, 132, 60 }
     };
 
     int subdisplay;
@@ -572,32 +572,32 @@ void os_init_screen (void)
 
     if (display == -1)
 
-	if (old_video_mode == 7)
-	    display = '0';
-	else if (h_version == V6 || (h_flags & GRAPHICS_FLAG))
-	    display = '5';
-	else
-	    display = '1';
+        if (old_video_mode == 7)
+            display = '0';
+        else if (h_version == V6 || (h_flags & GRAPHICS_FLAG))
+            display = '5';
+        else
+            display = '1';
 
     /* Activate the desired display mode. All VESA text modes are very
        similar to the standard text mode; in fact, only here we need to
        know which VESA mode is used. */
 
     if (display >= '0' && display <= '5') {
-	subdisplay = -1;
-	display -= '0';
-	_AL = info[display].vmode;
-	_AH = 0;
+        subdisplay = -1;
+        display -= '0';
+        _AL = info[display].vmode;
+        _AH = 0;
     } else if (display == 'a') {
-	subdisplay = 0;
-	display = 1;
-	_AL = 0x01;
-	_AH = 0;
+        subdisplay = 0;
+        display = 1;
+        _AL = 0x01;
+        _AH = 0;
     } else if (display >= 'b' && display <= 'e') {
-	subdisplay = display - 'a';
-	display = 1;
-	_BX = subinfo[subdisplay].vesamode;
-	_AX = 0x4f02;
+        subdisplay = display - 'a';
+        display = 1;
+        _BX = subinfo[subdisplay].vesamode;
+        _AX = 0x4f02;
     }
 
     geninterrupt (0x10);
@@ -606,40 +606,40 @@ void os_init_screen (void)
 
     if (display <= _TEXT_) {
 
-	/* Enable bright background colours */
+        /* Enable bright background colours */
 
-	asm mov ax,0x1003
-	asm mov bl,0
-	asm int 0x10
+        asm mov ax,0x1003
+        asm mov bl,0
+        asm int 0x10
 
-	/* Turn off hardware cursor */
+        /* Turn off hardware cursor */
 
-	asm mov ah,1
-	asm mov cx,0xffff
-	asm int 0x10
+        asm mov ah,1
+        asm mov cx,0xffff
+        asm int 0x10
 
     } else {
 
-	load_fonts ();
+        load_fonts ();
 
-	if (display == _AMIGA_) {
+        if (display == _AMIGA_) {
 
-	     scaler = 2;
+             scaler = 2;
 
-	     /* Use resolution 640 x 400 instead of 640 x 480. BIOS doesn't
-		help us here since this is not a standard resolution. */
+             /* Use resolution 640 x 400 instead of 640 x 480. BIOS doesn't
+                help us here since this is not a standard resolution. */
 
-	     outportb (0x03c2, 0x63);
+             outportb (0x03c2, 0x63);
 
-	     outport (0x03d4, 0x0e11);
-	     outport (0x03d4, 0xbf06);
-	     outport (0x03d4, 0x1f07);
-	     outport (0x03d4, 0x9c10);
-	     outport (0x03d4, 0x8f12);
-	     outport (0x03d4, 0x9615);
-	     outport (0x03d4, 0xb916);
+             outport (0x03d4, 0x0e11);
+             outport (0x03d4, 0xbf06);
+             outport (0x03d4, 0x1f07);
+             outport (0x03d4, 0x9c10);
+             outport (0x03d4, 0x8f12);
+             outport (0x03d4, 0x9615);
+             outport (0x03d4, 0xb916);
 
-	 }
+         }
 
     }
 
@@ -660,12 +660,12 @@ void os_init_screen (void)
 
     if (display == _AMIGA_ && h_version == V6) {
 
-	user_reverse_fg = -1;
-	user_reverse_bg = -1;
-	zcolour[LIGHTGRAY] = LIGHTGREY_COLOUR;
-	zcolour[DARKGRAY] = DARKGREY_COLOUR;
+        user_reverse_fg = -1;
+        user_reverse_bg = -1;
+        zcolour[LIGHTGRAY] = LIGHTGREY_COLOUR;
+        zcolour[DARKGRAY] = DARKGREY_COLOUR;
 
-	special_palette ();
+        special_palette ();
 
     }
 
@@ -673,46 +673,46 @@ void os_init_screen (void)
        the game which features are supported by the interpreter. */
 
     if (h_version == V3 && user_tandy_bit != -1)
-	h_config |= CONFIG_TANDY;
+        h_config |= CONFIG_TANDY;
     if (h_version == V3)
-	h_config |= CONFIG_SPLITSCREEN;
+        h_config |= CONFIG_SPLITSCREEN;
     if (h_version == V3 && (display == _MCGA_ || (display == _AMIGA_ && user_font != 0)))
-	h_config |= CONFIG_PROPORTIONAL;
+        h_config |= CONFIG_PROPORTIONAL;
     if (h_version >= V4 && display != _MCGA_ && (user_bold_typing != -1 || display <= _TEXT_))
-	h_config |= CONFIG_BOLDFACE;
+        h_config |= CONFIG_BOLDFACE;
     if (h_version >= V4)
-	h_config |= CONFIG_EMPHASIS | CONFIG_FIXED | CONFIG_TIMEDINPUT;
+        h_config |= CONFIG_EMPHASIS | CONFIG_FIXED | CONFIG_TIMEDINPUT;
     if (h_version >= V5 && display != _MONO_ && display != _CGA_)
-	h_config |= CONFIG_COLOUR;
+        h_config |= CONFIG_COLOUR;
     if (h_version >= V5 && display >= _CGA_ && init_pictures ())
-	h_config |= CONFIG_PICTURES;
+        h_config |= CONFIG_PICTURES;
 
     /* Handle various game flags. These flags are set if the game wants
        to use certain features. The flags must be cleared if the feature
        is not available. */
 
     if (h_flags & GRAPHICS_FLAG)
-	if (display <= _TEXT_)
-	    h_flags &= ~GRAPHICS_FLAG;
+        if (display <= _TEXT_)
+            h_flags &= ~GRAPHICS_FLAG;
     if (h_version == V3 && (h_flags & OLD_SOUND_FLAG))
 #ifdef SOUND_SUPPORT
-	if (!dos_init_sound ())
+        if (!dos_init_sound ())
 #endif
-	    h_flags &= ~OLD_SOUND_FLAG;
+            h_flags &= ~OLD_SOUND_FLAG;
     if (h_flags & SOUND_FLAG)
 #ifdef SOUND_SUPPORT
-	if (!dos_init_sound ())
+        if (!dos_init_sound ())
 #endif
-	    h_flags &= ~SOUND_FLAG;
+            h_flags &= ~SOUND_FLAG;
     if (h_version >= V5 && (h_flags & UNDO_FLAG))
-	if (!f_setup.undo_slots)
-	    h_flags &= ~UNDO_FLAG;
+        if (!f_setup.undo_slots)
+            h_flags &= ~UNDO_FLAG;
     if (h_flags & MOUSE_FLAG)
-	if (subdisplay != -1 || !detect_mouse ())
-	    h_flags &= ~MOUSE_FLAG;
+        if (subdisplay != -1 || !detect_mouse ())
+            h_flags &= ~MOUSE_FLAG;
     if (h_flags & COLOUR_FLAG)
-	if (display == _MONO_ || display == _CGA_)
-	    h_flags &= ~COLOUR_FLAG;
+        if (display == _MONO_ || display == _CGA_)
+            h_flags &= ~COLOUR_FLAG;
     h_flags &= ~MENU_FLAG;
 
     /* Set the screen dimensions, font size and default colour */
@@ -725,22 +725,22 @@ void os_init_screen (void)
     h_default_background = info[display].bg;
 
     if (subdisplay != -1) {
-	h_screen_width = subinfo[subdisplay].width;
-	h_screen_height = subinfo[subdisplay].height;
+        h_screen_width = subinfo[subdisplay].width;
+        h_screen_height = subinfo[subdisplay].height;
     }
 
     if (user_screen_width != -1)
-	h_screen_width = user_screen_width;
+        h_screen_width = user_screen_width;
     if (user_screen_height != -1)
-	h_screen_height = user_screen_height;
+        h_screen_height = user_screen_height;
 
     h_screen_cols = h_screen_width / h_font_width;
     h_screen_rows = h_screen_height / h_font_height;
 
     if (user_foreground != -1)
-	h_default_foreground = zcolour[user_foreground];
+        h_default_foreground = zcolour[user_foreground];
     if (user_background != -1)
-	h_default_background = zcolour[user_background];
+        h_default_background = zcolour[user_background];
 
     /* Set the interpreter number (a constant telling the game which
        operating system it runs on) and the interpreter version. The
@@ -750,7 +750,7 @@ void os_init_screen (void)
     h_interpreter_version = 'F';
 
     if (display == _AMIGA_)
-	h_interpreter_number = INTERP_AMIGA;
+        h_interpreter_number = INTERP_AMIGA;
 
      /* Install the fast_exit routine to handle the ctrl-break key */
 
@@ -795,31 +795,31 @@ void os_restart_game (int stage)
 
     if (story_id == BEYOND_ZORK)
 
-	if (stage == RESTART_BEGIN)
+        if (stage == RESTART_BEGIN)
 
-	    if ((display == _MCGA_ || display == _AMIGA_) && os_picture_data (1, &x, &y)) {
+            if ((display == _MCGA_ || display == _AMIGA_) && os_picture_data (1, &x, &y)) {
 
-		special_palette ();
+                special_palette ();
 
-		asm mov ax,0x1010
-		asm mov bx,64
-		asm mov dh,0
-		asm mov ch,0
-		asm mov cl,0
-		asm int 0x10
-		asm mov ax,0x1010
-		asm mov bx,79
-		asm mov dh,0xff
-		asm mov ch,0xff
-		asm mov cl,0xff
-		asm int 0x10
+                asm mov ax,0x1010
+                asm mov bx,64
+                asm mov dh,0
+                asm mov ch,0
+                asm mov cl,0
+                asm int 0x10
+                asm mov ax,0x1010
+                asm mov bx,79
+                asm mov dh,0xff
+                asm mov ch,0xff
+                asm mov cl,0xff
+                asm int 0x10
 
-		os_draw_picture (1, 1, 1);
-		os_read_key (0, FALSE);
+                os_draw_picture (1, 1, 1);
+                os_read_key (0, FALSE);
 
-		standard_palette ();
+                standard_palette ();
 
-	    }
+            }
 
 }/* os_restart_game */
 
@@ -835,12 +835,12 @@ int os_random_seed (void)
 {
     if (user_random_seed == -1) {
 
-	/* Use the time of day as seed value */
+        /* Use the time of day as seed value */
 
-	asm mov ah,0
-	asm int 0x1a
+        asm mov ah,0
+        asm int 0x1a
 
-	return _DX & 0x7fff;
+        return _DX & 0x7fff;
 
     } else return user_random_seed;
 
@@ -866,18 +866,18 @@ FILE *os_path_open (const char *name, const char *mode)
     if ((p = getenv ("ZCODE_PATH")) == NULL)
         p = getenv ("INFOCOM_PATH");
     if (p != NULL) {
-	while (*p) {
-	    bp = buf;
-	    while (*p && *p != OS_PATHSEP)
-		lastch = *bp++ = *p++;
-	    if (lastch != '\\' && lastch != '/')
-		*bp++ = '\\';
-	    strcpy (bp, name);
-	    if ((fp = fopen (buf, mode)) != NULL)
-		return fp;
-	    if (*p)
-		p++;
-	}
+        while (*p) {
+            bp = buf;
+            while (*p && *p != OS_PATHSEP)
+                lastch = *bp++ = *p++;
+            if (lastch != '\\' && lastch != '/')
+                *bp++ = '\\';
+            strcpy (bp, name);
+            if ((fp = fopen (buf, mode)) != NULL)
+                return fp;
+            if (*p)
+                p++;
+        }
     }
     return NULL;
 }/* os_path_open */
@@ -921,26 +921,26 @@ int dos_init_blorb(void)
 
     if (strncmp((char *)basename(f_setup.story_file),
      (char *)basename(blorb_file), 55) == 0) {
-	if ((blorbfile = fopen(blorb_file, "rb")) == NULL)
-	    return bb_err_Read;
+        if ((blorbfile = fopen(blorb_file, "rb")) == NULL)
+            return bb_err_Read;
 /* Under DOS, bb_create_map() returns bb_err_Format */
-	blorb_err = bb_create_map(blorbfile, &blorb_map);
+        blorb_err = bb_create_map(blorbfile, &blorb_map);
 
-	if (blorb_err != bb_err_None) {
-	    return blorb_err;
-	}
+        if (blorb_err != bb_err_None) {
+            return blorb_err;
+        }
 
     /* Now we need to locate the EXEC chunk within the blorb file
      * and present it to the rest of the program as a file stream.
      */
 
-	blorb_err = bb_load_chunk_by_type(blorb_map, bb_method_FilePos,
-			&blorb_res, bb_ID_ZCOD, 0);
+        blorb_err = bb_load_chunk_by_type(blorb_map, bb_method_FilePos,
+                        &blorb_res, bb_ID_ZCOD, 0);
 
-	if (blorb_err == bb_err_None) {
-	    exec_in_blorb = 1;
-	    use_blorb = 1;
-	}
+        if (blorb_err == bb_err_None) {
+            exec_in_blorb = 1;
+            use_blorb = 1;
+        }
     }
     return 0;
 }
@@ -955,19 +955,19 @@ int os_storyfile_seek(FILE * fp, long offset, int whence)
     int retval;
     /* Is this a Blorb file containing Zcode? */
     if (exec_in_blorb) {
-	switch (whence) {
-	    case SEEK_END:
-		retval = fseek(fp, blorb_res.data.startpos + blorb_res.length + offset, SEEK_SET);
-		break;
-	    case SEEK_CUR:
-		retval = fseek(fp, offset, SEEK_CUR);
-		break;
-	    case SEEK_SET:
-	    default:
-		retval = fseek(fp, blorb_res.data.startpos + offset, SEEK_SET);
-		break;
-	}
-	return retval;
+        switch (whence) {
+            case SEEK_END:
+                retval = fseek(fp, blorb_res.data.startpos + blorb_res.length + offset, SEEK_SET);
+                break;
+            case SEEK_CUR:
+                retval = fseek(fp, offset, SEEK_CUR);
+                break;
+            case SEEK_SET:
+            default:
+                retval = fseek(fp, blorb_res.data.startpos + offset, SEEK_SET);
+                break;
+        }
+        return retval;
     }
     return fseek(fp, offset, whence);
 }
