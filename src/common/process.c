@@ -247,6 +247,11 @@ static void load_all_operands (zbyte specifier)
 }/* load_all_operands */
 
 
+int frotzShouldRestore = 1;
+int frotzShouldSave = 0;
+void frotzRestoreState(void);
+void frotzSaveState(void);
+
 /*
  * interpret
  *
@@ -262,6 +267,16 @@ void interpret (void)
     }
 
     do {
+        if (frotzShouldRestore) {
+            frotzRestoreState();
+            restart_header();
+            erase_window (1);
+            frotzShouldRestore = 0;
+        }
+        if (frotzShouldSave) {
+            frotzSaveState();
+            frotzShouldSave = 0;
+        }
 
         zbyte opcode;
 
@@ -304,11 +319,6 @@ void interpret (void)
             var_opcodes[opcode - 0xc0] ();
 
         }
-
-#if defined(DJGPP) && defined(SOUND_SUPPORT)
-    if (end_of_sound_flag)
-        end_of_sound ();
-#endif
 
     } while (finished == 0);
 

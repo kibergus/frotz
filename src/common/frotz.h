@@ -30,7 +30,6 @@ typedef int bool;
 
 #include <stdio.h>
 
-
 /* typedef unsigned short zbyte; */
 typedef unsigned char zbyte;
 typedef unsigned short zword;
@@ -55,31 +54,6 @@ typedef unsigned short zchar;
 typedef unsigned char zchar;
 
 enum story {
-    ZORK1,
-    ZORK2,
-    ZORK3,
-    ZORK1G,
-    MINIZORK,
-    SAMPLER1,
-    SAMPLER2,
-    ENCHANTER,
-    SORCERER,
-    SPELLBREAKER,
-    PLANETFALL,
-    STATIONFALL,
-    BALLYHOO,
-    BORDER_ZONE,
-    AMFV,
-    HHGG,
-    LGOP,
-    SUSPECT,
-    BEYOND_ZORK,
-    SHERLOCK,
-    ZORK_ZERO,
-    SHOGUN,
-    ARTHUR,
-    JOURNEY,
-    LURKING_HORROR,
     UNKNOWN
 };
 
@@ -111,9 +85,6 @@ typedef struct {
 
 /*** Constants that may be set at compile time ***/
 
-#ifndef MAX_UNDO_SLOTS
-#define MAX_UNDO_SLOTS 500
-#endif
 #ifndef MAX_FILE_NAME
 #define MAX_FILE_NAME 80
 #endif
@@ -215,26 +186,26 @@ typedef struct {
 #define CONFIG_PROPORTIONAL 0x40 /* Interpr uses proportional font     - V3  */
 
 #define CONFIG_COLOUR       0x01 /* Interpr supports colour            - V5+ */
-#define CONFIG_PICTURES            0x02 /* Interpr supports pictures               - V6  */
+#define CONFIG_PICTURES     0x02 /* Interpr supports pictures           - V6  */
 #define CONFIG_BOLDFACE     0x04 /* Interpr supports boldface style    - V4+ */
 #define CONFIG_EMPHASIS     0x08 /* Interpr supports emphasis style    - V4+ */
 #define CONFIG_FIXED        0x10 /* Interpr supports fixed width style - V4+ */
-#define CONFIG_SOUND            0x20 /* Interpr supports sound             - V6  */
+#define CONFIG_SOUND        0x20 /* Interpr supports sound             - V6  */
 
 #define CONFIG_TIMEDINPUT   0x80 /* Interpr supports timed input       - V4+ */
 
-#define SCRIPTING_FLAG          0x0001 /* Outputting to transcription file  - V1+ */
-#define FIXED_FONT_FLAG   0x0002 /* Use fixed width font               - V3+ */
-#define REFRESH_FLAG           0x0004 /* Refresh the screen                 - V6  */
-#define GRAPHICS_FLAG          0x0008 /* Game wants to use graphics         - V5+ */
-#define OLD_SOUND_FLAG          0x0010 /* Game wants to use sound effects    - V3  */
-#define UNDO_FLAG          0x0010 /* Game wants to use UNDO feature     - V5+ */
+#define SCRIPTING_FLAG      0x0001 /* Outputting to transcription file  - V1+ */
+#define FIXED_FONT_FLAG     0x0002 /* Use fixed width font               - V3+ */
+#define REFRESH_FLAG        0x0004 /* Refresh the screen                 - V6  */
+#define GRAPHICS_FLAG       0x0008 /* Game wants to use graphics         - V5+ */
+#define OLD_SOUND_FLAG      0x0010 /* Game wants to use sound effects    - V3  */
+#define UNDO_FLAG           0x0010 /* Game wants to use UNDO feature     - V5+ */
 #define MOUSE_FLAG          0x0020 /* Game wants to use a mouse          - V5+ */
-#define COLOUR_FLAG          0x0040 /* Game wants to use colours          - V5+ */
+#define COLOUR_FLAG         0x0040 /* Game wants to use colours          - V5+ */
 #define SOUND_FLAG          0x0080 /* Game wants to use sound effects    - V5+ */
-#define MENU_FLAG          0x0100 /* Game wants to use menus            - V6  */
+#define MENU_FLAG           0x0100 /* Game wants to use menus            - V6  */
 
-#define TRANSPARENT_FLAG  0x0001 /* Game wants to use transparency     - V6  */
+#define TRANSPARENT_FLAG    0x0001 /* Game wants to use transparency     - V6  */
 
 #define INTERP_DEFAULT 0
 #define INTERP_DEC_20 1
@@ -258,10 +229,10 @@ typedef struct {
 #define MAGENTA_COLOUR 7
 #define CYAN_COLOUR 8
 #define WHITE_COLOUR 9
-#define GREY_COLOUR 10                /* INTERP_MSDOS only */
+#define GREY_COLOUR 10              /* INTERP_MSDOS only */
 #define LIGHTGREY_COLOUR 10         /* INTERP_AMIGA only */
-#define MEDIUMGREY_COLOUR 11         /* INTERP_AMIGA only */
-#define DARKGREY_COLOUR 12         /* INTERP_AMIGA only */
+#define MEDIUMGREY_COLOUR 11        /* INTERP_AMIGA only */
+#define DARKGREY_COLOUR 12          /* INTERP_AMIGA only */
 
 #define REVERSE_STYLE 1
 #define BOLDFACE_STYLE 2
@@ -336,118 +307,25 @@ typedef struct {
 
 /*** Data access macros ***/
 
-#define SET_BYTE(addr,v)  { zmp[addr] = v; }
-#define LOW_BYTE(addr,v)  { v = zmp[addr]; }
-#define CODE_BYTE(v)          { v = *pcp++;    }
+#define ZMP(addr) (addr >= h_dynamic_size ? czmp : dzmp)[addr]
 
-#if defined (AMIGA)
-
-extern zbyte *pcp;
-extern zbyte *zmp;
-
-#define lo(v)        ((zbyte *)&v)[1]
-#define hi(v)        ((zbyte *)&v)[0]
-
-#define SET_WORD(addr,v)  { zmp[addr] = hi(v); zmp[addr+1] = lo(v); }
-#define LOW_WORD(addr,v)  { hi(v) = zmp[addr]; lo(v) = zmp[addr+1]; }
-#define HIGH_WORD(addr,v) { hi(v) = zmp[addr]; lo(v) = zmp[addr+1]; }
-#define CODE_WORD(v)      { hi(v) = *pcp++; lo(v) = *pcp++; }
-#define GET_PC(v)         { v = pcp - zmp; }
-#define SET_PC(v)         { pcp = zmp + v; }
-
-#endif
-
-#if defined (MSDOS_16BIT)
-extern zbyte *pcp;
-extern zbyte *zmp;
-
-#define lo(v)   ((zbyte *)&v)[0]
-#define hi(v)   ((zbyte *)&v)[1]
-
-#define SET_WORD(addr,v) asm {\
-    les bx,zmp;\
-    add bx,addr;\
-    mov ax,v;\
-    xchg al,ah;\
-    mov es:[bx],ax }
-
-#define LOW_WORD(addr,v) asm {\
-    les bx,zmp;\
-    add bx,addr;\
-    mov ax,es:[bx];\
-    xchg al,ah;\
-    mov v,ax }
-
-#define HIGH_WORD(addr,v) asm {\
-    mov bx,word ptr zmp;\
-    add bx,word ptr addr;\
-    mov al,bh;\
-    mov bh,0;\
-    mov ah,0;\
-    adc ah,byte ptr addr+2;\
-    mov cl,4;\
-    shl ax,cl;\
-    add ax,word ptr zmp+2;\
-    mov es,ax;\
-    mov ax,es:[bx];\
-    xchg al,ah;\
-    mov v,ax }
-
-#define CODE_WORD(v) asm {\
-    les bx,pcp;\
-    mov ax,es:[bx];\
-    xchg al,ah;\
-    mov v,ax;\
-    add word ptr pcp,2 }
-
-#define GET_PC(v) asm {\
-    mov bx,word ptr pcp+2;\
-    sub bx,word ptr zmp+2;\
-    mov ax,bx;\
-    mov cl,4;\
-    shl bx,cl;\
-    mov cl,12;\
-    shr ax,cl;\
-    add bx,word ptr pcp;\
-    adc al,0;\
-    sub bx,word ptr zmp;\
-    sbb al,0;\
-    mov word ptr v,bx;\
-    mov word ptr v+2,ax }
-
-#define SET_PC(v) asm {\
-    mov bx,word ptr zmp;\
-    add bx,word ptr v;\
-    mov al,bh;\
-    mov bh,0;\
-    mov ah,0;\
-    adc ah,byte ptr v+2;\
-    mov cl,4;\
-    shl ax,cl;\
-    add ax,word ptr zmp+2;\
-    mov word ptr pcp,bx;\
-    mov word ptr pcp+2,ax }
-
-#endif /* MSDOS_16BIT */
-
-
-#if !defined (AMIGA) && !defined (MSDOS_16BIT)
+#define SET_BYTE(addr,v)  { dzmp[addr] = v; }
+#define LOW_BYTE(addr,v)  { v = ZMP(addr); }
+#define CODE_BYTE(v)      { v = ZMP(pcp - czmp); pcp++; }
 
 extern zbyte *pcp;
-extern zbyte *zmp;
+extern const zbyte *czmp;
+extern zbyte *dzmp;
 
-#define lo(v)        (v & 0xff)
-#define hi(v)        (v >> 8)
+#define lo(v)    (v & 0xff)
+#define hi(v)    (v >> 8)
 
-#define SET_WORD(addr,v)  { zmp[addr] = hi(v); zmp[addr+1] = lo(v); }
-#define LOW_WORD(addr,v)  { v = ((zword) zmp[addr] << 8) | zmp[addr+1]; }
-#define HIGH_WORD(addr,v) { v = ((zword) zmp[addr] << 8) | zmp[addr+1]; }
-#define CODE_WORD(v)      { v = ((zword) pcp[0] << 8) | pcp[1]; pcp += 2; }
-#define GET_PC(v)         { v = pcp - zmp; }
-#define SET_PC(v)         { pcp = zmp + v; }
-
-#endif
-
+#define SET_WORD(addr,v)  { dzmp[addr] = hi(v); dzmp[addr+1] = lo(v); }
+#define LOW_WORD(addr,v)  { v = ((zword) ZMP(addr) << 8) | ZMP(addr+1); }
+#define HIGH_WORD(addr,v) { v = ((zword) ZMP(addr) << 8) | ZMP(addr+1); }
+#define CODE_WORD(v)      { v = ((zword) ZMP(pcp - czmp) << 8) | ZMP(pcp - czmp + 1); pcp += 2; }
+#define GET_PC(v)         { v = pcp - czmp; }
+#define SET_PC(v)         { pcp = czmp + v; }
 
 /*** Story file header data ***/
 extern zbyte h_version;
@@ -526,7 +404,7 @@ extern bool enable_scrolling;
 extern bool enable_buffering;
 
 
-extern char *option_zcode_path;        /* dg */
+extern char *option_zcode_path;    /* dg */
 
 extern long reserve_mem;
 
@@ -734,7 +612,7 @@ void        storeb (zword, zbyte);
 void        storew (zword, zword);
 
 
-        /*** returns the current window ***/
+/*** returns the current window ***/
 Zwindow * curwinrec( void);
 
 
@@ -754,7 +632,7 @@ void         os_more_prompt (void);
 int          os_peek_colour (void);
 int          os_picture_data (int, int *, int *);
 void         os_prepare_sample (int);
-void         os_process_arguments (int, char *[]);
+int          os_process_arguments (int, char *[]);
 int        os_random_seed (void);
 int          os_read_file_name (char *, const char *, int);
 zchar        os_read_key (int, int);

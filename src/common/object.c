@@ -270,12 +270,8 @@ void z_clear_attr (void)
     zword obj_addr;
     zbyte value;
 
-    if (story_id == SHERLOCK)
-        if (zargs[1] == 48)
-            return;
-
     if (zargs[1] > ((h_version <= V3) ? 31 : 47))
-        runtime_error (ERR_ILL_ATTR);
+    runtime_error (ERR_ILL_ATTR);
 
     /* If we are monitoring attribute assignment display a short note */
 
@@ -623,10 +619,6 @@ void z_get_prop_addr (void)
         return;
     }
 
-    if (story_id == BEYOND_ZORK)
-        if (zargs[0] > MAX_OBJECT)
-            { store (0); return; }
-
     /* Property id is in bottom five (six) bits */
 
     mask = (h_version <= V3) ? 0x1f : 0x3f;
@@ -912,10 +904,6 @@ void z_set_attr (void)
 {
     zword obj_addr;
     zbyte value;
-
-    if (story_id == SHERLOCK)
-        if (zargs[1] == 48)
-            return;
 
     if (zargs[1] > ((h_version <= V3) ? 31 : 47))
         runtime_error (ERR_ILL_ATTR);

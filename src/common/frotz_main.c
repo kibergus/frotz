@@ -25,6 +25,7 @@
  */
 
 #include "frotz.h"
+#include "../chibi/chibi_frotz.h"
 
 #ifndef MSDOS_16BIT
 #define cdecl
@@ -32,7 +33,6 @@
 
 extern void interpret (void);
 extern void init_memory (void);
-extern void init_undo (void);
 extern void reset_memory (void);
 
 
@@ -136,6 +136,7 @@ void z_piracy (void)
 
 }/* z_piracy */
 
+void frotzRestoreState(void );
 
 /*
  * main
@@ -143,11 +144,17 @@ void z_piracy (void)
  * Prepare and run the game.
  *
  */
+#ifdef linux
 int cdecl main (int argc, char *argv[])
+#else
+int cdecl frotz_main (int argc, char *argv[])
+#endif
 {
     os_init_setup ();
 
-    os_process_arguments (argc, argv);
+    int ret = os_process_arguments (argc, argv);
+    if (ret != 0)
+        return ret;
 
     init_buffer ();
 
@@ -160,8 +167,6 @@ int cdecl main (int argc, char *argv[])
     init_sound ();
 
     os_init_screen ();
-
-    init_undo ();
 
     z_restart ();
 

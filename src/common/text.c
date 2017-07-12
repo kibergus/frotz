@@ -19,6 +19,7 @@
  */
 
 #include "frotz.h"
+#include "../chibi/chibi_frotz.h"
 
 enum string_type {
     LOW_STRING, ABBREVIATION, HIGH_STRING, EMBEDDED_STRING, VOCABULARY
@@ -62,7 +63,7 @@ zchar translate_from_zscii (zbyte c)
     if (c == 0xfe)
         return ZC_SINGLE_CLICK;
 
-    if (c >= 0x9b && story_id != BEYOND_ZORK) {
+    if (c >= 0x9b) {
 
         if (hx_unicode_table != 0) {        /* game has its own Unicode table */
 

@@ -20,14 +20,10 @@
 
 #include "frotz.h"
 
-extern int save_undo (void);
-
 extern zchar stream_read_key (zword, zword, bool);
-extern zchar stream_read_input (int, zchar *, zword, zword, bool, bool);
+extern zchar stream_read_input (int, zchar *, zword, zword, bool);
 
 extern void tokenise_line (zword, zword, zword, bool);
-
-static bool truncate_question_mark(void);
 
 /*
  * is_terminator
@@ -126,7 +122,7 @@ void read_string (int max, zchar *buffer)
 
     do {
 
-        key = stream_read_input (max, buffer, 0, 0, FALSE, FALSE);
+        key = stream_read_input (max, buffer, 0, 0, FALSE);
 
     } while (key != ZC_RETURN);
 
@@ -219,16 +215,10 @@ void z_read (void)
         max, buffer,                /* buffer and size */
         zargs[2],                /* timeout value   */
         zargs[3],                /* timeout routine */
-        TRUE,                        /* enable hot keys */
-        h_version == V6);        /* no script in V6 */
+        TRUE);                       /* enable hot keys */
 
     if (key == ZC_BAD)
         return;
-
-    /* Perform save_undo for V1 to V4 games */
-
-    if (h_version <= V4)
-        save_undo ();
 
     /* Copy local buffer back to dynamic memory */
 
@@ -241,8 +231,6 @@ void z_read (void)
                 buffer[i] += 0x20;
 
         }
-
-        if (truncate_question_mark() && buffer[i] == '?') buffer[i] = ' ';
 
         storeb ((zword) (zargs[0] + ((h_version <= V4) ? 1 : 2) + i), translate_to_zscii (buffer[i]));
 
@@ -333,43 +321,3 @@ void z_read_mouse (void)
     storew ((zword) (zargs[0] + 6), 0);                /* menu selection */
 
 }/* z_read_mouse */
-
-/*
- * truncate_question_mark
- *
- * check if this game is one that expects the interpreter to truncate a
- * trailing question mark from the input buffer.
- *
- * For some games, Infocom modified the interpreter to truncate trailing
- * question marks.  Presumably this was to make it easier to deal with
- * questions asked of the narrator or interpreter, such as "WHAT IS A
- * GRUE?".  This is a deviation from the Z-Machine Standard (written
- * after Infocom's demise).  Some interpreters written later incorrectly
- * always truncate trailing punctuation.  In the interest of making sure
- * the original Infocom games play exactly as they did with Infocom's
- * own interpreters, this function checks for those games that expect
- * the trailing question mark to be truncated.
- *
- */
-static bool truncate_question_mark(void)
-{
-        if (story_id == ZORK1) return TRUE;
-        if (story_id == ZORK2) return TRUE;
-        if (story_id == ZORK3) return TRUE;
-        if (story_id == MINIZORK) return TRUE;
-        if (story_id == SAMPLER1) return TRUE;
-        if (story_id == SAMPLER2) return TRUE;
-        if (story_id == ENCHANTER) return TRUE;
-        if (story_id == SORCERER) return TRUE;
-        if (story_id == SPELLBREAKER) return TRUE;
-        if (story_id == PLANETFALL) return TRUE;
-        if (story_id == STATIONFALL) return TRUE;
-        if (story_id == BALLYHOO) return TRUE;
-        if (story_id == BORDER_ZONE) return TRUE;
-        if (story_id == AMFV) return TRUE;
-        if (story_id == HHGG) return TRUE;
-        if (story_id == LGOP) return TRUE;
-        if (story_id == SUSPECT) return TRUE;
-
-        return FALSE;
-}

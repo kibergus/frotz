@@ -30,12 +30,6 @@ static struct {
     int pic1;
     int pic2;
 } mapper[] = {
-    { ZORK_ZERO,  5, 497, 498 },
-    { ZORK_ZERO,  6, 501, 502 },
-    { ZORK_ZERO,  7, 499, 500 },
-    { ZORK_ZERO,  8, 503, 504 },
-    {    ARTHUR, 54, 170, 171 },
-    {    SHOGUN, 50,  61,  62 },
     {   UNKNOWN,  0,   0,   0 }
 };
 
@@ -209,9 +203,7 @@ void screen_new_line (void)
 {
     if (discarding) return;
 
-    /* Handle newline interrupts at the start (for most cases) */
-
-    if (h_interpreter_number != INTERP_MSDOS || story_id != ZORK_ZERO || h_release != 393)
+        /* Handle newline interrupts at the start */
         countdown ();
 
     /* Check whether the last input line gets destroyed */
@@ -264,12 +256,6 @@ void screen_new_line (void)
         }
 
     }
-
-    /* Handle newline interrupts at the end for Zork Zero under DOS */
-
-    if (h_interpreter_number == INTERP_MSDOS && story_id == ZORK_ZERO && h_release == 393)
-        countdown ();
-
 }/* screen_new_line */
 
 
@@ -491,16 +477,6 @@ static void update_attributes (void)
     enable_scrolling = attr & 2;
     enable_scripting = attr & 4;
     enable_buffering = attr & 8;
-
-    /* Some story files forget to select wrapping for printing hints */
-
-    if (story_id == ZORK_ZERO && h_release == 366)
-        if (cwin == 0)
-            enable_wrapping = TRUE;
-    if (story_id == SHOGUN && h_release <= 295)
-        if (cwin == 0)
-            enable_wrapping = TRUE;
-
 }/* update_attributes */
 
 
@@ -928,27 +904,12 @@ void z_draw_picture (void)
             os_picture_data (pic, &height1, &width1);
             os_picture_data (mapper[i].pic2, &height2, &width2);
 
-            if (story_id == ARTHUR && pic == 54)
-                delta = h_screen_width / 160;
-
             os_draw_picture (mapper[i].pic1, y + height1, x + delta);
             os_draw_picture (mapper[i].pic2, y + height1, x + width1 - width2 - delta);
 
         }
 
     os_draw_picture (pic, y, x);
-
-    if (story_id == SHOGUN)
-
-        if (pic == 3) {
-
-            int height, width;
-
-            os_picture_data (59, &height, &width);
-            os_draw_picture (59, y, h_screen_width - width + 1);
-
-        }
-
 }/* z_draw_picture */
 
 

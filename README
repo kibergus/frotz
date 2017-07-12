@@ -1,3 +1,27 @@
+This is a crude port of frotz to ChibiOS intented to run on STM32 uController.
+This port was made by chopping everything not needed for me:
+ 1) Any file interactions, including game saving and loading.
+ 2) Undo implementation.
+ 3) Support for sound and images.
+ 4) Hacks for existing games
+ 5) Any other things that did not compile and were not needed.
+And then adding a bit:
+ 1) Game is stored in const array. This allows to put in-to uController flash memory.
+    #define GAME_DATA_SIZE 351744
+    extern const char GAME_DATA[];
+ 2) Game data is not copied to RAM, because there is not enought RAM. So some hacks for
+    z-machine address space vere required.
+ 3) Implemented malloc, free, realloc, time, random and so on.
+ 4) main renamed to frotz_main.
+ 5) Minot type fixes.
+
+Implementation of ch_fputs, ch_fputc, and frotz_getline is not included because it
+contains a lot of specific code to allow interraction of minigames written on C++ with
+game rinning in frotz.
+
+
+===========================================
+
 FROTZ V2.44 - An interpreter for all Infocom and other Z-machine games.
 Complies with standard 1.0 of Graham Nelson's specification.
 

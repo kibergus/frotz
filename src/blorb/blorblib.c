@@ -16,13 +16,11 @@
  */
 
 #ifdef BLORB_BIG_ENDIAN
-static char contentsticker[] = "\nBlorb Library 1.0 (big-endian)\n";
 #define bb_native2(v) (v)
 #define bb_native4(v) (v)
 #endif
 
 #ifdef BLORB_LITTLE_ENDIAN
-static char contentsticker[] = "\nBlorb Library 1.0 (little-endian)\n";
 #define bb_native2(v)   \
     ( (((uint16)(v) >> 8) & 0x00ff)    \
     | (((uint16)(v) << 8) & 0xff00))
@@ -234,7 +232,7 @@ static bb_err_t bb_initialize_map(bb_map_t *map)
                     bb_resdesc_t *resources;
                     bb_resdesc_t **ressorted;
 
-                    if (len != numres*12+4)
+                    if (len != (uint32_t)(numres*12+4))
                         return bb_err_Format; /* bad length field */
 
                     resources = (bb_resdesc_t *)malloc(numres * sizeof(bb_resdesc_t));
@@ -370,7 +368,7 @@ static bb_err_t bb_initialize_map(bb_map_t *map)
                 if (len) {
                     bb_aux_pict_t *aux = (bb_aux_pict_t *)malloc(len * sizeof(bb_aux_pict_t));
 
-                    for (jx=0; jx<len; jx++, ptr += 7) {
+                    for (jx=0; jx<(int)len; jx++, ptr += 7) {
                         bb_result_t res;
 
                         err = bb_load_resource(map, bb_method_DontLoad, &res,
@@ -411,7 +409,7 @@ static bb_err_t bb_initialize_map(bb_map_t *map)
                 if (len) {
                     bb_aux_sound_t *aux = (bb_aux_sound_t *)malloc(len * sizeof(bb_aux_sound_t));
 
-                    for (jx=0; jx<len; jx++, ptr += 2) {
+                    for (jx=0; jx<(int)len; jx++, ptr += 2) {
                         bb_result_t res;
 
                         err = bb_load_resource(map, bb_method_DontLoad, &res,
