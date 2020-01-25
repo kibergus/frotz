@@ -10,14 +10,14 @@ And then adding a bit:
     #define GAME_DATA_SIZE 351744
     extern const char GAME_DATA[];
  2) Game data is not copied to RAM, because there is not enought RAM. So some hacks for
-    z-machine address space vere required.
+    z-machine address space were required.
  3) Implemented malloc, free, realloc, time, random and so on.
  4) main renamed to frotz_main.
- 5) Minot type fixes.
+ 5) Minor type fixes.
 
 Implementation of ch_fputs, ch_fputc, and frotz_getline is not included because it
 contains a lot of specific code to allow interraction of minigames written on C++ with
-game rinning in frotz.
+game running in frotz.
 
 
 ===========================================
